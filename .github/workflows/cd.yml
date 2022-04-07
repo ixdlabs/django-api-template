@@ -1,5 +1,6 @@
-name: elasticbeanstalk-cd-workflow
+name: Release CD
 env:
+  # TODO: Configure the following environment variables
   EB_PACKAGE_S3_BUCKET_NAME : "example-dev-deployments"
   EB_APPLICATION_NAME       : "example"
   EB_ENVIRONMENT_NAME       : "example-env"
