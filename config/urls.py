@@ -8,12 +8,12 @@ from rest_framework.routers import DefaultRouter
 from config.admin import custom_admin_site
 
 spectacular_api_view = spec_views.SpectacularAPIView.as_view()
-spectacular_redoc_view = spec_views.SpectacularRedocView.as_view(url_name="schema")
+spectacular_api_docs_view = spec_views.SpectacularRedocView.as_view(url_name="schema")
 
 urlpatterns = [
     path("api-auth/", include("apps.api_auth.urls")),
     path("api-schema/", spectacular_api_view, name="schema"),
-    path("api/docs/", spectacular_redoc_view, name="redoc"),
+    path("api/docs/", spectacular_api_docs_view, name="redoc"),
 ]
 
 router = DefaultRouter()
@@ -22,6 +22,8 @@ router = DefaultRouter()
 urlpatterns += [
     # TODO: Register API views here
     path("api/v1/", include(router.urls)),
+    path("api-schema/", spectacular_api_view, name="schema"),
+    path("api/docs/", spectacular_api_docs_view, name="api_docs"),
 ]
 
 urlpatterns += [
