@@ -1,12 +1,11 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView
 from drf_spectacular import views as spec_views
 from rest_framework.routers import DefaultRouter
 
-from apps.users import views as user_views
+from config.admin import custom_admin_site
 
 spectacular_api_view = spec_views.SpectacularAPIView.as_view()
 spectacular_redoc_view = spec_views.SpectacularRedocView.as_view(url_name="schema")
@@ -18,16 +17,22 @@ urlpatterns = [
 ]
 
 router = DefaultRouter()
-# TODO: API view sets here
+# TODO: Register API view sets here
 
 urlpatterns += [
-    # TODO: API views here
+    # TODO: Register API views here
     path("api/v1/", include(router.urls)),
 ]
 
 urlpatterns += [
-    path("admin/", admin.site.urls),
-    path("", RedirectView.as_view(pattern_name="admin:index")),
+    # TODO: Configure admin site endpoint here
+    path("custom-admin/", custom_admin_site.urls),
+    path("", RedirectView.as_view(pattern_name="custom_admin:index")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.USE_DEBUG_TOOLBAR:
+    urlpatterns += [
+        path("__debug__/", include("debug_toolbar.urls")),
+    ]
