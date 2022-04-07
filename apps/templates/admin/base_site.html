@@ -1,0 +1,15 @@
+{% extends "admin/base_site.html" %}
+
+{% load static %}
+
+{% block branding %}
+    <a href="{% url "admin:index" %}">
+        {{ block.super }}
+    </a>
+{% endblock %}
+
+{% block userlinks %}
+    <a href="{% url "redoc" %}">View API Docs</a>
+    /
+    {{ block.super }}
+{% endblock %}
