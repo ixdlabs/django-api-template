@@ -108,5 +108,4 @@ venv.bak/
 
 # database
 sqlite.db
-.idea
 .vscode
