@@ -1,5 +1,26 @@
 # Example API
 
+## Template Guide
+
+### Cloning
+
+```bash
+$ git clone https://github.com/ixdlabs/lk-solitrapower-erp-backend
+```
+
+### Pre-commit hooks setup
+
+```bash
+$ pre-commit install
+```
+
+### Intellij IDEA Setup
+
+1. Go to `Project Structure > Project` and set the correct SDK. (Create a venv/conda environment)
+2. In `Project Structure > Modules` select `django-api-template` and set its name to correct project name.
+3. In the same dialog, select `Django` module and set project root and settings locations.
+4. Go to `Edit Configurations` and Add `Django Server` configuration. Select `Use SDK of Module` as the interpreter.
+
 ## Guide
 
 ### Python Environment Setup
@@ -11,8 +32,8 @@ Use `venv`, `conda` or a similar virtual environment to install the dependencies
 Use the following command to create the new environment.
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
+$ python -m venv .venv
+$ source .venv/bin/activate
 ```
 
 #### Miniconda (Alternative)
@@ -26,7 +47,7 @@ $ conda create -n example python=3.10
 $ conda activate example
 ```
 
-#### Install Requirements
+### Install Requirements
 
 After the environment is created and activated, install the necessary dependencies using
 the [requirements.txt](requirements.txt) file.
@@ -107,3 +128,7 @@ is [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 ```bash
 $ python manage.py runserver
 ```
+
+### MailHog Setup
+
+Set `USE_MAILHOG` to `True` and run `MailHog` to capture outgoing emails.
