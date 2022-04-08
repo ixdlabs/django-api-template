@@ -18,8 +18,7 @@ $ pre-commit install
 
 1. Go to `Project Structure > Project` and set the correct SDK. (Create a venv/conda environment)
 2. In `Project Structure > Modules` select `django-api-template` and set its name to correct project name.
-3. In the same dialog, select `Django` module and set project root and settings locations.
-4. Go to `Edit Configurations` and Add `Django Server` configuration. Select `Use SDK of Module` as the interpreter.
+3. Go to `Edit Configurations` and Add `Django Server` configuration. Select `Use SDK of Module` as the interpreter.
 
 ## Guide
 
@@ -115,10 +114,19 @@ Then create the static files required for the project. **You should run this aga
 $ python manage.py collectstatic
 ```
 
+Then load the fixtures. (Optional) This will load the initial data for the project.
+Dumping fixtures can be done as `python manage.py dumpdata APP.MODEL > apps/APP/fixtures/APP_MODEL.json`.
+
+```bash
+$ python manage.py loaddata admin_interface_theme_uswds.json
+```
+
 Finally, create the user account. This will be the default admin user for the system. Give a preferred username and
 password.
 
 ```bash
+$ python manage.py superuser --username superadmin --password userpassword
+# Or to create interactively
 $ python manage.py createsuperuser
 ```
 
