@@ -146,7 +146,7 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
-STATICFILES_DIRS = [APPS_DIR / "static"]
+STATICFILES_DIRS = [ROOT_DIR / "static"]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(ROOT_DIR / ".media")
 
@@ -173,12 +173,14 @@ TEMPLATES = [
         # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         # https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
-        "DIRS": [str(APPS_DIR / "templates")],
         "OPTIONS": {
             # https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
             # https://docs.djangoproject.com/en/dev/ref/templates/api/#loader-types
             "loaders": [
-                "django.template.loaders.filesystem.Loader",
+                (
+                    "django.template.loaders.filesystem.Loader",
+                    [str(ROOT_DIR / "templates")],
+                ),
                 "django.template.loaders.app_directories.Loader",
             ],
             # https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
