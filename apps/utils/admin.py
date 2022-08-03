@@ -1,13 +1,39 @@
 import functools
 import json
+import logging
 from typing import List
 
 from django.contrib import admin, messages
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from apps.utils.exceptions import OperationException
+
+
+class ErrorHandledModelAdmin(admin.ModelAdmin):
+    """
+    Mixin to catch all errors in the Django Admin and map them to user-visible errors.
+    https://stackoverflow.com/questions/26554069/catch-exception-on-save-in-django-admin
+    """
+
+    def change_view(self, request, object_id, form_url="", extra_context=None):
+        try:
+            return super().change_view(request, object_id, form_url, extra_context)
+        except Exception as e:
+            self.message_user(request, "Error changing model: %s" % e, level=logging.ERROR)
+            # This logic was cribbed from the `change_view()` handling here:
+            # django/contrib/admin/options.py:response_post_save_add()
+            # There might be a simpler way to do this, but it seems to do the job.
+            return HttpResponseRedirect(request.path)
+
+    def add_view(self, request, form_url="", extra_context=None):
+        try:
+            return super().add_view(request, form_url, extra_context)
+        except Exception as e:
+            self.message_user(request, "Error adding model: %s" % e, level=logging.ERROR)
+            return HttpResponseRedirect(request.path)
 
 
 class ObjectIdFieldMixin:
