@@ -119,7 +119,7 @@ def admin_fk_link_tag():
             link = reverse(f"admin:{obj._meta.app_label}_{obj._meta.model_name}_change", args=[obj.id])
             link_text = str(obj)
             if len(link_text.strip()) == 0:
-                link_text = _("Link")
+                link_text = str(_("Link"))
             return mark_safe('<a href="%s">%s</a>' % (link, link_text))
 
         return wrapper
