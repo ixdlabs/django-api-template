@@ -110,3 +110,6 @@ venv.bak/
 sqlite.db
 .vscode
 .idea
+
+# SonarQube
+.scannerwork

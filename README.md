@@ -5,13 +5,7 @@
 ### Cloning
 
 ```bash
-$ git clone https://github.com/ixdlabs/lk-solitrapower-erp-backend
-```
-
-### Pre-commit hooks setup
-
-```bash
-$ pre-commit install
+$ git clone https://github.com/ixdlabs/django-api-template
 ```
 
 ### Intellij IDEA Setup
@@ -36,6 +30,8 @@ $ source .venv/bin/activate
 ```
 
 #### Miniconda (Alternative)
+
+> Do not follow this if you are using `venv` (Previous section) or a similar virtual environment.
 
 Install [Miniconda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) to create a new virtual
 environment for project dependencies. Then use the following command to create the new environment. You may need to
@@ -62,7 +58,15 @@ error.
 $ python manage.py
 ```
 
-### Postgres Setup (For production)
+### Pre-commit hooks setup
+
+```bash
+$ pre-commit install
+```
+
+### Postgres Setup (For production only)
+
+> Developers do not need to follow this section. This is only for production deployment/testing as is in production. The default configuration is for `sqlite3` database.
 
 Install [postgres](https://www.postgresql.org/download/) and setup it according to your OS instructions. Use following
 command to login to the `psql` shell.
