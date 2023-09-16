@@ -29,19 +29,6 @@ $ python -m venv .venv
 $ source .venv/bin/activate
 ```
 
-#### Miniconda (Alternative)
-
-> Do not follow this if you are using `venv` (Previous section) or a similar virtual environment.
-
-Install [Miniconda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) to create a new virtual
-environment for project dependencies. Then use the following command to create the new environment. You may need to
-restart the terminal/command prompt to properly activate the new environment.
-
-```bash
-$ conda create -n example python=3.10
-$ conda activate example
-```
-
 ### Install Requirements
 
 After the environment is created and activated, install the necessary dependencies using
@@ -129,7 +116,7 @@ Finally, create the user account. This will be the default admin user for the sy
 password.
 
 ```bash
-$ python manage.py superuser --username superadmin --password userpassword
+$ python manage.py superuser --username superadmin  --email superadmin@example.com --password userpassword
 # Or to create interactively
 $ python manage.py createsuperuser
 ```
