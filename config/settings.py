@@ -278,6 +278,7 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
@@ -301,7 +302,7 @@ REST_AUTH = {
 # ---------------------------------------------------------- DRF Spectacular OpenAPI Documentation ---------------------
 # TODO: Change project details.
 SPECTACULAR_SETTINGS = {
-    "TITLE": "example-api",
+    "TITLE": "Example API",
     "DESCRIPTION": "Example Backend API",
     "VERSION": "0.0.1",
     "COMPONENT_SPLIT_REQUEST": True,
@@ -310,6 +311,7 @@ SPECTACULAR_SETTINGS = {
     "CONTACT": {"name": "kdsuneraavinash", "email": "sunera@ixdlabs.com"},
     "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
     "SERVE_AUTHENTICATION": ["rest_framework.authentication.SessionAuthentication"],
+    "AUTHENTICATION_WHITELIST": ["rest_framework_simplejwt.authentication.JWTAuthentication"],
 }
 
 # ---------------------------------------------------------- Django Constance ------------------------------------------
