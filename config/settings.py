@@ -320,7 +320,7 @@ CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 CONSTANCE_CONFIG: OrderedDict = OrderedDict()
 
 # ---------------------------------------------------------- Django Toolbar --------------------------------------------
-USE_DEBUG_TOOLBAR = env.bool("USE_DEBUG_TOOLBAR", default=True)
+USE_DEBUG_TOOLBAR = env.bool("USE_DEBUG_TOOLBAR", default=DEBUG)
 if USE_DEBUG_TOOLBAR:
     INSTALLED_APPS += ["debug_toolbar"]
     INTERNAL_IPS = ["127.0.0.1", "localhost"]
@@ -352,6 +352,6 @@ if USE_SENTRY:
     )
 
 # ---------------------------------------------------------- Django Extensions -----------------------------------------
-USE_DJANGO_EXTENSIONS = env.bool("USE_DJANGO_EXTENSIONS", default=False)
+USE_DJANGO_EXTENSIONS = env.bool("USE_DJANGO_EXTENSIONS", default=DEBUG)
 if USE_DJANGO_EXTENSIONS:
     INSTALLED_APPS += ["django_extensions"]
