@@ -297,6 +297,7 @@ REST_AUTH = {
     "JWT_AUTH_COOKIE": "access_token",
     "JWT_AUTH_REFRESH_COOKIE": "refresh_token",
     "JWT_AUTH_HTTPONLY": False,
+    "USER_DETAILS_SERIALIZER": "apps.users.serializers.UserSerializer",
 }
 
 # ---------------------------------------------------------- DRF Spectacular OpenAPI Documentation ---------------------
