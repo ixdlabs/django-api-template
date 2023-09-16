@@ -1,8 +1,11 @@
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 from model_utils.models import UUIDModel
 
 
 class User(UUIDModel, AbstractUser):
+    email = models.EmailField("email address", null=True, blank=True, unique=True)
+
     class Meta:
         ordering = ["-date_joined"]
 
