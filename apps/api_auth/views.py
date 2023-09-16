@@ -15,7 +15,7 @@ from apps.api_auth.serializers import RegisterSerializer
 user_model = get_user_model()
 
 
-@extend_schema(auth=[], responses={status.HTTP_201_CREATED: api_settings.JWT_SERIALIZER})
+@extend_schema(auth=[], responses={status.HTTP_201_CREATED: api_settings.JWT_SERIALIZER}, summary="Register a new user")
 class RegisterView(CreateAPIView):
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ title|default:"RapiDoc" }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="module" src="{{ js_dist }}"></script>
+</head>
+<body>
+<rapi-doc
+        spec-url="{{ schema_url }}"
+        persist-auth="true"
+        fill-request-fields-with-example="false"
+        theme="light"
+        show-method-in-nav-bar="as-colored-block"
+        use-path-in-nav-bar="true"
+        nav-bg-color="#161F6D"
+        primary-color="#337DEF"
+        show-header="false"
+        allow-spec-file-download="true"
+>
+    <img slot="nav-logo" src="https://ixdlabs.com/_next/static/media/logo-icon-white.e468545b.svg"
+         style="width:100px; height:100px; margin-left: auto; margin-right: auto"/>
+</rapi-doc>
+
+</body>
+</html>

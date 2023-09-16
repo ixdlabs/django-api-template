@@ -6,10 +6,10 @@ from drf_spectacular import views as spec_views
 from rest_framework.routers import DefaultRouter
 
 from config.admin import custom_admin_site
-from config.schema import SpectacularElementsView
+from config.schema import SpectacularRapiDocView
 
 spectacular_api_view = spec_views.SpectacularAPIView.as_view()
-spectacular_api_docs_view = SpectacularElementsView.as_view(url_name="schema")
+spectacular_api_docs_view = SpectacularRapiDocView.as_view(url_name="schema")
 
 router = DefaultRouter()
 # TODO: Register API view sets here
