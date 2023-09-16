@@ -4,7 +4,7 @@ from model_utils.models import UUIDModel
 
 
 class User(UUIDModel, AbstractUser):
-    email = models.EmailField("email address", null=True, blank=True, unique=True)
+    email = models.EmailField("email address", unique=True)
 
     class Meta:
         ordering = ["-date_joined"]
