@@ -4,7 +4,10 @@ from django.urls import path
 from drf_spectacular.utils import extend_schema
 from rest_framework_simplejwt.views import TokenVerifyView
 
+from apps.api_auth.views import RegisterView
+
 urlpatterns = [
+    path("register/", RegisterView.as_view(), name="rest_login"),
     path("login/", extend_schema(auth=[])(auth_views.LoginView).as_view(), name="rest_login"),
     path("logout/", auth_views.LogoutView.as_view(), name="rest_logout"),
     path("user/", auth_views.UserDetailsView.as_view(), name="rest_user_details"),
