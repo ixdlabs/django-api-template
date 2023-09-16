@@ -8,6 +8,7 @@ django-filter==23.2
 Pillow==10.0.1
 django-anymail==10.1
 drf-spectacular==0.26.4
+drf-standardized-errors[openapi]==0.12.5
 
 # ---------------------------------------------------------- Admin Panel -----------------------------------------------
 django-admin-interface==0.26.1
