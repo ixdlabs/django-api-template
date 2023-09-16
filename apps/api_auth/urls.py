@@ -1,5 +1,7 @@
 from dj_rest_auth import views as auth_views
+from dj_rest_auth.jwt_auth import get_refresh_view
 from django.urls import path
+from rest_framework_simplejwt.views import TokenVerifyView
 
 urlpatterns = [
     path("login/", auth_views.LoginView.as_view(), name="rest_login"),
@@ -8,4 +10,7 @@ urlpatterns = [
     path("password/change/", auth_views.PasswordChangeView.as_view(), name="rest_password_change"),
     path("password/reset/", auth_views.PasswordResetView.as_view(), name="rest_password_reset"),
     path("password/reset/confirm/", auth_views.PasswordResetConfirmView.as_view(), name="rest_password_reset_confirm"),
+    # Refresh token views
+    path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
+    path("token/refresh/", get_refresh_view().as_view(), name="token_refresh"),
 ]

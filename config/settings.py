@@ -246,7 +246,7 @@ ADMINS = [("""ixdlabs""", "developer@ixdlabs.lk")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
 ADMIN_MODELS = [
-    ["Authentication/Authorization", ("Group", "User", "TokenProxy")],
+    ["Authentication/Authorization", ("Group", "User")],
     ["Site Settings", ("Theme", "Site", "Config")],
 ]
 
@@ -277,7 +277,9 @@ REST_FRAMEWORK = {
     "DATETIME_FORMAT": "%Y-%m-%dT%H:%M:%S%z",
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
-    "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework.authentication.TokenAuthentication"],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+    ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
@@ -287,8 +289,13 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_URLS_REGEX = r"^/(admin-api|api-auth|api/v1)/.*$"
 
 # ---------------------------------------------------------- Django Rest Auth ------------------------------------------
-# https://django-rest-auth.readthedocs.io/en/latest/configuration.html#configuration
-OLD_PASSWORD_FIELD_ENABLED = True
+# https://dj-rest-auth.readthedocs.io/en/latest/configuration.html
+REST_AUTH = {
+    "OLD_PASSWORD_FIELD_ENABLED": True,
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "access_token",
+    "JWT_AUTH_REFRESH_COOKIE": "refresh_token",
+}
 
 # ---------------------------------------------------------- DRF Spectacular OpenAPI Documentation ---------------------
 # TODO: Change project details.

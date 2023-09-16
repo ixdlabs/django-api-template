@@ -7,8 +7,6 @@ from django.contrib.auth.admin import GroupAdmin
 from django.contrib.auth.models import Group
 from django.contrib.sites.admin import SiteAdmin
 from django.contrib.sites.models import Site
-from rest_framework.authtoken.admin import TokenAdmin
-from rest_framework.authtoken.models import TokenProxy
 
 
 class CustomAdminSite(AdminSite):
@@ -42,7 +40,6 @@ class CustomAdminSite(AdminSite):
 
 # TODO: Configure admin site name here
 custom_admin_site = CustomAdminSite(name="custom_admin")
-custom_admin_site.register(TokenProxy, TokenAdmin)
 custom_admin_site.register(Group, GroupAdmin)
 custom_admin_site.register(Site, SiteAdmin)
 custom_admin_site.register(Theme, ThemeAdmin)
