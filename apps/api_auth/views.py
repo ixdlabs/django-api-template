@@ -5,13 +5,13 @@ from dj_rest_auth.jwt_auth import get_refresh_view
 from dj_rest_auth.utils import jwt_encode
 from dj_rest_auth.views import (
     LoginView,
-    LogoutView,
     PasswordChangeView,
     PasswordResetConfirmView,
     PasswordResetView,
     sensitive_post_parameters_m,
 )
 from django.contrib.auth import get_user_model
+from drf_spectacular.contrib.rest_auth import RestAuthDetailSerializer
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
@@ -61,26 +61,21 @@ class CustomRegisterView(PublicEndpoint, CreateAPIView):
         self.access_token, self.refresh_token = jwt_encode(self.user)
 
 
-@extend_schema(summary="Login a user")
+@extend_schema(responses={status.HTTP_200_OK: api_settings.JWT_SERIALIZER}, summary="Login a user")
 class CustomLoginView(PublicEndpoint, LoginView):
     pass
-
-
-@extend_schema(summary="Logout a user")
-class CustomLogoutView(LogoutView):
-    http_method_names = ["post"]
 
 
 # ---------------------------------------- Password
 
 
-@extend_schema(summary="Reset user password")
-class CustomPasswordResetView(PublicEndpoint, PasswordResetView):
+@extend_schema(responses={status.HTTP_200_OK: RestAuthDetailSerializer}, summary="Change user password")
+class CustomPasswordChangeView(PasswordChangeView):
     pass
 
 
-@extend_schema(summary="Change user password")
-class CustomPasswordChangeView(PasswordChangeView):
+@extend_schema(summary="Reset user password")
+class CustomPasswordResetView(PublicEndpoint, PasswordResetView):
     pass
 
 
