@@ -26,8 +26,6 @@ django-constance[database]==3.1.0
 django-storages[boto3]==1.14
 
 # ---------------------------------------- Testing and Code Quality
-django_coverage_plugin==3.1.0
-coverage==7.3.1
 pre-commit==3.4.0
 mypy==1.5.1
 

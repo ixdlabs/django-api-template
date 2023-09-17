@@ -142,3 +142,81 @@ Set `USE_MAIL_HOG` to `True` and run `MailHog` to capture outgoing emails.
 
 Or you may use `Run Server + MailHog` configuration in the IDE. (This will not run MailHog, only the server will run
 with `USE_MAIL_HOG=True`)
+
+### Packages
+
+This project uses [Django](https://www.djangoproject.com/) as the web framework. Django is a high-level Python Web
+framework that encourages rapid development and clean, pragmatic design.
+
+Slight modifications are made to the default Django project structure to make it more modular and easy to maintain. For
+example, the apps are put inside the `apps` directory and the `settings.py` and other configuration files are moved to
+the `config` directory.
+
+#### Django and Core Libraries
+
+| Package            | Purpose                                                                                             |
+|--------------------|-----------------------------------------------------------------------------------------------------|
+| django             | Web framework for building the application and its core functionalities.                            |
+| django-environ     | Simplifies handling environment variables and settings configuration.                               |
+| django-model-utils | Provides useful utilities for working with Django models. Used mainly for UUID and Timestamp models |
+| django-filter      | Enables easy and customizable filtering of querysets in Django.                                     |
+
+Following packages are installed not for direct usage, but as feature enhancements for the above packages.
+
+- psycopg2-binary (For postgres database)
+- Pillow (For image processing)
+- argon2-cffi (For password hashing)
+- gunicorn (For production deployment)
+
+#### Django REST Framework and Authentication
+
+| Package                       | Purpose                                                              |
+|-------------------------------|----------------------------------------------------------------------|
+| djangorestframework           | A powerful toolkit for building Web APIs in Django.                  |
+| django-cors-headers           | Adds Cross-Origin Resource Sharing (CORS) headers support.           |
+| drf-spectacular               | Simplifies the generation of API documentation for DRF.              |
+| drf-standardized-errors       | Standardized error responses for Django REST Framework APIs.         |
+| dj-rest-auth                  | Adds authentication views and serializers for Django REST Framework. |
+| djangorestframework-simplejwt | Provides JSON Web Token (JWT) authentication support for DRF.        |
+
+#### Django Admin
+
+| Package        | Purpose                                                                           |
+|----------------|-----------------------------------------------------------------------------------|
+| django-jazzmin | Enhances the Django admin interface with a modern and customizable look and feel. |
+
+#### Third-Party Integrations
+
+| Package                    | Purpose                                                                         |
+|----------------------------|---------------------------------------------------------------------------------|
+| django-anymail             | Integrates various transactional email service providers with Django.           |
+| sentry-sdk                 | Integrates Sentry for real-time error tracking and monitoring.                  |
+| django-constance[database] | Allows dynamic Django settings using the admin interface or configuration file. |
+| django-storages[boto3]     | Enables the use of Amazon S3 or other storage backends with Django.             |
+
+#### Testing and Code Quality
+
+| Package                | Purpose                                                                   |
+|------------------------|---------------------------------------------------------------------------|
+| pre-commit             | A framework for managing and maintaining multi-language pre-commit hooks. |
+| mypy                   | A static type checker for Python, used for type checking the codebase.    |
+
+#### Debugging and Development Tools
+
+| Package              | Purpose                                                           |
+|----------------------|-------------------------------------------------------------------|
+| django-debug-toolbar | A set of panels displaying various debug information for Django.  |
+| django-extensions    | Adds various developer-friendly features to the Django framework. |
+
+Additionally, the following packages are installed for type stubs.
+
+- djangorestframework-stubs
+- django-stubs
+- types-python-dateutil
+- types-requests
+
+#### Dependency Management and Upgrades
+
+| Package      | Purpose                                                         |
+|--------------|-----------------------------------------------------------------|
+| pip-upgrader | Facilitates upgrading Python packages to their latest versions. |
