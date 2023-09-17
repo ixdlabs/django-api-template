@@ -20,7 +20,7 @@ urlpatterns = [
     path("api/v1/", include(router.urls)),
     # TODO: Register API views here
     # Admin site URLs
-    path("custom-admin/", CustomDashboardView.as_view(), name="admin:index"),
+    path("custom-admin/", CustomDashboardView.as_view(), name="dashboard"),
     path("custom-admin/", admin.site.urls),
     path("", RedirectView.as_view(pattern_name="admin:index")),
     # API documentation URLs

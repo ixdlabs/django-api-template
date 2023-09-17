@@ -86,6 +86,7 @@ THIRD_PARTY_APPS = [
     "constance.backends.database",
     "anymail",
     "drf_standardized_errors",
+    "import_export",
 ]
 LOCAL_APPS = [
     "apps.api_auth.apps.ApiAuthConfig",
@@ -432,3 +433,10 @@ JAZZMIN_UI_TWEAKS = {
         "success": "btn-success",
     },
 }
+
+
+# ---------------------------------------------------------- Django Import Export --------------------------------------
+
+IMPORT_EXPORT_IMPORT_PERMISSION_CODE = "add"
+IMPORT_EXPORT_EXPORT_PERMISSION_CODE = "view"
+IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = True

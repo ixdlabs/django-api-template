@@ -181,9 +181,10 @@ Following packages are installed not for direct usage, but as feature enhancemen
 
 #### Django Admin
 
-| Package        | Purpose                                                                           |
-|----------------|-----------------------------------------------------------------------------------|
-| django-jazzmin | Enhances the Django admin interface with a modern and customizable look and feel. |
+| Package              | Purpose                                                                           |
+|----------------------|-----------------------------------------------------------------------------------|
+| django-jazzmin       | Enhances the Django admin interface with a modern and customizable look and feel. |
+| django-import-export | Adds import and export functionality to Django admin.                             |
 
 #### Third-Party Integrations
 
@@ -196,10 +197,10 @@ Following packages are installed not for direct usage, but as feature enhancemen
 
 #### Testing and Code Quality
 
-| Package                | Purpose                                                                   |
-|------------------------|---------------------------------------------------------------------------|
-| pre-commit             | A framework for managing and maintaining multi-language pre-commit hooks. |
-| mypy                   | A static type checker for Python, used for type checking the codebase.    |
+| Package    | Purpose                                                                   |
+|------------|---------------------------------------------------------------------------|
+| pre-commit | A framework for managing and maintaining multi-language pre-commit hooks. |
+| mypy       | A static type checker for Python, used for type checking the codebase.    |
 
 #### Debugging and Development Tools
 
