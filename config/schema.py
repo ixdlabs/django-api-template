@@ -64,7 +64,8 @@ class SpectacularRapiDocView(SpectacularCustomView):
         return Response(
             data={
                 "title": self.title,
-                "js_dist": "https://cdn.jsdelivr.net/npm/rapidoc@latest/dist/rapidoc-min.js",
+                "rapidoc_js_dist": "https://unpkg.com/rapidoc/dist/rapidoc-min.js",
+                "rapipdf_js_dist": "https://unpkg.com/rapipdf/dist/rapipdf-min.js",
                 "schema_url": self._get_schema_url(request),
             },
             template_name=self.template_name,

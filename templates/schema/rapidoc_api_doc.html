@@ -4,7 +4,8 @@
     <title>{{ title|default:"RapiDoc" }}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="module" src="{{ js_dist }}"></script>
+    <script type="module" src="{{ rapidoc_js_dist }}"></script>
+    <script type="module" src="{{ rapipdf_js_dist }}"></script>
 </head>
 <body>
 <rapi-doc
@@ -17,10 +18,17 @@
         nav-bg-color="#161F6D"
         primary-color="#337DEF"
         show-header="false"
-        allow-spec-file-download="true"
 >
     <img slot="nav-logo" src="https://ixdlabs.com/_next/static/media/logo-icon-white.e468545b.svg"
-         style="width:100px; height:100px; margin-left: auto; margin-right: auto"/>
+         alt="Logo" style="width:100px; height:100px; margin-left: auto; margin-right: auto"/>
+    <rapi-pdf
+            slot="overview"
+            spec-url="{{ schema_url }}"
+            button-bg="#161F6D"
+            hide-input="true"
+            pdf-primary-color="#161F6D"
+            pdf-a   lternate-color="#337DEF"
+    ></rapi-pdf>
 </rapi-doc>
 
 </body>
