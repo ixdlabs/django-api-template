@@ -11,6 +11,7 @@ from dj_rest_auth.views import (
     sensitive_post_parameters_m,
 )
 from django.contrib.auth import get_user_model
+from django.views.generic import TemplateView
 from drf_spectacular.contrib.rest_auth import RestAuthDetailSerializer
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
@@ -74,14 +75,28 @@ class CustomPasswordChangeView(PasswordChangeView):
     pass
 
 
-@extend_schema(summary="Reset user password")
+@extend_schema(responses={status.HTTP_200_OK: RestAuthDetailSerializer}, summary="Reset user password")
 class CustomPasswordResetView(PublicEndpoint, PasswordResetView):
     pass
 
 
-@extend_schema(summary="Reset user password (confirm)")
+@extend_schema(responses={status.HTTP_200_OK: RestAuthDetailSerializer}, summary="Reset user password (confirm)")
 class CustomPasswordResetConfirmView(PublicEndpoint, PasswordResetConfirmView):
     pass
+
+
+class PasswordResetConfirmTemplateView(TemplateView):
+    """
+    View to confirm the password reset.
+    """
+
+    template_name = "registration/password_reset_confirm.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["uid"] = self.kwargs["uidb64"]
+        context["token"] = self.kwargs["token"]
+        return context
 
 
 # ---------------------------------------- Token

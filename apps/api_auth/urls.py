@@ -9,6 +9,7 @@ from apps.api_auth.views import (
     CustomRegisterView,
     CustomTokenRefreshView,
     CustomTokenVerifyView,
+    PasswordResetConfirmTemplateView,
 )
 
 urlpatterns = [
@@ -21,6 +22,7 @@ urlpatterns = [
     path("password/change/", CustomPasswordChangeView.as_view(), name="rest_password_change"),
     path("password/reset/", CustomPasswordResetView.as_view(), name="rest_password_reset"),
     path("password/reset/confirm/", CustomPasswordResetConfirmView.as_view(), name="rest_password_reset_confirm"),
+    path("password/reset/<uidb64>/<token>/", PasswordResetConfirmTemplateView.as_view(), name="password_reset_confirm"),
     # Token endpoints
     path("token/verify/", CustomTokenVerifyView.as_view(), name="token_verify"),
     path("token/refresh/", CustomTokenRefreshView.as_view(), name="token_refresh"),
