@@ -1,24 +1,35 @@
 from typing import Any
 
 from dj_rest_auth.app_settings import api_settings
+from dj_rest_auth.jwt_auth import get_refresh_view
 from dj_rest_auth.utils import jwt_encode
-from dj_rest_auth.views import sensitive_post_parameters_m
+from dj_rest_auth.views import (
+    LoginView,
+    LogoutView,
+    PasswordChangeView,
+    PasswordResetConfirmView,
+    PasswordResetView,
+    sensitive_post_parameters_m,
+)
 from django.contrib.auth import get_user_model
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework_simplejwt.views import TokenVerifyView
 
 from apps.api_auth.serializers import RegisterSerializer
+from apps.utils.views import PublicEndpoint
 
 user_model = get_user_model()
 
 
-@extend_schema(auth=[], responses={status.HTTP_201_CREATED: api_settings.JWT_SERIALIZER}, summary="Register a new user")
-class RegisterView(CreateAPIView):
+# ---------------------------------------- Auth
+
+
+@extend_schema(responses={status.HTTP_201_CREATED: api_settings.JWT_SERIALIZER}, summary="Register a new user")
+class CustomRegisterView(PublicEndpoint, CreateAPIView):
     serializer_class = RegisterSerializer
-    permission_classes = [AllowAny]
 
     user: Any
     access_token: str
@@ -48,3 +59,43 @@ class RegisterView(CreateAPIView):
     def perform_create(self, serializer):
         self.user = serializer.save()
         self.access_token, self.refresh_token = jwt_encode(self.user)
+
+
+@extend_schema(summary="Login a user")
+class CustomLoginView(PublicEndpoint, LoginView):
+    pass
+
+
+@extend_schema(summary="Logout a user")
+class CustomLogoutView(LogoutView):
+    http_method_names = ["post"]
+
+
+# ---------------------------------------- Password
+
+
+@extend_schema(summary="Reset user password")
+class CustomPasswordResetView(PublicEndpoint, PasswordResetView):
+    pass
+
+
+@extend_schema(summary="Change user password")
+class CustomPasswordChangeView(PasswordChangeView):
+    pass
+
+
+@extend_schema(summary="Reset user password (confirm)")
+class CustomPasswordResetConfirmView(PublicEndpoint, PasswordResetConfirmView):
+    pass
+
+
+# ---------------------------------------- Token
+
+
+@extend_schema(summary="Verify an access token")
+class CustomTokenVerifyView(PublicEndpoint, TokenVerifyView):
+    pass
+
+
+token_refresh_view_cls = get_refresh_view()
+CustomTokenRefreshView = extend_schema(summary="Refresh an access token")(token_refresh_view_cls)
