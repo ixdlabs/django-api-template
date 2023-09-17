@@ -19,8 +19,6 @@ urlpatterns = [
     path("api/v1/", include(router.urls)),
     # TODO: Register API views here
     # Admin site URLs
-    path(r"jet/", include("jet.urls", "jet")),
-    path(r"jet/dashboard/", include("jet.dashboard.urls", "jet-dashboard")),
     path("custom-admin/", admin.site.urls),
     path("", RedirectView.as_view(pattern_name="admin:index")),
     # API documentation URLs

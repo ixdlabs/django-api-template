@@ -10,15 +10,18 @@ $ git clone https://github.com/ixdlabs/django-api-template
 
 ### Intellij IDEA Setup
 
-1. Go to `Project Structure > Project` and set the correct SDK. (Create a venv/conda environment)
+Follow the below steps to set up the project in Intellij IDEA. (Tested on Intellij IDEA 2023.2.1)
+
+1. Go to `Project Structure > Project` and change the project name and set the correct SDK. (Create a venv/conda
+   environment)
 2. In `Project Structure > Modules` select `django-api-template` and set its name to correct project name.
-3. Go to `Edit Configurations` and Add `Django Server` configuration. Select `Use SDK of Module` as the interpreter.
 
 ## Guide
 
 ### Python Environment Setup
 
-Use `venv`, `conda` or a similar virtual environment to install the dependencies.
+You should have python 3.10 or above installed in your system. Use `venv`, `conda` or a similar virtual environment to
+install the dependencies.
 
 #### venv
 
@@ -29,10 +32,12 @@ $ python -m venv .venv
 $ source .venv/bin/activate
 ```
 
+You can also use the IDE to create the environment.
+
 ### Install Requirements
 
 After the environment is created and activated, install the necessary dependencies using
-the [requirements.txt](requirements.txt) file.
+the [requirements.txt](requirements.txt) file. (Make sure you are in the correct virtual environment)
 
 ```bash
 $ pip install -r requirements.txt
@@ -47,13 +52,18 @@ $ python manage.py
 
 ### Pre-commit hooks setup
 
+This project uses [pre-commit](https://pre-commit.com/) hooks to check the code before committing. Install the hooks by
+running the following command.
+
 ```bash
 $ pre-commit install
 ```
 
 ### Postgres Setup (For production only)
 
-> Developers do not need to follow this section. This is only for production deployment/testing as is in production. The default configuration is for `sqlite3` database.
+> Developers do not need to follow this section. This is only for production deployment/testing as is in production. The
+> default dev configuration is for `sqlite3` database which will be automatically created in the project root
+> as `sqlite.db`.
 
 Install [postgres](https://www.postgresql.org/download/) and setup it according to your OS instructions. Use following
 command to login to the `psql` shell.
@@ -66,10 +76,8 @@ Then enter below commands.
 
 ```sql
 CREATE ROLE db_user WITH LOGIN PASSWORD 'password';
-CREATE
-DATABASE example_db;
-GRANT ALL PRIVILEGES ON DATABASE
-example_db TO db_user;
+CREATE DATABASE example_db;
+GRANT ALL PRIVILEGES ON DATABASE example_db TO db_user;
 \q
 ```
 
@@ -105,13 +113,6 @@ Then create the static files required for the project. **You should run this aga
 $ python manage.py collectstatic
 ```
 
-Then load the fixtures. (Optional) This will load the initial data for the project.
-Dumping fixtures can be done as `python manage.py dumpdata APP.MODEL > apps/APP/fixtures/APP_MODEL.json`.
-
-```bash
-$ python manage.py loaddata admin_interface_theme_uswds.json
-```
-
 Finally, create the user account. This will be the default admin user for the system. Give a preferred username and
 password.
 
@@ -121,8 +122,8 @@ $ python manage.py superuser --username superadmin  --email superadmin@example.c
 $ python manage.py createsuperuser
 ```
 
-Afterwards try running the project. The default url for the dashboard
-is [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+Afterward, try running the project. The default url for the dashboard
+is [http://127.0.0.1:8001/](http://127.0.0.1:8000/)
 
 ```bash
 $ python manage.py runserver
@@ -130,4 +131,14 @@ $ python manage.py runserver
 
 ### MailHog Setup
 
-Set `USE_MAILHOG` to `True` and run `MailHog` to capture outgoing emails.
+MailHog is a tool to capture outgoing emails. You can use it to test the email sending functionality. Install MailHog by
+following the instructions in the mailhog [repository](https://github.com/mailhog/MailHog).
+
+Set `USE_MAIL_HOG` to `True` and run `MailHog` to capture outgoing emails.
+
+ ```bash
+ $ USE_MAIL_HOG=True python manage.py runserver
+ ```
+
+Or you may use `Run Server + MailHog` configuration in the IDE. (This will not run MailHog, only the server will run
+with `USE_MAIL_HOG=True`)
