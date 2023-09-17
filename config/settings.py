@@ -392,7 +392,7 @@ JET_SIDE_MENU_ITEMS = [
         "items": [
             {"name": "sites.site"},
             {"name": "constance.config"},
-            {"label": _("API Docs"), "url": {"type": "reverse", "name": "api_docs"}, "url_blank": True},
         ],
     },
 ]
+JET_INDEX_DASHBOARD = "config.dashboard.CustomIndexDashboard"
