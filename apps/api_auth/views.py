@@ -90,7 +90,7 @@ class PasswordResetConfirmTemplateView(TemplateView):
     View to confirm the password reset.
     """
 
-    template_name = "registration/password_reset_confirm.html"
+    template_name = "api_auth/password_reset_confirm.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
