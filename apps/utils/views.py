@@ -2,7 +2,6 @@ from typing import Sequence
 
 from django.conf import settings
 from rest_framework import pagination
-from rest_framework.permissions import AllowAny
 
 
 class PageSizeParamPagination(pagination.PageNumberPagination):
@@ -15,5 +14,5 @@ class PageSizeParamPagination(pagination.PageNumberPagination):
 
 
 class PublicEndpoint:
-    permission_classes: Sequence = [AllowAny]
+    permission_classes: Sequence = []
     authentication_classes: Sequence = []
