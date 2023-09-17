@@ -63,8 +63,8 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # ---------------------------------------------------------- Apps ------------------------------------------------------
 DJANGO_ADMIN_THEME_APPS = [
-    "admin_interface",
-    "colorfield",
+    "jet.dashboard",
+    "jet",
 ]
 DJANGO_APPS = [
     "django.contrib.auth",
@@ -246,10 +246,6 @@ ADMIN_URL = "admin/"
 ADMINS = [("""ixdlabs""", "developer@ixdlabs.lk")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
-ADMIN_MODELS = [
-    ["Authentication/Authorization", ("Group", "User")],
-    ["Site Settings", ("Theme", "Site", "Config")],
-]
 
 # ---------------------------------------------------------- Logging ---------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#logging
@@ -371,3 +367,32 @@ if USE_SENTRY:
 USE_DJANGO_EXTENSIONS = env.bool("USE_DJANGO_EXTENSIONS", default=DEBUG)
 if USE_DJANGO_EXTENSIONS:
     INSTALLED_APPS += ["django_extensions"]
+
+
+# ---------------------------------------------------------- Django Jet ------------------------------------------------
+
+JET_THEMES = [
+    {"theme": "default", "color": "#354052", "title": "Default"},
+    {"theme": "green", "color": "#2E5955", "title": "Green"},
+    {"theme": "light-green", "color": "#009471", "title": "Light Green"},
+    {"theme": "light-violet", "color": "#554488", "title": "Light Violet"},
+    {"theme": "light-blue", "color": "#2980B9", "title": "Light Blue"},
+    {"theme": "light-gray", "color": "#333C47", "title": "Light Gray"},
+]
+JET_SIDE_MENU_ITEMS = [
+    {
+        "label": _("Authentication/Authorization"),
+        "items": [
+            {"name": "users.user"},
+            {"name": "auth.group"},
+        ],
+    },
+    {
+        "label": _("Site Settings"),
+        "items": [
+            {"name": "sites.site"},
+            {"name": "constance.config"},
+            {"label": _("API Docs"), "url": {"type": "reverse", "name": "api_docs"}, "url_blank": True},
+        ],
+    },
+]
