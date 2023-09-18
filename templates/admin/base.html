@@ -1,0 +1,13 @@
+{#Ref: https://github.com/farridav/django-jazzmin/blob/master/jazzmin/templates#}
+{% extends "admin/base.html" %}
+
+{% load i18n static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <style>
+        .dashboard-sidebar-site-logo {
+            box-shadow: none !important;
+        }
+    </style>
+{% endblock %}

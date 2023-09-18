@@ -1,0 +1,17 @@
+{#Ref: https://github.com/farridav/django-jazzmin/blob/master/jazzmin/templates#}
+{% extends "registration/base.html" %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <style>
+        body {
+            background-color: #343A40;
+            background-size: cover;
+        }
+
+        img {
+            width: 150px;
+            padding-bottom: 20px;
+        }
+    </style>
+{% endblock %}

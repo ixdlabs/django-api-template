@@ -378,7 +378,7 @@ JAZZMIN_SETTINGS = {
     "site_brand": "IXD Labs",
     "site_logo": "logo.svg",
     "site_icon": "favicon.ico",
-    "site_logo_classes": "elevation-0",
+    "site_logo_classes": "dashboard-sidebar-site-logo",
     # Footer and Welcome
     "welcome_sign": "Welcome to the Administration Portal",
     "copyright": "IXD Labs (Pvt) Ltd",
