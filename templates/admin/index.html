@@ -2,6 +2,27 @@
 
 {% load i18n static %}
 
+{% block extrastyle %}
+    {{ block.super }}
+    <!--suppress CssUnusedSymbol -->
+    <style>
+        .dashboard #content {
+            width: auto;
+        }
+    </style>
+    {{ block.super }}
+{% endblock %}
+
+{% block nav-sidebar %}
+    {% include "admin/nav_sidebar.html" %}
+{% endblock %}
+
 {% block content %}
-    {% include "admin/dashboard.html" %}
+    <div id="content-main">
+        {% include "admin/dashboard.html" %}
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    {% include "admin/recent_actions.html" %}
 {% endblock %}

@@ -63,7 +63,8 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # ---------------------------------------------------------- Apps ------------------------------------------------------
 DJANGO_ADMIN_THEME_APPS = [
-    "jazzmin",
+    "admin_interface",
+    "colorfield",
 ]
 DJANGO_APPS = [
     "django.contrib.auth",
@@ -368,75 +369,14 @@ USE_DJANGO_EXTENSIONS = env.bool("USE_DJANGO_EXTENSIONS", default=DEBUG)
 if USE_DJANGO_EXTENSIONS:
     INSTALLED_APPS += ["django_extensions"]
 
-# ---------------------------------------------------------- Jazzmin ---------------------------------------------------
-
-# https://django-jazzmin.readthedocs.io/configuration/
-JAZZMIN_SETTINGS = {
-    # Basic configuration
-    "site_title": "Administration Portal",
-    "site_header": "Administration Portal",
-    "site_brand": "IXD Labs",
-    "site_logo": "logo.svg",
-    "site_icon": "favicon.ico",
-    "site_logo_classes": "dashboard-sidebar-site-logo",
-    # Footer and Welcome
-    "welcome_sign": "Welcome to the Administration Portal",
-    "copyright": "IXD Labs (Pvt) Ltd",
-    # Top Menu Items
-    "search_model": [],
-    "topmenu_links": [
-        {"name": "Home", "url": "admin:index"},
-        {"name": "API Docs", "url": "api_docs", "new_window": True},
-    ],
-    # Configure side menu content
-    "hide_apps": ["authtoken"],
-    "hide_models": ["users.User", "constance.Config"],
-    "order_with_respect_to": ["auth", "sites"],
-    "custom_links": {
-        "auth": [
-            {
-                "name": "Users",
-                "url": "admin:users_user_changelist",
-                "icon": "fas fa-user",
-            }
-        ],
-        "sites": [
-            {
-                "name": "Configurations",
-                "url": "admin:constance_config_changelist",
-                "icon": "fas fa-cog",
-            }
-        ],
-    },
-    "icons": {
-        "auth.Group": "fas fa-users",
-        "sites.Site": "fas fa-globe",
-    },
-    "default_icon_parents": "fas fa-chevron-circle-right",
-    "default_icon_children": "fas fa-circle",
-    "related_modal_active": True,
-    "use_google_fonts_cdn": True,
-    "changeform_format": "vertical_tabs",
-}
-JAZZMIN_UI_TWEAKS = {
-    "theme": "default",
-    "dark_mode_theme": None,
-    "body_small_text": True,
-    "sidebar_fixed": True,
-    "actions_sticky_top": True,
-    "button_classes": {
-        "primary": "btn-primary",
-        "secondary": "btn-secondary",
-        "info": "btn-info",
-        "warning": "btn-warning",
-        "danger": "btn-danger",
-        "success": "btn-success",
-    },
-}
-
-
 # ---------------------------------------------------------- Django Import Export --------------------------------------
 
 IMPORT_EXPORT_IMPORT_PERMISSION_CODE = "add"
 IMPORT_EXPORT_EXPORT_PERMISSION_CODE = "view"
 IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = True
+
+# ---------------------------------------------------------- Django Admin Interface ------------------------------------
+ADMIN_MODELS = [
+    ["Authentication/Authorization", ("Group", "User")],
+    ["Site Settings", ("Theme", "Site", "Config")],
+]

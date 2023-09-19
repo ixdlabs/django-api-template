@@ -17,7 +17,7 @@ dj-rest-auth==5.0.1
 djangorestframework-simplejwt==5.3.0
 
 # ---------------------------------------- Django Admin
-django-jazzmin==2.6.0
+django-admin-interface==0.26.1
 django-import-export==3.3.1
 
 # ---------------------------------------- Third-Party Integrations
