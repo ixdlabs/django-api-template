@@ -1,6 +1,6 @@
 {% extends "admin/index.html" %}
 
-{% load i18n static %}
+{% load i18n static dashboard %}
 
 {% block extrastyle %}
     {{ block.super }}
@@ -19,7 +19,7 @@
 
 {% block content %}
     <div id="content-main">
-        {% include "admin/dashboard.html" %}
+        {% dashboard %}
     </div>
 {% endblock %}
 

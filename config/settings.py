@@ -90,6 +90,7 @@ THIRD_PARTY_APPS = [
     "import_export",
 ]
 LOCAL_APPS = [
+    "apps.dashboard.apps.DashboardConfig",
     "apps.api_auth.apps.ApiAuthConfig",
     "apps.users.apps.UsersConfig",
 ]
