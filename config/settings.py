@@ -374,7 +374,7 @@ if USE_DJANGO_EXTENSIONS:
 
 IMPORT_EXPORT_IMPORT_PERMISSION_CODE = "add"
 IMPORT_EXPORT_EXPORT_PERMISSION_CODE = "view"
-IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = True
+IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = False
 
 # ---------------------------------------------------------- Django Admin Interface ------------------------------------
 ADMIN_MODELS = [
