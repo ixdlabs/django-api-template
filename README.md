@@ -202,19 +202,19 @@ Following packages are installed not for direct usage, but as feature enhancemen
 | pre-commit | A framework for managing and maintaining multi-language pre-commit hooks. |
 | mypy       | A static type checker for Python, used for type checking the codebase.    |
 
-#### Debugging and Development Tools
-
-| Package              | Purpose                                                           |
-|----------------------|-------------------------------------------------------------------|
-| django-debug-toolbar | A set of panels displaying various debug information for Django.  |
-| django-extensions    | Adds various developer-friendly features to the Django framework. |
-
 Additionally, the following packages are installed for type stubs.
 
 - djangorestframework-stubs
 - django-stubs
 - types-python-dateutil
 - types-requests
+
+#### Debugging and Development Tools
+
+| Package              | Purpose                                                           |
+|----------------------|-------------------------------------------------------------------|
+| django-debug-toolbar | A set of panels displaying various debug information for Django.  |
+| django-extensions    | Adds various developer-friendly features to the Django framework. |
 
 #### Dependency Management and Upgrades
 

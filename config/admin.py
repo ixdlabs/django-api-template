@@ -7,6 +7,16 @@ from django.contrib.auth.admin import GroupAdmin
 from django.contrib.auth.models import Group
 from django.contrib.sites.admin import SiteAdmin
 from django.contrib.sites.models import Site
+from django_celery_beat.admin import ClockedScheduleAdmin, PeriodicTaskAdmin
+from django_celery_beat.models import (
+    ClockedSchedule,
+    CrontabSchedule,
+    IntervalSchedule,
+    PeriodicTask,
+    SolarSchedule,
+)
+from django_celery_results.admin import GroupResultAdmin, TaskResultAdmin
+from django_celery_results.models import GroupResult, TaskResult
 
 
 class CustomAdminSite(AdminSite):
@@ -38,11 +48,16 @@ class CustomAdminSite(AdminSite):
         return app_list
 
 
-# TODO: Configure admin site name here
 custom_admin_site = CustomAdminSite(name="custom_admin")
 custom_admin_site.register(Group, GroupAdmin)
 custom_admin_site.register(Site, SiteAdmin)
 custom_admin_site.register(Theme, ThemeAdmin)
 custom_admin_site.register([Config], ConstanceAdmin)  # noqa
 
-# TODO: Register other third party models here
+custom_admin_site.register(TaskResult, TaskResultAdmin)
+custom_admin_site.register(GroupResult, GroupResultAdmin)
+custom_admin_site.register(IntervalSchedule)
+custom_admin_site.register(CrontabSchedule)
+custom_admin_site.register(SolarSchedule)
+custom_admin_site.register(ClockedSchedule, ClockedScheduleAdmin)
+custom_admin_site.register(PeriodicTask, PeriodicTaskAdmin)

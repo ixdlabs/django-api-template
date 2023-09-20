@@ -85,6 +85,8 @@ THIRD_PARTY_APPS = [
     "django_filters",
     "constance",
     "constance.backends.database",
+    "django_celery_results",
+    "django_celery_beat",
     "anymail",
     "drf_standardized_errors",
     "import_export",
@@ -379,5 +381,15 @@ IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = False
 # ---------------------------------------------------------- Django Admin Interface ------------------------------------
 ADMIN_MODELS = [
     ["Authentication/Authorization", ("Group", "User")],
+    ["Background Tasks", ("TaskResult", "GroupResult", "PeriodicTask")],
     ["Site Settings", ("Theme", "Site", "Config")],
 ]
+
+# ---------------------------------------------------------- Celery ----------------------------------------------------
+
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_BROKER_URL = env.str("CELERY_BROKER_URL", default=None)
+CELERY_TASK_ALWAYS_EAGER = env.bool("CELERY_TASK_ALWAYS_EAGER", default=DEBUG)
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60  # 30 minutes
