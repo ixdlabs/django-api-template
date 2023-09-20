@@ -6,7 +6,7 @@
     {{ block.super }}
 
     <style>
-        /* Hide inline admin title and fix padding */
+        {# Hide inline admin title and fix padding #}
         .inline-group .tabular tr.has_original td.original > p {
             display: none;
         }
@@ -15,8 +15,7 @@
             padding-top: 8pt !important;
         }
 
-        /* Import export preview table styles (disable dark mode) */
-
+        {# Import export preview table styles (disable dark mode because of some inconsistencies) #}
         table.import-preview tr.skip {
             background-color: #d2d2d2 !important;
         }
@@ -32,17 +31,18 @@
         table.import-preview tr.update {
             background-color: #fdfdcf !important;
         }
-
     </style>
 {% endblock %}
 
 {% block branding %}
+    {# Link the logo to the admin index page #}
     <a href="{% url "custom_admin:index" %}">
         {{ block.super }}
     </a>
 {% endblock %}
 
 {% block userlinks %}
+    {# Add a link to the API docs #}
     <a href="{% url "api_docs" %}">View API Docs</a>
     /
     {{ block.super }}

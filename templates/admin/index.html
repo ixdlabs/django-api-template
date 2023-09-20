@@ -4,12 +4,13 @@
 
 {% block extrastyle %}
     {{ block.super }}
-    <!--suppress CssUnusedSymbol -->
     <style>
+        {# Fix dashboard content parent sizing #}
         .dashboard #content {
             width: auto;
         }
 
+        {# Fix iFrame sizing #}
         #content-main {
             position: relative;
             overflow: hidden;
@@ -27,19 +28,24 @@
             height: 100%;
         }
     </style>
+
     {{ block.super }}
 {% endblock %}
 
 {% block nav-sidebar %}
+    {# Load sidebar admin list pages #}
     {% include "admin/nav_sidebar.html" %}
 {% endblock %}
 
 {% block content %}
+    {# Use an iframe to load dashboard #}
     <div id="content-main">
-        <iframe id="dashboard-iframe" src="{% url 'dashboard' %}" frameborder="0" width="100%" height="100%" scrolling="no"></iframe>
+        <iframe id="dashboard-iframe" src="{% url 'dashboard' %}" frameborder="0" width="100%" height="100%"
+                scrolling="no"></iframe>
     </div>
 {% endblock %}
 
 {% block sidebar %}
+    {# Load recent actions content #}
     {% include "admin/recent_actions.html" %}
 {% endblock %}

@@ -181,10 +181,10 @@ Following packages are installed not for direct usage, but as feature enhancemen
 
 #### Django Admin
 
-| Package              | Purpose                                                                           |
-|----------------------|-----------------------------------------------------------------------------------|
-| django-jazzmin       | Enhances the Django admin interface with a modern and customizable look and feel. |
-| django-import-export | Adds import and export functionality to Django admin.                             |
+| Package                | Purpose                                               |
+|------------------------|-------------------------------------------------------|
+| django-admin-interface | A modern and customizable admin interface for Django. |
+| django-import-export   | Adds import and export functionality to Django admin. |
 
 #### Third-Party Integrations
 
