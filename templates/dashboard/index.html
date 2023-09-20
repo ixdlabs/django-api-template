@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <title>Dashboard</title>
+</head>
+<body>
+
+<div class="row">
+    {#Docs: https://adminlte.io/docs/3.2/components/boxes.html#}
+    <div class="col-lg-4 col-12">
+        <div class="small-box bg-gradient-success">
+            <div class="inner">
+                <h3>{{ number_of_users }}</h3>
+                <p>User Registrations</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <a href="{% url 'admin:users_user_changelist' %}" class="small-box-footer text-white" target="_parent">
+                More info <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+        <div class="p-2"></div>
+        <div class="info-box">
+            <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Messages</span>
+                <span class="info-box-number">1,410</span>
+            </div>
+        </div>
+        <div class="info-box">
+            <span class="info-box-icon"><i class="far fa-flag"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Bookmarks</span>
+                <span class="info-box-number">410</span>
+            </div>
+        </div>
+        <div class="info-box bg-gradient-warning">
+            <span class="info-box-icon"><i class="far fa-copy"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Uploads</span>
+                <span class="info-box-number">13,648</span>
+            </div>
+        </div>
+    </div>
+
+    {#Docs: https://morrisjs.github.io/morris.js/index.html#}
+    <div class="col-lg-8 col-12">
+        <div class="card p-4">
+            <div id="hero-area" style="height: 500px;"></div>
+            <script>
+                new Morris.Area({
+                    element: 'hero-area',
+                    data: [
+                        {period: '2010 Q1', iphone: 2666, ipad: null, itouch: 2647},
+                        {period: '2010 Q2', iphone: 2778, ipad: 2294, itouch: 2441},
+                        {period: '2010 Q3', iphone: 4912, ipad: 1969, itouch: 2501},
+                        {period: '2010 Q4', iphone: 3767, ipad: 3597, itouch: 5689},
+                        {period: '2011 Q1', iphone: 6810, ipad: 1914, itouch: 2293},
+                        {period: '2011 Q2', iphone: 5670, ipad: 4293, itouch: 1881},
+                        {period: '2011 Q3', iphone: 4820, ipad: 3795, itouch: 1588},
+                        {period: '2011 Q4', iphone: 15073, ipad: 5967, itouch: 5175},
+                        {period: '2012 Q1', iphone: 10687, ipad: 4460, itouch: 2028},
+                        {period: '2012 Q2', iphone: 8432, ipad: 5713, itouch: 1791}
+                    ],
+                    xkey: 'period',
+                    ykeys: ['iphone', 'ipad', 'itouch'],
+                    labels: ['iPhone', 'iPad', 'iPod Touch'],
+                    pointSize: 2,
+                    hideHover: 'auto'
+                });
+
+            </script>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+</body>
+</html>

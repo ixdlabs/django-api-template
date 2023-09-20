@@ -5,6 +5,7 @@ from django.views.generic import RedirectView
 from drf_spectacular import views as spec_views
 from rest_framework.routers import DefaultRouter
 
+from apps.dashboard.views import DashboardView
 from config.admin import custom_admin_site
 from config.schema import SpectacularRapiDocView
 
@@ -19,6 +20,7 @@ urlpatterns = [
     path("api/v1/", include(router.urls)),
     # TODO: Register API views here
     # Admin site URLs
+    path("custom-admin/dashboard", DashboardView.as_view(), name="dashboard"),
     path("custom-admin/", custom_admin_site.urls),
     path("", RedirectView.as_view(pattern_name="custom_admin:index")),
     # API documentation URLs
