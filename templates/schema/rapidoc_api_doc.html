@@ -1,3 +1,6 @@
+{% load i18n static admin_interface_tags %}
+{% get_admin_interface_theme as theme %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,19 +18,21 @@
         theme="light"
         show-method-in-nav-bar="as-colored-block"
         use-path-in-nav-bar="true"
-        nav-bg-color="#0C4B33"
-        primary-color="#44B78B"
+        nav-bg-color="{{ theme.css_header_background_color }}"
+        primary-color="{{ theme.css_module_background_color }}"
         show-header="false"
 >
-    <img slot="nav-logo" src="https://ixdlabs.com/_next/static/media/logo-icon-white.e468545b.svg"
-         alt="Logo" style="width:100px; height:100px; margin-left: auto; margin-right: auto"/>
+    {% if theme.logo %}
+        <img slot="nav-logo" src="{{ theme.logo.url }}"
+             alt="Logo" style="width:100px; height:100px; margin-left: auto; margin-right: auto"/>
+    {% endif %}
     <rapi-pdf
             slot="overview"
             spec-url="{{ schema_url }}"
-            button-bg="#0C4B33"
+            button-bg="{{ theme.css_header_background_color }}"
             hide-input="true"
-            pdf-primary-color="#0C4B33"
-            pdf-alternate-color="#44B78B"
+            pdf-primary-color="{{ theme.css_header_background_color }}"
+            pdf-alternate-color="{{ theme.css_module_background_color }}"
     ></rapi-pdf>
 </rapi-doc>
 
