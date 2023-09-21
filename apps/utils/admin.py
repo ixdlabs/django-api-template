@@ -22,7 +22,7 @@ class ErrorHandledModelAdmin(admin.ModelAdmin):
         try:
             return super().change_view(request, object_id, form_url, extra_context)
         except Exception as e:
-            self.message_user(request, "Error changing model: %s" % e, level=logging.ERROR)
+            self.message_user(request, _("Error changing model: %s") % e, level=logging.ERROR)
             # This logic was cribbed from the `change_view()` handling here:
             # django/contrib/admin/options.py:response_post_save_add()
             # There might be a simpler way to do this, but it seems to do the job.
@@ -32,23 +32,8 @@ class ErrorHandledModelAdmin(admin.ModelAdmin):
         try:
             return super().add_view(request, form_url, extra_context)
         except Exception as e:
-            self.message_user(request, "Error adding model: %s" % e, level=logging.ERROR)
+            self.message_user(request, _("Error adding model: %s") % e, level=logging.ERROR)
             return HttpResponseRedirect(request.path)
-
-
-class ObjectIdFieldMixin:
-    """
-    Adds an Upper-cased ID field.
-    """
-
-    @admin.display(description="ID")
-    def full_object_id(self, obj):
-        return mark_safe("%s" % str(obj.id).upper())
-
-    @admin.display(description="Short ID")
-    def object_id(self, obj):
-        # Only first 8 characters are shown
-        return mark_safe("%s" % str(obj.id)[:8].upper())
 
 
 class CreateUpdateReadOnlyFieldsMixin:
