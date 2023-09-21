@@ -1,6 +1,10 @@
 import os
+from logging.config import dictConfig
 
 from celery import Celery, shared_task
+from celery.signals import setup_logging
+from django.conf import settings
+from django_structlog.celery.steps import DjangoStructLogInitStep
 
 # Cheat Sheet Documentation
 # https://cheat.readthedocs.io/en/latest/django/celery.html
@@ -19,6 +23,14 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 
 # Load task modules from all registered Django apps.
 app.autodiscover_tasks()
+
+# A step to initialize django-structlog
+app.steps["worker"].add(DjangoStructLogInitStep)
+
+
+@setup_logging.connect
+def config_loggers(*args, **kwargs):
+    dictConfig(settings.LOGGING)
 
 
 @shared_task
