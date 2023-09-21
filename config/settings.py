@@ -260,6 +260,14 @@ MANAGERS = ADMINS
 # more details on how to customize your logging configuration.
 # For tips on struct log
 # See https://hodovi.cc/blog/django-development-and-production-logging/
+
+DJANGO_LOG_LEVEL = env.str("DJANGO_LOG_LEVEL", "DEBUG")
+DJANGO_REQUEST_LOG_LEVEL = env.str("DJANGO_REQUEST_LOG_LEVEL", "INFO")
+DJANGO_CELERY_LOG_LEVEL = env.str("DJANGO_CELERY_LOG_LEVEL", "INFO")
+DJANGO_DATABASE_LOG_LEVEL = env.str("DJANGO_DATABASE_LOG_LEVEL", "CRITICAL")
+
+DEFAULT_LOGGER_HANDLER = "console" if DEBUG else "json"
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -304,7 +312,12 @@ LOGGING = {
         },
     },
     "loggers": {
-        # Use structlog middleware
+        # DB logs
+        "django.db.backends": {
+            "handlers": [DEFAULT_LOGGER_HANDLER],
+            "level": DJANGO_DATABASE_LOG_LEVEL,
+        },
+        # Silence django's default logging
         "django.server": {
             "handlers": ["null"],
             "propagate": False,
@@ -313,10 +326,22 @@ LOGGING = {
             "handlers": ["null"],
             "propagate": False,
         },
-        # Primary logger
+        # Structlog loggers
+        "django_structlog": {
+            "handlers": [DEFAULT_LOGGER_HANDLER],
+            "level": DJANGO_LOG_LEVEL,
+        },
+        "django_structlog.middlewares": {
+            "handlers": [DEFAULT_LOGGER_HANDLER],
+            "level": DJANGO_REQUEST_LOG_LEVEL,
+        },
+        "django_structlog.celery": {
+            "handlers": [DEFAULT_LOGGER_HANDLER],
+            "level": DJANGO_CELERY_LOG_LEVEL,
+        },
         "root": {
-            "handlers": ["console" if DEBUG else "json"],
-            "level": "INFO",
+            "handlers": [DEFAULT_LOGGER_HANDLER],
+            "level": DJANGO_LOG_LEVEL,
         },
     },
 }
@@ -450,12 +475,13 @@ ADMIN_MODELS = [
     ["Background Tasks", ("PeriodicTask", "TaskResult", "GroupResult")],
     ["Site Settings", ("Theme", "Site", "Config")],
 ]
+LIST_PER_PAGE = 20
 
 # ---------------------------------------------------------- Celery ----------------------------------------------------
 
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_RESULT_BACKEND = "django-db"
+CELERY_CACHE_BACKEND = "default"
 CELERY_BROKER_URL = env.str("CELERY_BROKER_URL", default=None)
-CELERY_TASK_ALWAYS_EAGER = env.bool("CELERY_TASK_ALWAYS_EAGER", default=DEBUG)
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60  # 30 minutes
