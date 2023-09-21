@@ -122,6 +122,12 @@ $ python manage.py superuser --username superadmin  --email superadmin@example.c
 $ python manage.py createsuperuser
 ```
 
+Install the default admin themes by running following command.
+
+```bash
+$ python manage.py loaddata fixtures/themes.json
+```
+
 Afterward, try running the project. The default url for the dashboard
 is [http://127.0.0.1:8001/](http://127.0.0.1:8000/)
 
