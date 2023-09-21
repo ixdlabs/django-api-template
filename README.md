@@ -12,9 +12,8 @@ $ git clone https://github.com/ixdlabs/django-api-template
 
 Follow the below steps to set up the project in Intellij IDEA. (Tested on Intellij IDEA 2023.2.1)
 
-1. Go to `Project Structure > Project` and change the project name and set the correct SDK. (Create a venv/conda
-   environment)
-2. In `Project Structure > Modules` select `django-api-template` and set its name to correct project name.
+1. Rename all occurrences of `django-api-template` to the project name.
+2. Rename `django-api-template.iml` to the project name.
 
 ## Guide
 
