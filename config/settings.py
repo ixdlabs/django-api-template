@@ -378,7 +378,7 @@ IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = False
 # ---------------------------------------------------------- Django Admin Interface ------------------------------------
 ADMIN_MODELS = [
     ["Authentication/Authorization", ("Group", "User")],
-    ["Background Tasks", ("TaskResult", "GroupResult", "PeriodicTask")],
+    ["Background Tasks", ("PeriodicTask", "TaskResult", "GroupResult")],
     ["Site Settings", ("Theme", "Site", "Config")],
 ]
 

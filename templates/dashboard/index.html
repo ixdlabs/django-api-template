@@ -87,6 +87,10 @@
     </div>
 </div>
 
+<script>
+    // Remove error messages in console (by AdminLTE because embedded in an iFrame
+    localStorage.setItem('AdminLTE:IFrame:Options', JSON.stringify({autoIframeMode: false, autoItemActive: false}))
+</script>
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
 </body>
 </html>

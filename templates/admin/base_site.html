@@ -4,34 +4,7 @@
 
 {% block extrastyle %}
     {{ block.super }}
-
-    <style>
-        {# Hide inline admin title and fix padding #}
-        .inline-group .tabular tr.has_original td.original > p {
-            display: none;
-        }
-
-        .inline-group .tabular tr.has_original td {
-            padding-top: 8pt !important;
-        }
-
-        {# Import export preview table styles (disable dark mode because of some inconsistencies) #}
-        table.import-preview tr.skip {
-            background-color: #d2d2d2 !important;
-        }
-
-        table.import-preview tr.new {
-            background-color: #bdd8b2 !important;
-        }
-
-        table.import-preview tr.delete {
-            background-color: #f9bebf !important;
-        }
-
-        table.import-preview tr.update {
-            background-color: #fdfdcf !important;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{% static "style_fixes.css" %}">
 {% endblock %}
 
 {% block branding %}
