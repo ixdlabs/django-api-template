@@ -11,7 +11,7 @@ terraform {
 terraform {
   backend "s3" {
     bucket = "ixd-terraform-tfstate-bucket"
-    key    = "terraform-aws-beanstalk-deployment/terraform.tfstate"
+    key    = "add-your-s3-key-here" #ex: "terraform-aws-beanstalk-deployment/terraform.tfstate"
     region = "us-east-1"
   }
 }

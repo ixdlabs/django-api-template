@@ -10,7 +10,7 @@ env:
   PUBLIC_SUBNET_1_AVAIL_ZONE: "ap-south-1a"
   INSTANCE_TYPE: "t2.micro" # Define the instance type (e.g., t2.micro, m5.large)
   STACK_NAME: "64bit Amazon Linux 2023 v4.0.6 running Python 3.9"
-  EC2_KEY_NAME: "<your-project-name+env>-kp" # Name of the key pair created manually
+  EC2_KEY_NAME: "<your-project-name+env>-kp" # Name of the key pair created manually ex: "demo-project-dev-kp"
   DJANGO_ALLOWED_HOSTS: "*"
   DJANGO_SETTINGS_MODULE: "config.settings"
   
