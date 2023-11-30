@@ -1,20 +1,111 @@
-name: Release CD
-env:
-  # TODO: Configure the following environment variables
-  EB_PACKAGE_S3_BUCKET_NAME : "example-dev-deployments"
-  EB_APPLICATION_NAME       : "example"
-  EB_ENVIRONMENT_NAME       : "example-env"
-  DEPLOY_PACKAGE_NAME       : "example-dev-deployment-${{ github.sha }}.zip"
-  AWS_REGION_NAME           : "ap-southeast-2"
+name: CD
 
-on: 
+env:
+  # Configure the following environment variables
+  PROJECT_NAME: "<your-project-name>" # Name of the project ex: "demo-project"
+  ENV: "dev" # (dev, stag, or prod)
+  AWS_REGION: "ap-south-1"
+  VPC_CIDR_BLOCK: "10.0.0.0/16" # CIDR block for the Virtual Private Cloud (VPC)
+  PUBLIC_SUBNET_1_CIDR_BLOCK: "10.0.1.0/24"
+  PUBLIC_SUBNET_1_AVAIL_ZONE: "ap-south-1a"
+  INSTANCE_TYPE: "t2.micro" # Define the instance type (e.g., t2.micro, m5.large)
+  STACK_NAME: "64bit Amazon Linux 2023 v4.0.6 running Python 3.9"
+  EC2_KEY_NAME: "<your-project-name+env>-kp" # Name of the key pair created manually
+  DJANGO_ALLOWED_HOSTS: "*"
+  DJANGO_SETTINGS_MODULE: "config.settings"
+  
+
+  #S3 media bucket
+  USE_AWS_S3: "true"
+  AWS_S3_REGION_NAME: "us-east-1"
+  AWS_STORAGE_BUCKET_NAME: "<your-project-name+env>-media"  # ex: "demo-project-dev-media"
+  AWS_S3_ACCESS_KEY_ID: "sfsvsdvsv"
+  AWS_S3_SECRET_ACCESS_KEY: "dcsfdfvdscvf"
+
+  #env vars related to deploy_to_eb
+  EB_PACKAGE_S3_BUCKET_NAME : "<your-project-name+env>-deployments" # ex: "demo-project-dev-deployments"
+  EB_APPLICATION_NAME       : "<your-project-name+env>" # ex: "demo-project-dev
+  EB_ENVIRONMENT_NAME       : "<your-project-name+env>-env"  # ex: "demo-project-dev-env
+  DEPLOY_PACKAGE_NAME       : "<your-project-name+env>-deployment-${{ github.sha }}.zip"
+  
+on:
   push:
-    branches: 
-      - release
+    branches:
+      - master
 
 jobs:
+
+    terraform-build:
+      runs-on: ubuntu-latest
+    
+      steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v2
+
+        - name: Set up Terraform
+          uses: hashicorp/setup-terraform@v1
+
+        - name: Configure AWS Credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ env.AWS_REGION }}
+          
+        - name: Initialize Terraform
+          working-directory: ./terraform
+          run: terraform init
+
+        - name: Apply Terraform Configuration
+          working-directory: ./terraform
+          run: |
+            terraform apply -auto-approve \
+              -var "project_name=${{ env.PROJECT_NAME }}" \
+              -var "env=${{ env.ENV }}" \
+              -var "vpc_cidr_block=${{ env.VPC_CIDR_BLOCK }}" \
+              -var "public_subnet_1_cidr_block=${{ env.PUBLIC_SUBNET_1_CIDR_BLOCK }}" \
+              -var "public_subnet_1_avail_zone=${{ env.PUBLIC_SUBNET_1_AVAIL_ZONE }}" \
+              -var "instance_type=${{ env.INSTANCE_TYPE }}" \
+              -var "stack_name=${{ env.STACK_NAME }}" \
+              -var "ec2_keypair=${{ env.EC2_KEY_NAME }}" \
+              -var "DATABASE_URL=${{ secrets.DATABASE_URL }}" \
+              -var "USE_AWS_S3=${{ env.USE_AWS_S3 }}" \
+              -var "AWS_S3_ACCESS_KEY_ID=${{ secrets.AWS_S3_ACCESS_KEY_ID }}" \
+              -var "AWS_S3_SECRET_ACCESS_KEY=${{ secrets.AWS_S3_SECRET_ACCESS_KEY }}" \
+              -var "AWS_STORAGE_BUCKET_NAME=${{ env.AWS_STORAGE_BUCKET_NAME }}" \
+              -var "AWS_S3_REGION_NAME=${{ env.AWS_S3_REGION_NAME }}" \
+              -var "DJANGO_ALLOWED_HOSTS=${{ env.DJANGO_ALLOWED_HOSTS }}" \
+              -var "DJANGO_SETTINGS_MODULE=${{ env.DJANGO_SETTINGS_MODULE }}" 
+
+    
+        - name: Terraform Destroy
+          working-directory: ./terraform
+          run: |
+            terraform destroy -auto-approve \
+              -var "project_name=${{ env.PROJECT_NAME }}" \
+              -var "env=${{ env.ENV }}" \
+              -var "vpc_cidr_block=${{ env.VPC_CIDR_BLOCK }}" \
+              -var "public_subnet_1_cidr_block=${{ env.PUBLIC_SUBNET_1_CIDR_BLOCK }}" \
+              -var "public_subnet_1_avail_zone=${{ env.PUBLIC_SUBNET_1_AVAIL_ZONE }}" \
+              -var "instance_type=${{ env.INSTANCE_TYPE }}" \
+              -var "stack_name=${{ env.STACK_NAME }}" \
+              -var "ec2_keypair=${{ env.EC2_KEY_NAME }}" \
+              -var "DATABASE_URL=${{ env.DATABASE_URL }}" \
+              -var "USE_AWS_S3=${{ env.USE_AWS_S3 }}" \
+              -var "AWS_S3_ACCESS_KEY_ID=${{ env.AWS_S3_ACCESS_KEY_ID }}" \
+              -var "AWS_S3_SECRET_ACCESS_KEY=${{ env.AWS_S3_SECRET_ACCESS_KEY }}" \
+              -var "AWS_STORAGE_BUCKET_NAME=${{ env.AWS_STORAGE_BUCKET_NAME }}" \
+              -var "AWS_S3_REGION_NAME=${{ env.AWS_S3_REGION_NAME }}" \
+              -var "DJANGO_ALLOWED_HOSTS=${{ env.DJANGO_ALLOWED_HOSTS }}" \
+              -var "DJANGO_SETTINGS_MODULE=${{ env.DJANGO_SETTINGS_MODULE }}"   
+
+        - name: Print nice message on completion of Terraform Pipeline
+          run : echo "Terraform Pipeline part finished successfully"              
+
+
     push_to_s3:
        runs-on: ubuntu-latest
+       needs: [terraform-build]
        
        steps:
          - name: Git clone our repository
@@ -26,9 +117,9 @@ jobs:
          - name: Configure my AWS Credentials
            uses: aws-actions/configure-aws-credentials@v1
            with:
-             aws-access-key-id    : ${{ secrets.DEPLOYMENTUSER_ACCESS_KEY }}
-             aws-secret-access-key: ${{ secrets.DEPLOYMENTUSER_SECRET_KEY }}
-             aws-region           : ${{ env.AWS_REGION_NAME }}
+             aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY_ID }}
+             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+             aws-region           : ${{ env.AWS_REGION       }}
 
          - name: Copy our Deployment package to S3 bucket
            run : aws s3 cp ${{ env.DEPLOY_PACKAGE_NAME }} s3://${{ env.EB_PACKAGE_S3_BUCKET_NAME}}/
@@ -44,9 +135,9 @@ jobs:
          - name: Configure my AWS Credentials
            uses: aws-actions/configure-aws-credentials@v1
            with:
-             aws-access-key-id    : ${{ secrets.DEPLOYMENTUSER_ACCESS_KEY }}
-             aws-secret-access-key: ${{ secrets.DEPLOYMENTUSER_SECRET_KEY }}
-             aws-region           : ${{ env.AWS_REGION_NAME }}
+             aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY_ID }}
+             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+             aws-region           : ${{ env.AWS_REGION       }}
          
          - name: Create new ElasticBeanstalk Applicaiton Version
            run : |
