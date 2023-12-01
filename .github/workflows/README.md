@@ -33,7 +33,33 @@ Before running the CI/CD pipeline, make sure to complete the following steps:
    - Manually create an EC2 key pair. The name should be in the format `<your-project-name+env>-kp`. Example: "demo-project-dev-kp"
 
 5. Adjust Terraform variables in the cd.yml according to your project needs. Such as PROJECT_NAME, ENV, AWS_REGION, VPC_CIDR_BLOCK
-![Alt text](env-vars.png)
+
+         ```yaml
+         # Configure the following environment variables
+         PROJECT_NAME: "<your-project-name>" # Name of the project ex: "demo-project"
+         ENV: "dev" # (dev, stag, or prod)
+         AWS_REGION: "ap-south-1"
+         VPC_CIDR_BLOCK: "10.0.0.0/16" # CIDR block for the Virtual Private Cloud (VPC)
+         PUBLIC_SUBNET_1_CIDR_BLOCK: "10.0.1.0/24"
+         PUBLIC_SUBNET_1_AVAIL_ZONE: "ap-south-1a"
+         INSTANCE_TYPE: "t2.micro" # Define the instance type (e.g., t2.micro, m5.large)
+         STACK_NAME: "64bit Amazon Linux 2023 v4.0.6 running Python 3.9"
+         EC2_KEY_NAME: "<your-project-name+env>-kp" # Name of the key pair created manually ex: "demo-project-dev-kp"
+         DJANGO_ALLOWED_HOSTS: "*"
+         DJANGO_SETTINGS_MODULE: "config.settings"
+         
+
+         #S3 media bucket
+         USE_AWS_S3: "true"
+         AWS_S3_REGION_NAME: "us-east-1"
+         AWS_STORAGE_BUCKET_NAME: "<your-project-name+env>-media"  # ex: "demo-project-dev-media"
+
+         #env vars related to deploy_to_eb
+         EB_PACKAGE_S3_BUCKET_NAME : "<your-project-name+env>-deployments" # ex: "demo-project-dev-deployments"
+         EB_APPLICATION_NAME       : "<your-project-name+env>" # ex: "demo-project-dev
+         EB_ENVIRONMENT_NAME       : "<your-project-name+env>-env"  # ex: "demo-project-dev-env
+         DEPLOY_PACKAGE_NAME       : "<your-project-name+env>-deployment-${{ github.sha }}.zip"
+         ```
 
 ## GitHub Actions
 
