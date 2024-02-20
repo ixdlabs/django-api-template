@@ -103,7 +103,7 @@ class PasswordResetConfirmTemplateView(TemplateView):
 
 
 @extend_schema(summary="Verify an access token")
-class CustomTokenVerifyView(PublicEndpoint, TokenVerifyView):
+class CustomTokenVerifyView(PublicEndpoint, TokenVerifyView):  # type: ignore
     pass
 
 

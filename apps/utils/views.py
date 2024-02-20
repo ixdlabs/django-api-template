@@ -14,5 +14,5 @@ class PageSizeParamPagination(pagination.PageNumberPagination):
 
 
 class PublicEndpoint:
-    permission_classes: Sequence = []
-    authentication_classes: Sequence = []
+    permission_classes: Sequence = ()
+    authentication_classes: Sequence = ()
