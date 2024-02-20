@@ -27,7 +27,9 @@ django-constance[database]==3.1.0
 django-storages[boto3]==1.14.2
 celery==5.3.6
 django-celery-results==2.5.1
-django_celery_beat==2.5.0
+# django_celery_beat==2.5.0
+# https://github.com/celery/django-celery-beat/issues/680
+git+https://github.com/celery/django-celery-beat.git@cd41f68895ec114cd971479e2108c0f3c47554c7
 
 # ---------------------------------------- Testing and Code Quality
 pre-commit==3.6.2

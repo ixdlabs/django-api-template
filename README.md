@@ -145,9 +145,9 @@ following the instructions in the mailhog [repository](https://github.com/mailho
 
 Set `USE_MAIL_HOG` to `True` and run `MailHog` to capture outgoing emails.
 
- ```bash
- $ USE_MAIL_HOG=True python manage.py runserver
- ```
+```bash
+$ USE_MAIL_HOG=True python manage.py runserver
+```
 
 Or you may use `Run Server + MailHog` configuration in the IDE. (This will not run MailHog, only the server will run
 with `USE_MAIL_HOG=True`)
