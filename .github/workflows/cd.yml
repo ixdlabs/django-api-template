@@ -24,7 +24,7 @@ jobs:
            run : zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./  -x  *.git*
            
          - name: Configure my AWS Credentials
-           uses: aws-actions/configure-aws-credentials@v1
+           uses: aws-actions/configure-aws-credentials@v2
            with:
              aws-access-key-id    : ${{ secrets.DEPLOYMENTUSER_ACCESS_KEY }}
              aws-secret-access-key: ${{ secrets.DEPLOYMENTUSER_SECRET_KEY }}
@@ -42,7 +42,7 @@ jobs:
        
        steps:
          - name: Configure my AWS Credentials
-           uses: aws-actions/configure-aws-credentials@v1
+           uses: aws-actions/configure-aws-credentials@v2
            with:
              aws-access-key-id    : ${{ secrets.DEPLOYMENTUSER_ACCESS_KEY }}
              aws-secret-access-key: ${{ secrets.DEPLOYMENTUSER_SECRET_KEY }}
