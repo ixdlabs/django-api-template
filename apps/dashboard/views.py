@@ -12,7 +12,7 @@ class DashboardView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get_context_data(self):
-        context = super().get_context_data()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context["number_of_users"] = User.objects.count()
         return context
