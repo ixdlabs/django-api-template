@@ -1,40 +1,29 @@
-{% load i18n static admin_interface_tags %}
-{% get_admin_interface_theme as theme %}
+{% load i18n static %}
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <title>{{ title|default:"RapiDoc" }}</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script type="module" src="{{ rapidoc_js_dist }}"></script>
     <script type="module" src="{{ rapipdf_js_dist }}"></script>
-</head>
-<body>
-<rapi-doc
+  </head>
+  <body>
+    <rapi-doc
+      spec-url="{{ schema_url }}"
+      persist-auth="true"
+      fill-request-fields-with-example="false"
+      theme="light"
+      show-method-in-nav-bar="as-colored-block"
+      use-path-in-nav-bar="true"
+      show-header="false"
+    >
+      <rapi-pdf
+        slot="overview"
         spec-url="{{ schema_url }}"
-        persist-auth="true"
-        fill-request-fields-with-example="false"
-        theme="light"
-        show-method-in-nav-bar="as-colored-block"
-        use-path-in-nav-bar="true"
-        nav-bg-color="{{ theme.css_header_background_color }}"
-        primary-color="{{ theme.css_module_background_color }}"
-        show-header="false"
->
-    {% if theme.logo %}
-        <img slot="nav-logo" src="{{ theme.logo.url }}"
-             alt="Logo" style="width:100px; height:100px; margin-left: auto; margin-right: auto"/>
-    {% endif %}
-    <rapi-pdf
-            slot="overview"
-            spec-url="{{ schema_url }}"
-            button-bg="{{ theme.css_header_background_color }}"
-            hide-input="true"
-            pdf-primary-color="{{ theme.css_header_background_color }}"
-            pdf-alternate-color="{{ theme.css_module_background_color }}"
-    ></rapi-pdf>
-</rapi-doc>
-
-</body>
+        hide-input="true"
+      ></rapi-pdf>
+    </rapi-doc>
+  </body>
 </html>

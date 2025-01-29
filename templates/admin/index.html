@@ -1,32 +1,25 @@
-{% extends "admin/index.html" %}
+{% extends 'unfold/layouts/base_simple.html' %}
 
-{% load i18n static %}
+{% load cache i18n %}
 
-{% block extrastyle %}
-    {{ block.super }}
-    <style>
-        {# Fix dashboard content parent sizing #}
-        .dashboard #content {
-            width: auto;
-        }
-    </style>
+{% block breadcrumbs %}{% endblock %}
 
-    {{ block.super }}
+{% block title %}
+    {% if subtitle %}
+        {{ subtitle }} |
+    {% endif %}
+
+    {{ title }} | {{ site_title|default:_('Django site admin') }}
 {% endblock %}
 
-{% block nav-sidebar %}
-    {# Load sidebar admin list pages #}
-    {% include "admin/nav_sidebar.html" %}
+{% block branding %}
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">
+            {{ site_header|default:_('Django administration') }}
+        </a>
+    </h1>
 {% endblock %}
 
 {% block content %}
-    {# Use an iframe to load dashboard #}
-    <div id="content-main">
-        <iframe id="dashboard-iframe" src="{% url 'dashboard' %}" frameborder="0" width="100%" height="100%" scrolling="no" onload="resizeIframe(this)"></iframe>
-    </div>
-    <script>
-        function resizeIframe(obj) {
-            obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
-        }
-    </script>
+    {% include "admin/dashboard.html" %}
 {% endblock %}

@@ -1,8 +1,8 @@
-from collections import OrderedDict
 from pathlib import Path
 
 import environ  # noqa
 import structlog
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: ROOT_DIR / 'subdir'.
@@ -64,8 +64,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # ---------------------------------------------------------- Apps ------------------------------------------------------
 DJANGO_ADMIN_THEME_APPS = [
-    "admin_interface",
-    "colorfield",
+    "unfold",
 ]
 DJANGO_APPS = [
     "django.contrib.auth",
@@ -85,13 +84,12 @@ THIRD_PARTY_APPS = [
     "dj_rest_auth",
     "drf_spectacular",
     "django_filters",
-    "constance",
-    "constance.backends.database",
     "django_celery_results",
     "django_celery_beat",
     "anymail",
     "drf_standardized_errors",
     "import_export",
+    "dynamic_preferences",
 ]
 LOCAL_APPS = [
     "apps.dashboard.apps.DashboardConfig",
@@ -422,10 +420,6 @@ SPECTACULAR_SETTINGS = {
     },
 }
 
-# ---------------------------------------------------------- Django Constance ------------------------------------------
-CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
-CONSTANCE_CONFIG: OrderedDict = OrderedDict()
-
 # ---------------------------------------------------------- Django Toolbar --------------------------------------------
 USE_DEBUG_TOOLBAR = env.bool("USE_DEBUG_TOOLBAR", default=DEBUG)
 if USE_DEBUG_TOOLBAR:
@@ -470,12 +464,71 @@ IMPORT_EXPORT_EXPORT_PERMISSION_CODE = "view"
 IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = False
 
 # ---------------------------------------------------------- Django Admin Interface ------------------------------------
-ADMIN_MODELS = [
-    ["Authentication/Authorization", ("Group", "User")],
-    ["Background Tasks", ("PeriodicTask", "TaskResult", "GroupResult")],
-    ["Site Settings", ("Theme", "Site", "Config")],
-]
 LIST_PER_PAGE = 20
+UNFOLD = {
+    "SITE_TITLE": "Administration",
+    "SITE_HEADER": "IXD Labs",
+    "SITE_URL": "https://example.com",
+    "SIDEBAR": {
+        "navigation": [
+            {
+                "title": _("Authentication/Authorization"),
+                "items": [
+                    {
+                        "title": _("Groups"),
+                        "icon": "person",
+                        "link": reverse_lazy("admin:auth_group_changelist"),
+                    },
+                    {
+                        "title": _("Users"),
+                        "icon": "group",
+                        "link": reverse_lazy("admin:users_user_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": _("Background Tasks"),
+                "items": [
+                    {
+                        "title": _("Periodic Task"),
+                        "icon": "event_repeat",
+                        "link": reverse_lazy("admin:django_celery_beat_periodictask_changelist"),
+                    },
+                    {
+                        "title": _("Task Result"),
+                        "icon": "source_notes",
+                        "link": reverse_lazy("admin:django_celery_results_groupresult_changelist"),
+                    },
+                    {
+                        "title": _("Group Result"),
+                        "icon": "source_notes",
+                        "link": reverse_lazy("admin:django_celery_results_taskresult_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": _("Site Settings"),
+                "items": [
+                    {
+                        "title": _("Site"),
+                        "icon": "globe",
+                        "link": reverse_lazy("admin:sites_site_changelist"),
+                    },
+                    {
+                        "title": _("Config"),
+                        "icon": "manufacturing",
+                        "link": reverse_lazy("admin:dynamic_preferences_globalpreferencemodel_changelist"),
+                    },
+                    {
+                        "title": _("API Documentation"),
+                        "icon": "api",
+                        "link": reverse_lazy("api_docs"),
+                    },
+                ],
+            },
+        ],
+    },
+}
 
 # ---------------------------------------------------------- Celery ----------------------------------------------------
 
