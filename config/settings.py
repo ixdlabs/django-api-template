@@ -166,14 +166,20 @@ if USE_AWS_S3:
     AWS_SECRET_ACCESS_KEY = env("AWS_S3_SECRET_ACCESS_KEY")
     AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
     AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")
-    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
-    # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-    DEFAULT_FILE_STORAGE = "config.storages.MediaRootS3Boto3Storage"
-    MEDIA_URL = "https://%s.s3.%s.amazonaws.com/%s/media/" % (
-        AWS_STORAGE_BUCKET_NAME,
-        AWS_S3_REGION_NAME,
-        AWS_STORAGE_BUCKET_NAME,
-    )
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "location": "media",
+                "file_overwrite": False,
+                "querystring_auth": True,
+                "object_parameters": {"CacheControl": "max-age=86400"},
+            },
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
 
 # ---------------------------------------------------------- Templates -------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#templates
