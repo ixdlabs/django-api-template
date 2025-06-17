@@ -18,7 +18,8 @@ from django_celery_results.admin import TaskResultAdmin as BaseTaskResultAdmin
 from django_celery_results.models import GroupResult, TaskResult
 from dynamic_preferences.admin import GlobalPreferenceAdmin as BaseGlobalPreferenceAdmin
 from dynamic_preferences.models import GlobalPreferenceModel
-from unfold.admin import ModelAdmin, UnfoldAdminSelectWidget, UnfoldAdminTextInputWidget
+from unfold.admin import ModelAdmin
+from unfold.widgets import UnfoldAdminSelectWidget, UnfoldAdminTextInputWidget
 from unfold.decorators import display
 
 # --------------------------------------------------------- Celery
