@@ -69,22 +69,22 @@ def make_display(
     Build an @display-decorated list_display helper:
 
     ```
-        _organization = make_header_display(
-            description="organization",
-            ordering="organization",
-            primary="organization__name",
-            secondary="=Organization",
-            image="organization__logo",
+        _category = make_header_display(
+            description="category",
+            ordering="category",
+            primary="category__name",
+            secondary="=category",
+            image="category__logo",
         )
     ```
 
     This is equal to,
 
     ```
-        @display(description="organization", ordering="organization", header=True)
-        def _organization(self, obj):
-            return [obj.organization.name, "Organization", "", {
-                    "path": obj.organization.logo,
+        @display(description="category", ordering="category", header=True)
+        def _category(self, obj):
+            return [obj.category.name, "category", "", {
+                    "path": obj.category.logo,
                     "width": 50,
                     "height": 50,
                     "squared": True,

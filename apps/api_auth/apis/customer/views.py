@@ -13,7 +13,7 @@ from rest_framework.viewsets import GenericViewSet
 from apps.api_auth.apis.customer.serializers import (
     LoginCustomerResponseSerializer,
     LoginCustomerSerializer,
-    UserCustomerSerializer,
+    UserAuthCustomerSerializer,
 )
 from apps.api_auth.utils import jwt_encode
 from apps.users.choices import UserTypes
@@ -62,7 +62,7 @@ class AuthCustomerViewSet(PublicEndpoint, GenericViewSet):
 
         # Encode the user JWT
         access_token, refresh_token = jwt_encode(user)
-        user_serializer = UserCustomerSerializer(instance=user)
+        user_serializer = UserAuthCustomerSerializer(instance=user)
         res_serializer = LoginCustomerResponseSerializer(
             instance={"user": user_serializer.data, "access": str(access_token), "refresh": str(refresh_token)},
         )

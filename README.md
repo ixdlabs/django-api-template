@@ -1,9 +1,9 @@
-# Fitconnect Backend
+# Django API Template
 
 ## Cloning
 
 ```bash
-$ git clone https://github.com/ixdlabs-fitconnect/backend
+$ git clone https://github.com/ixdlabs/django-api-template
 ```
 
 ## Environment Setup
@@ -100,21 +100,21 @@ Then enter below commands.
 
 ```sql
 CREATE ROLE db_user WITH LOGIN PASSWORD 'password';
-CREATE DATABASE fitconnect_db;
-GRANT ALL PRIVILEGES ON DATABASE fitconnect_db TO db_user;
+CREATE DATABASE django_api_template_db;
+GRANT ALL PRIVILEGES ON DATABASE django_api_template_db TO db_user;
 \q
 ```
 
 Then login to `psql` as `db_user` and check if the setup is done correctly. Password should be `password`.
 
 ```bash
-$ psql -U db_user fitconnect_db
+$ psql -U db_user django_api_template_db
 ```
 
 Remember to set the `DATABASE_URL` environment variable.
 
 ```
-DATABASE_URL=postgres://db_user:password@localhost:5432/fitconnect_db
+DATABASE_URL=postgres://db_user:password@localhost:5432/django_api_template_db
 ```
 
 ## Django Setup
@@ -339,15 +339,9 @@ If you need to override translations for external packages (e.g., `rest_framewor
 
 To enable full functionality of the system, the following scheduled tasks must be configured via the Django Admin panel (under Scheduled Tasks). Each task includes a description and its recommended schedule.
 
-| **Task**                            | **Details**                                                                                                                                                                                                                                                                                                                                                                  |
-| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Purge Stale Pending Payments**    | - **Path**: `apps.payments.tasks.purge_stale_pending_payments_periodic_task`<br> - **Description**: Deletes `PENDING` payments older than 1 day without completion.<br> - **Schedule**: Every 30 minutes (Crontab)<br> - **Args**: _None_                                                                                                                                    |
-| **Purge Unpaid Workout Requests**   | - **Path**: `apps.payments.tasks.purge_unpaid_stale_workout_requests_periodic_task`<br> - **Description**: Deletes workout requests older than 1 day not linked to any successful payment.<br> - **Schedule**: Every 30 minutes (Crontab)<br> - **Args**: _None_                                                                                                             |
-| **Purge Unpaid Memberships**        | - **Path**: `apps.payments.tasks.purge_unpaid_stale_memberships_periodic_task`<br> - **Description**: Deletes memberships older than 1 day with no successful payment.<br> - **Schedule**: Every 30 minutes (Crontab)<br> - **Args**: _None_                                                                                                                                 |
-| **Send Birthday Wishes**            | - **Path**: `apps.users.tasks.send_birthday_wish_periodic_task`<br> - **Description**: Sends birthday notifications to users of specified organizations.<br> - **Schedule**: Daily at sunrise (solar)<br> - **Args**: `["ORG1_ID", "ORG2_ID", ...]`                                                                                                                          |
-| **Send Membership Renew Reminders** | - **Path**: `apps.memberships.tasks.send_membership_renew_reminder_periodic_task`<br> - **Description**: Sends membership renew reminders to users of specified organizations.<br> - **Schedule**: Daily at sunrise (solar)<br> - **Args**: `["ORG1_ID", "ORG2_ID", ...]`                                                                                                    |
-| **Send Membership Expired Notices** | - **Path**: `apps.memberships.tasks.send_membership_expired_reminder_periodic_task`<br> - **Description**: Sends expired membership notifications to users of specified organizations.<br> - **Schedule**: Daily at sunrise (solar)<br> - **Args**: `["ORG1_ID", "ORG2_ID", ...]`                                                                                            |
-| **Generate Monthly Invoices**       | - **Path**: `apps.payments.tasks.generate_monthly_invoices`<br> - **Description**: Generates monthly subscription invoices for all organizations with subscription amounts. Creates invoices for the current month billing period with due dates 15 days after the billing period ends.<br> - **Schedule**: Monthly on the 1st (Crontab: `0 0 1 * *`)<br> - **Args**: _None_ |
+| **Task**         | **Details**                                                                                                                                                     |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Example Task** | - **Path**: `apps.example.tasks.task`<br> - **Description**: Example task.<br> - **Schedule**: Monthly on the 1st (Crontab: `0 0 1 * *`)<br> - **Args**: _None_ |
 
 ## OpenTelemetry Integration
 
@@ -373,53 +367,3 @@ gunicorn --config tools/infra/gunicorn.conf.py config.wsgi:application
 # Start using Docker Compose (assumes backend is running at localhost:4317)
 docker-compose up --build
 ```
-
-## Environment Variables
-
-Environment variables are configured as shown below.
-To enable compatibility with Azure Key Vault, you can set the `AZUREKV` flag to True. This ensures that all environment variable names are transformed to be Key Vault–compliant (i.e., underscores \_ are replaced with hyphens -).
-For example, if `AZUREKV=True` is set, the variable `DJANGO_DEBUG` will be mapped from the Azure Key Vault entry `DJANGO-DEBUG`.
-
-### For Web service
-
-| **Section**  | **Variable**                          | **Example Value**                     |
-| ------------ | ------------------------------------- | ------------------------------------- |
-| Django       | `DJANGO_DEBUG`                        | `false`                               |
-| Conn Strings | `CELERY_BROKER_URL`                   | `amqp://user:pass@10.10.10.10:5672//` |
-|              | `DATABASE_URL`                        | `postgresql://user:pass@host:5432/db` |
-|              | `REDIS_URL`                           | `redis://:pass@host:6379`             |
-| Serving      | `DJANGO_ALLOWED_HOSTS`                | `web.fitconnect.me`                   |
-|              | `CSRF_TRUSTED_ORIGINS`                | `https://web.fitconnect.me`           |
-|              | `CORS_ALLOWED_ORIGINS`                | `https://admin-dev.fitconnect.me`     |
-|              | `USE_WHITENOISE`                      | `true`                                |
-| Resend       | `USE_RESEND`                          | `True`                                |
-|              | `RESEND_API_KEY`                      | `re_xxxx`                             |
-|              | `DEFAULT_FROM_EMAIL`                  | `hello@fitconnect.me`                 |
-| Firebase     | `FIREBASE_SERVICE_ACCOUNT_JSON`       | `{ "type": "service_account", ...}`   |
-|              | `FIREBASE_DEMO_WEB_CONFIG_JSON`       | `{ "apiKey": "xxx", ...}`             |
-|              | `FIREBASE_DEMO_WEB_VAPID_KEY`         | `xxxx`                                |
-| Payhere      | `PAYHERE_SANDBOX_MERCHANT_ID`         | `xxxx`                                |
-|              | `PAYHERE_SANDBOX_MERCHANT_SECRETS`    | `domain=secret`                       |
-| Open Tel     | `OTEL_EXPORTER_OTLP_ENDPOINT`         | `http://10.10.10.10:4317`             |
-| Azure        | `USE_AZURE_BLOB`                      | `true`                                |
-|              | `AZURE_ACCOUNT_NAME`                  | `fitconnect-account`                  |
-|              | `AZURE_ACCOUNT_KEY`                   | `xxxx`                                |
-|              | `AZURE_CONTAINER_NAME`                | `fitconnect-blob`                     |
-|              | `WEBSITES_ENABLE_APP_SERVICE_STORAGE` | `false`                               |
-| Docker Reg   | `DOCKER_REGISTRY_SERVER_URL`          | `https://xxx.azurecr.io`              |
-|              | `DOCKER_REGISTRY_SERVER_PASSWORD`     | `xxxx`                                |
-|              | `DOCKER_REGISTRY_SERVER_USERNAME`     | `xxxx`                                |
-
-### For Celery worker service
-
-| **Section**  | **Variable**                    | **Description/Example Value**         |
-| ------------ | ------------------------------- | ------------------------------------- |
-| Django       | `DJANGO_DEBUG`                  | `False`                               |
-| Conn Strings | `CELERY_BROKER_URL`             | `amqp://user:pass@10.10.10.10:5672//` |
-|              | `DATABASE_URL`                  | `postgresql://user:pass@host:5432/db` |
-|              | `REDIS_URL`                     | `redis://:pass@host:6379`             |
-| Resend       | `USE_RESEND`                    | `True`                                |
-|              | `RESEND_API_KEY`                | `re_xxxx`                             |
-|              | `DEFAULT_FROM_EMAIL`            | `hello@fitconnect.me`                 |
-| Firebase     | `FIREBASE_SERVICE_ACCOUNT_JSON` | `{ "type": "service_account", ...}`   |
-| Open Tel     | `OTEL_EXPORTER_OTLP_ENDPOINT`   | `http://10.10.10.10:4317`             |
