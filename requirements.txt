@@ -13,8 +13,7 @@ ephem==4.2
 pygments==2.19.2
 whitenoise==6.9.0
 redis==6.2.0
-google-genai==1.47.0
-pydantic==2.11.7
+
 
 # ---------------------------------------- Django Packages -------------------------------------------------------------
 djangorestframework==3.16.0
@@ -31,7 +30,6 @@ django-anymail[resend]==13.0
 django-storages[boto3,azure]==1.14.6
 django_celery_beat==2.8.1
 django_celery_results==2.6.0
-fcm-django==2.3.1
 
 # ---------------------------------------- Open Telemetry --------------------------------------------------------------
 opentelemetry-exporter-otlp==1.35.0

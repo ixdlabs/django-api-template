@@ -55,11 +55,6 @@ UNFOLD_ADMIN_UI = {
             "icon": "api",
             "link": reverse_lazy("api_docs"),
         },
-        {
-            "title": "FCM Demo",
-            "icon": "notifications",
-            "link": reverse_lazy("notification_fcm_demo"),
-        },
     ],
     "SIDEBAR": {
         "show_search": True,
@@ -84,11 +79,6 @@ UNFOLD_ADMIN_UI = {
                         "title": "Notifications",
                         "icon": "notifications",
                         "link": changelist("notifications", "Notification"),
-                    },
-                    {
-                        "title": "FCM Devices",
-                        "icon": "phone_iphone",
-                        "link": changelist("fcm_django", "FCMDevice"),
                     },
                 ],
             },

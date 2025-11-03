@@ -57,37 +57,5 @@
         </table>
       </div>
     </div>
-
-    <div class="flex flex-col gap-6 mb-6">
-      <h2 class="text-xl font-semibold">Payouts</h2>
-      <div class="overflow-x-auto">
-        <table class="w-full border border-gray-200">
-          <thead>
-            <tr>
-              <th class="py-2 px-4 border text-left">Organization</th>
-              <th class="py-2 px-4 border text-left">Total Payments</th>
-              <th class="py-2 px-4 border text-left">PG Fee (3.5%)</th>
-              <th class="py-2 px-4 border text-left">Total Payouts</th>
-              <th class="py-2 px-4 border text-left">Completed Payouts</th>
-              <th class="py-2 px-4 border text-left">Pending Payouts</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for x in org_payout_stats %}
-            <tr>
-              <td class="py-2 px-4 border">{{ x.organization_name | default:"Other"}}</td>
-              <td class="py-2 px-4 border text-right">{{ x.total_payments | floatformat:"2" | intcomma }}</td>
-              <td class="py-2 px-4 border text-right">{{ x.total_pg_fee | floatformat:"2" | intcomma }}</td>
-              <td class="py-2 px-4 border text-right">{{ x.total_payouts | floatformat:"2" | intcomma }}</td>
-              <td class="py-2 px-4 border text-right">{{ x.total_completed_payouts | floatformat:"2" | intcomma }}</td>
-              <td class="py-2 px-4 border text-right">{{ x.total_pending_payouts | floatformat:"2" | intcomma }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
   </div>
 </div>
-
-<script src="{% static 'apexcharts.js' %}"></script>

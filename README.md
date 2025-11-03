@@ -327,7 +327,7 @@ Edit these files to provide translations for your strings.
 
 ### Translating third-party packages
 
-If you need to override translations for external packages (e.g., `rest_framework`, `phonenumber_field`, etc.):
+If you need to override translations for external packages (e.g., `rest_framework`, etc.):
 
 1. Create a new app under apps/i18n/ named after the package, e.g.: `apps/i18n/rest_framework_locale/`.
 2. Inside this app, add a locale/ directory and copy the .po file from the original package: `apps/i18n/rest_framework_locale/locale/si/LC_MESSAGES/django.po`
@@ -392,8 +392,6 @@ For example, if `AZUREKV=True` is set, the variable `DJANGO_DEBUG` will be mappe
 |              | `CSRF_TRUSTED_ORIGINS`                | `https://web.fitconnect.me`           |
 |              | `CORS_ALLOWED_ORIGINS`                | `https://admin-dev.fitconnect.me`     |
 |              | `USE_WHITENOISE`                      | `true`                                |
-| Dialog       | `DIALOG_SMS_PASSWORD`                 | `xxxx`                                |
-|              | `DIALOG_SMS_USERNAME`                 | `xxxx`                                |
 | Resend       | `USE_RESEND`                          | `True`                                |
 |              | `RESEND_API_KEY`                      | `re_xxxx`                             |
 |              | `DEFAULT_FROM_EMAIL`                  | `hello@fitconnect.me`                 |
@@ -420,8 +418,6 @@ For example, if `AZUREKV=True` is set, the variable `DJANGO_DEBUG` will be mappe
 | Conn Strings | `CELERY_BROKER_URL`             | `amqp://user:pass@10.10.10.10:5672//` |
 |              | `DATABASE_URL`                  | `postgresql://user:pass@host:5432/db` |
 |              | `REDIS_URL`                     | `redis://:pass@host:6379`             |
-| Dialog       | `DIALOG_SMS_PASSWORD`           | `xxxx`                                |
-|              | `DIALOG_SMS_USERNAME`           | `xxxx`                                |
 | Resend       | `USE_RESEND`                    | `True`                                |
 |              | `RESEND_API_KEY`                | `re_xxxx`                             |
 |              | `DEFAULT_FROM_EMAIL`            | `hello@fitconnect.me`                 |

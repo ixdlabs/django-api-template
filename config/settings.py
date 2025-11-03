@@ -1,16 +1,13 @@
 import sys
 from datetime import timedelta
-from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
 import django.conf.locale
 import environ  # noqa
 import structlog
-from firebase_admin import initialize_app
 
 from config.admin import UNFOLD_ADMIN_UI
-from config.firebase import CustomFirebaseCredentials
 
 # Build paths inside the project like this: ROOT_DIR / 'subdir'.
 # Default apps directory is set to ROOT_DIR/apps
@@ -109,12 +106,10 @@ THIRD_PARTY_APPS = [
     "drf_standardized_errors",
     "import_export",
     "phonenumber_field",
-    "fcm_django",
 ]
 LOCAL_APPS = [
     "apps.dashboard.apps.DashboardConfig",
     "apps.api_auth.apps.ApiAuthConfig",
-    "apps.notifications.apps.NotificationsConfig",
     "apps.users.apps.UsersConfig",
 ]
 CLEANUP_APPS = ["django_cleanup.apps.CleanupConfig"]
@@ -546,23 +541,6 @@ else:
     # Following will make the celery tasks always run in eager mode.
     # So tasks will not be submitted to the worker.
     CELERY_TASK_ALWAYS_EAGER = True
-
-# ---------------------------------------------------------- Firebase --------------------------------------------------
-
-# Setup instructions: https://fcm-django.readthedocs.io/en/latest/
-FCM_DJANGO_SETTINGS = {
-    "ONE_DEVICE_PER_USER": False,
-    "DELETE_INACTIVE_DEVICES": True,
-}
-
-# This is required for the demo page
-FIREBASE_DEMO_WEB_CONFIG_JSON = env.json("FIREBASE_DEMO_WEB_CONFIG_JSON", default={})
-FIREBASE_DEMO_WEB_VAPID_KEY = env.str("FIREBASE_DEMO_WEB_VAPID_KEY", default="")
-
-# We will initialize firebase only if the service account json is set
-FIREBASE_SERVICE_ACCOUNT_JSON = env.str("FIREBASE_SERVICE_ACCOUNT_JSON", default=None)
-if FIREBASE_SERVICE_ACCOUNT_JSON is not None:
-    initialize_app(CustomFirebaseCredentials(FIREBASE_SERVICE_ACCOUNT_JSON))
 
 # ---------------------------------------------------------- Zeal ------------------------------------------------------
 # https://github.com/taobojlen/django-zeal
