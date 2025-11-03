@@ -10,10 +10,10 @@ def header_img(image: Optional[Any], size: int = 50):
     return ["", {"path": image_url, "width": size, "height": size, "squared": True, "borderless": True}]
 
 
-def header_col(text: str, color: str = "#a4eb3f"):
+def header_col(text: str, color: str = "#0000ff"):
     color_raw = color.lstrip("#")
     letter = text[:4].upper() if text else "?"
-    image_url = f"https://placehold.co/50x50/{color_raw}/000?text={letter}&font=oswald"
+    image_url = f"https://placehold.co/50x50/{color_raw}/fff?text={letter}&font=oswald"
     return ["", {"path": image_url, "width": 50, "height": 50, "squared": True, "borderless": True}]
 
 

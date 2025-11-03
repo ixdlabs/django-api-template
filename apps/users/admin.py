@@ -64,7 +64,7 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
         ordering="first_name",
         primary="get_full_name",
         secondary="username",
-        image_text="firstname",
+        image_text="first_name",
         header=True,
     )
     _user_type = make_display(

@@ -222,62 +222,9 @@ class GlobalSettingAdmin(ModelAdmin):
     ]
 
     actions_row = ["activate_global_setting"]
-    autocomplete_fields = ["otp_test_customer"]
     readonly_fields = ["id", "created", "modified"]
     fieldsets = [
         (None, {"fields": ("name", "is_active")}),
-        (
-            "OTP",
-            {
-                "fields": (
-                    "otp_generation_feature",
-                    "otp_valid_duration_seconds",
-                    "otp_resend_wait_duration_seconds",
-                    "otp_digit_count",
-                    "otp_test_customer",
-                ),
-                "classes": ["tab"],
-            },
-        ),
-        (
-            "Notifications",
-            {
-                "fields": ("email_feature", "sms_feature", "push_feature", "email_support", "sms_cost"),
-                "classes": ["tab"],
-            },
-        ),
-        (
-            "Payment",
-            {
-                "fields": (
-                    "payment_feature",
-                    "recurring_payments",
-                    "payment_sandbox",
-                ),
-                "classes": ["tab"],
-            },
-        ),
-        (
-            "Meal Scanner",
-            {
-                "fields": (
-                    "meal_scanner_feature",
-                    "meal_scanner_daily_limit",
-                ),
-                "classes": ["tab"],
-            },
-        ),
-        (
-            "Android/iOS",
-            {
-                "fields": (
-                    ("android_latest_version", "ios_latest_version"),
-                    ("android_minimum_required_version", "ios_minimum_required_version"),
-                    ("android_update_url", "ios_update_url"),
-                ),
-                "classes": ["tab"],
-            },
-        ),
         ("Maintenance", {"fields": ("is_maintenance_mode", "maintenance_mode_message"), "classes": ["tab"]}),
         ("MetaData", {"fields": ("id", ("created", "modified")), "classes": ["tab"]}),
     ]

@@ -28,17 +28,17 @@ UNFOLD_ADMIN_UI = {
     "COLORS": {
         # Generated from: https://uicolors.app/generate/a4eb3f
         "primary": {
-            "50": "#f6fee7",
-            "100": "#eafdca",
-            "200": "#d7fb9b",
-            "300": "#baf561",
-            "400": "#a4eb3f",
-            "500": "#7ed012",
-            "600": "#61a60a",
-            "700": "#497e0d",
-            "800": "#3c6410",
-            "900": "#345413",
-            "950": "#192f04",
+            "50": "#eff4ff",
+            "100": "#dbe5fe",
+            "200": "#c0d2fd",
+            "300": "#94b6fc",
+            "400": "#5285f8",
+            "500": "#3d68f4",
+            "600": "#2749e9",
+            "700": "#1f35d6",
+            "800": "#1f2dae",
+            "900": "#1f2b89",
+            "950": "#181d53",
         },
     },
     "STYLES": [
@@ -68,17 +68,6 @@ UNFOLD_ADMIN_UI = {
                         "title": "Users",
                         "icon": "group",
                         "link": changelist("users", "user"),
-                    },
-                ],
-            },
-            {
-                "title": "Notifications",
-                "collapsible": True,
-                "items": [
-                    {
-                        "title": "Notifications",
-                        "icon": "notifications",
-                        "link": changelist("notifications", "Notification"),
                     },
                 ],
             },
