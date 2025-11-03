@@ -1,9 +1,16 @@
+import sys
+from datetime import timedelta
+from decimal import Decimal
 from pathlib import Path
+from typing import Any
 
+import django.conf.locale
 import environ  # noqa
 import structlog
-from django.urls import reverse_lazy
-from django.utils.translation import gettext_lazy as _
+from firebase_admin import initialize_app
+
+from config.admin import UNFOLD_ADMIN_UI
+from config.firebase import CustomFirebaseCredentials
 
 # Build paths inside the project like this: ROOT_DIR / 'subdir'.
 # Default apps directory is set to ROOT_DIR/apps
@@ -13,7 +20,7 @@ APPS_DIR = ROOT_DIR / "apps"
 # Configure django environ
 # OS environment variables take precedence over variables from .env
 env = environ.Env()
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
+READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
 if READ_DOT_ENV_FILE:
     env.read_env(str(ROOT_DIR / ".env"))
 
@@ -25,9 +32,10 @@ SECRET_KEY = env("DJANGO_SECRET_KEY", default="local")
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 DEFAULT_ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=DEFAULT_ALLOWED_HOSTS)
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 # Local time zone. http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # In Windows, this must be set to your system time zone.
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Colombo"
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = "en-us"
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
@@ -44,15 +52,21 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 APPEND_SLASH = True
 # Languages
 LANGUAGES = [
-    ("en", _("English")),
+    ("en", "english"),
+    ("si", "sinhala"),
 ]
+LANG_INFO = {**django.conf.locale.LANG_INFO, "si": {"code": "si", "name": "Sinhala"}}
+django.conf.locale.LANG_INFO = LANG_INFO
 
 # ---------------------------------------------------------- Databases -------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     "default": env.db("DATABASE_URL", default="sqlite:///sqlite.db"),
 }
-DATABASES["default"]["ATOMIC_REQUESTS"] = True
+# Connection pooling for better DB performance
+# https://docs.djangoproject.com/en/5.2/ref/settings/#conn-max-age
+DATABASES["default"]["CONN_MAX_AGE"] = 600
+DATABASES["default"]["CONN_HEALTH_CHECKS"] = True
 # https://docs.djangoproject.com/en/3.2/releases/3.2/#customizing-type-of-auto-created-primary-keys
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
@@ -74,30 +88,36 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.admin",
+    "unfold.contrib.filters",
+    "django.contrib.humanize",
     "django.forms",
+]
+I18N_OVERRIDE_APPS = [
+    "apps.i18n.rest_framework_locale",
+    "apps.i18n.phonenumber_field_locale",
 ]
 THIRD_PARTY_APPS = [
     "django_structlog",
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
-    "dj_rest_auth",
     "drf_spectacular",
     "django_filters",
-    "django_celery_results",
     "django_celery_beat",
+    "django_celery_results",
     "anymail",
     "drf_standardized_errors",
     "import_export",
-    "dynamic_preferences",
+    "phonenumber_field",
+    "fcm_django",
 ]
 LOCAL_APPS = [
     "apps.dashboard.apps.DashboardConfig",
     "apps.api_auth.apps.ApiAuthConfig",
+    "apps.notifications.apps.NotificationsConfig",
     "apps.users.apps.UsersConfig",
 ]
-# https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-INSTALLED_APPS = DJANGO_ADMIN_THEME_APPS + DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+CLEANUP_APPS = ["django_cleanup.apps.CleanupConfig"]
 
 # ---------------------------------------------------------- Authentication --------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
@@ -138,6 +158,7 @@ MIDDLEWARE = [
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_structlog.middlewares.RequestMiddleware",
+    "apps.dashboard.middlewares.MaintenanceModeMiddleware",
 ]
 
 # ---------------------------------------------------------- Static ----------------------------------------------------
@@ -155,30 +176,60 @@ STATICFILES_FINDERS = [
 STATICFILES_DIRS = [ROOT_DIR / "static"]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(ROOT_DIR / ".media")
+# https://docs.djangoproject.com/en/5.2/ref/settings/#storages
+# Following is the default value, we redeclare it so the next storages can update it.
+STORAGES: dict[str, Any] = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+}
 
 # ---------------------------------------------------------- AWS Static ------------------------------------------------
 # Static and Media files config in AWS environment.
 USE_AWS_S3 = env.bool("USE_AWS_S3", default=False)
 if USE_AWS_S3:
     # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-    INSTALLED_APPS += ["storages"]
-    AWS_ACCESS_KEY_ID = env("AWS_S3_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY = env("AWS_S3_SECRET_ACCESS_KEY")
+    THIRD_PARTY_APPS += ["storages"]
+    AWS_ACCESS_KEY_ID = env("AWS_S3_ACCESS_KEY_ID", default="")
+    AWS_SECRET_ACCESS_KEY = env("AWS_S3_SECRET_ACCESS_KEY", default="")
     AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
     AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")
-    STORAGES = {
-        "default": {
-            "BACKEND": "storages.backends.s3.S3Storage",
-            "OPTIONS": {
-                "location": "media",
-                "file_overwrite": False,
-                "querystring_auth": True,
-                "object_parameters": {"CacheControl": "max-age=86400"},
-            },
+    STORAGES["default"] = {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "location": "media",
+            "file_overwrite": False,
+            "querystring_auth": True,
+            "object_parameters": {"CacheControl": "max-age=86400"},
         },
-        "staticfiles": {
-            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    }
+
+# ------------------------------------------------------ Azure Blob Static ---------------------------------------------
+# Static and Media files config in Azure environment.
+USE_AZURE_BLOB = env.bool("USE_AZURE_BLOB", default=False)
+if USE_AZURE_BLOB:
+    # https://django-storages.readthedocs.io/en/latest/backends/azure.html
+    THIRD_PARTY_APPS += ["storages"]
+    AZURE_ACCOUNT_NAME = env("AZURE_ACCOUNT_NAME", default="")
+    AZURE_ACCOUNT_KEY = env("AZURE_ACCOUNT_KEY", default="")
+    AZURE_CONTAINER = env("AZURE_CONTAINER_NAME", default="media")
+    STORAGES["default"] = {
+        "BACKEND": "config.storages.CustomAzureStorage",
+        "OPTIONS": {
+            "account_name": AZURE_ACCOUNT_NAME,
+            "account_key": AZURE_ACCOUNT_KEY,
+            "azure_container": AZURE_CONTAINER,
+            "overwrite_files": False,
+            "expiration_secs": 7200,  # 2 hours
         },
+    }
+
+# ------------------------------------------------------ Whitenoise ----------------------------------------------------
+# https://whitenoise.readthedocs.io/en/stable/django.html
+# This should come after django security middleware.
+if env.bool("USE_WHITENOISE", default=False):
+    MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+    STORAGES["staticfiles"] = {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     }
 
 # ---------------------------------------------------------- Templates -------------------------------------------------
@@ -228,24 +279,29 @@ X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 # ---------------------------------------------------------- Email -----------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#admins
+# We will disable this since errors are monitored independently
+ADMINS: list[str] = []
+MANAGERS = ADMINS
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-from-email
-# TODO: Change this to server domain.
-DEFAULT_FROM_EMAIL = "mail@notifications.example.com"
+DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL", default="mail@example.com")
 # https://docs.djangoproject.com/en/dev/ref/settings/#server-email
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
 
 EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
-USE_MAILGUN = env.bool("USE_MAILGUN", default=False)
-USE_MAIL_HOG = env.bool("USE_MAIL_HOG", default=False)
-if USE_MAILGUN:
-    # https://anymail.readthedocs.io/en/stable/esps/mailgun/
-    MAILGUN_API_KEY = env.str("MAILGUN_API_KEY")
-    EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
-    ANYMAIL = {"MAILGUN_API_KEY": MAILGUN_API_KEY}
-elif USE_MAIL_HOG:
+USE_RESEND = env.bool("USE_RESEND", default=False)
+USE_MAILCAPTURE = env.bool("USE_MAILCAPTURE", default=False)
+if USE_RESEND:
+    # https://anymail.dev/en/stable/esps/resend/
+    RESEND_API_KEY = env.str("RESEND_API_KEY")
+    EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
+    ANYMAIL = {"RESEND_API_KEY": RESEND_API_KEY}
+elif USE_MAILCAPTURE:
     # MailHog: https://github.com/mailhog/MailHog
+    # Mailpit: https://github.com/axllent/mailpit
     EMAIL_HOST = "localhost"
     EMAIL_PORT = 1025
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -253,10 +309,6 @@ elif USE_MAIL_HOG:
 # ---------------------------------------------------------- Admin -----------------------------------------------------
 # Django Admin URL.
 ADMIN_URL = "admin/"
-# https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = [("""ixdlabs""", "developer@ixdlabs.lk")]
-# https://docs.djangoproject.com/en/dev/ref/settings/#managers
-MANAGERS = ADMINS
 
 # ---------------------------------------------------------- Logging ---------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#logging
@@ -286,7 +338,7 @@ LOGGING = {
         },
         "plain_console": {
             "()": structlog.stdlib.ProcessorFormatter,
-            "processor": structlog.dev.ConsoleRenderer(),
+            "processor": structlog.dev.ConsoleRenderer(colors=False),
         },
         "key_value": {
             "()": structlog.stdlib.ProcessorFormatter,
@@ -314,6 +366,10 @@ LOGGING = {
         "null": {
             "class": "logging.NullHandler",
         },
+        "otel": {
+            "class": "config.otel.OtelLogHandler",
+            "formatter": "plain_console",
+        },
     },
     "loggers": {
         # DB logs
@@ -338,6 +394,7 @@ LOGGING = {
         "django_structlog.middlewares": {
             "handlers": [DEFAULT_LOGGER_HANDLER],
             "level": DJANGO_REQUEST_LOG_LEVEL,
+            "propagate": False,
         },
         "django_structlog.celery": {
             "handlers": [DEFAULT_LOGGER_HANDLER],
@@ -353,7 +410,6 @@ structlog.configure(
     processors=[
         structlog.contextvars.merge_contextvars,
         structlog.stdlib.filter_by_level,
-        structlog.processors.TimeStamper(fmt="iso"),
         structlog.stdlib.add_logger_name,
         structlog.stdlib.add_log_level,
         structlog.stdlib.PositionalArgumentsFormatter(),
@@ -367,6 +423,18 @@ structlog.configure(
 )
 DJANGO_STRUCTLOG_CELERY_ENABLED = True
 
+# ---------------------------------------------------------- Redis -----------------------------------------------------
+
+# If redis URL is set, we will use it for caching
+REDIS_URL = env.str("REDIS_URL", default=None)
+if REDIS_URL:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": REDIS_URL,
+        }
+    }
+
 # ---------------------------------------------------------- Django Rest Framework -------------------------------------
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
@@ -377,33 +445,29 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
     "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework_simplejwt.authentication.JWTAuthentication"],
-    "DEFAULT_SCHEMA_CLASS": "drf_standardized_errors.openapi.AutoSchema",
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "EXCEPTION_HANDLER": "drf_standardized_errors.handler.exception_handler",
+    "DEFAULT_SCHEMA_CLASS": "config.schema.CustomAutoSchema",
+}
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=180),
 }
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
 # Enable CORS to all API endpoints.
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
 CORS_URLS_REGEX = r"^/(admin-api|api-auth|api/v1)/.*$"
-
-# ---------------------------------------------------------- Django Rest Auth ------------------------------------------
-# https://dj-rest-auth.readthedocs.io/en/latest/configuration.html
-REST_AUTH = {
-    "OLD_PASSWORD_FIELD_ENABLED": True,
-    "USE_JWT": True,
-    "JWT_AUTH_COOKIE": "access_token",
-    "JWT_AUTH_REFRESH_COOKIE": "refresh_token",
-    "JWT_AUTH_HTTPONLY": False,
-    "USER_DETAILS_SERIALIZER": "apps.users.serializers.UserSerializer",
-}
+# Custom exception handler
+# https://drf-standardized-errors.readthedocs.io/en/latest/customization.html#handle-a-non-drf-exception
+DRF_STANDARDIZED_ERRORS = {"EXCEPTION_HANDLER_CLASS": "config.exceptions.CustomExceptionHandler"}
 
 # ---------------------------------------------------------- DRF Spectacular OpenAPI Documentation ---------------------
-# TODO: Change project details.
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Example API",
-    "DESCRIPTION": "Example Backend API",
+    "TITLE": "Backend API",
+    "DESCRIPTION": "Django API Template",
     "VERSION": "0.0.1",
     "COMPONENT_SPLIT_REQUEST": True,
+    "SERVE_INCLUDE_SCHEMA": False,
     "SCHEMA_PATH_PREFIX": r"\/(api|admin\-api)\/v[0-9]",
     "SORT_OPERATION_PARAMETERS": True,
     "CONTACT": {"name": "kdsuneraavinash", "email": "sunera@ixdlabs.com"},
@@ -412,24 +476,35 @@ SPECTACULAR_SETTINGS = {
     "AUTHENTICATION_WHITELIST": ["rest_framework_simplejwt.authentication.JWTAuthentication"],
     "POSTPROCESSING_HOOKS": ["drf_standardized_errors.openapi_hooks.postprocess_schema_enums"],
     "ENUM_NAME_OVERRIDES": {
-        "ValidationErrorEnum": "drf_standardized_errors.openapi_serializers.ValidationErrorEnum.values",
-        "ClientErrorEnum": "drf_standardized_errors.openapi_serializers.ClientErrorEnum.values",
-        "ServerErrorEnum": "drf_standardized_errors.openapi_serializers.ServerErrorEnum.values",
-        "ErrorCode401Enum": "drf_standardized_errors.openapi_serializers.ErrorCode401Enum.values",
-        "ErrorCode403Enum": "drf_standardized_errors.openapi_serializers.ErrorCode403Enum.values",
-        "ErrorCode404Enum": "drf_standardized_errors.openapi_serializers.ErrorCode404Enum.values",
-        "ErrorCode405Enum": "drf_standardized_errors.openapi_serializers.ErrorCode405Enum.values",
-        "ErrorCode406Enum": "drf_standardized_errors.openapi_serializers.ErrorCode406Enum.values",
-        "ErrorCode415Enum": "drf_standardized_errors.openapi_serializers.ErrorCode415Enum.values",
-        "ErrorCode429Enum": "drf_standardized_errors.openapi_serializers.ErrorCode429Enum.values",
-        "ErrorCode500Enum": "drf_standardized_errors.openapi_serializers.ErrorCode500Enum.values",
+        # Explanation: https://github.com/tfranzel/drf-spectacular/issues/482#issuecomment-904998597
+        "ValidationErrorEnum": "drf_standardized_errors.openapi_serializers.ValidationErrorEnum",
+        "ClientErrorEnum": "drf_standardized_errors.openapi_serializers.ClientErrorEnum",
+        "ServerErrorEnum": "drf_standardized_errors.openapi_serializers.ServerErrorEnum",
+        "ParseErrorCodeEnum": "drf_standardized_errors.openapi_serializers.ParseErrorCodeEnum",
+        "ErrorCode401Enum": "drf_standardized_errors.openapi_serializers.ErrorCode401Enum",
+        "ErrorCode403Enum": "drf_standardized_errors.openapi_serializers.ErrorCode403Enum",
+        "ErrorCode404Enum": "drf_standardized_errors.openapi_serializers.ErrorCode404Enum",
+        "ErrorCode405Enum": "drf_standardized_errors.openapi_serializers.ErrorCode405Enum",
+        "ErrorCode406Enum": "drf_standardized_errors.openapi_serializers.ErrorCode406Enum",
+        "ErrorCode415Enum": "drf_standardized_errors.openapi_serializers.ErrorCode415Enum",
+        "ErrorCode429Enum": "drf_standardized_errors.openapi_serializers.ErrorCode429Enum",
+        "ErrorCode500Enum": "drf_standardized_errors.openapi_serializers.ErrorCode500Enum",
+        "CurrentMembershipTimeStateEnum": "apps.memberships.choices.MembershipTimeStates",
+        "RequestStateEnum": "apps.workouts.choices.RequestStates",
+        "PaymentMethodEnum": "apps.payments.choices.PaymentMethods",
+        "WorkoutLevelAssignmentEnum": "apps.workouts.choices.WorkoutLevelAssignments",
+        "WorkoutGenderAssignmentEnum": "apps.workouts.choices.WorkoutGenderAssignments",
+        "PaymentBackendEnum": "apps.dashboard.choices.PaymentBackends",
+        "GenderEnum": "apps.users.choices.Genders",
+        "SmsGroupGenderEnum": "apps.notifications.choices.SmsGroupGenders",
+        "OrderStateEnum": "apps.products.choices.OrderStates",
     },
 }
 
 # ---------------------------------------------------------- Django Toolbar --------------------------------------------
 USE_DEBUG_TOOLBAR = env.bool("USE_DEBUG_TOOLBAR", default=DEBUG)
 if USE_DEBUG_TOOLBAR:
-    INSTALLED_APPS += ["debug_toolbar"]
+    THIRD_PARTY_APPS += ["debug_toolbar"]
     INTERNAL_IPS = ["127.0.0.1", "localhost"]
     MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
     TEMPLATES += [
@@ -439,29 +514,12 @@ if USE_DEBUG_TOOLBAR:
             "APP_DIRS": True,  # type: ignore
         }
     ]
-
-# ---------------------------------------------------------- Sentry ----------------------------------------------------
-USE_SENTRY = env.bool("USE_SENTRY", default=False)
-if USE_SENTRY:
-    import sentry_sdk
-    from sentry_sdk.integrations.django import DjangoIntegration
-
-    sentry_sdk.init(
-        dsn=env.str("SENTRY_DSN"),
-        integrations=[DjangoIntegration()],
-        # Set traces_sample_rate to 1.0 to capture 100%
-        # of transactions for performance monitoring.
-        # We recommend adjusting this value in production.
-        traces_sample_rate=env.float("SENTRY_SAMPLE_RATE", 0.1),
-        # If you wish to associate users to errors (assuming you are using
-        # django.contrib.auth) you may enable sending PII data.
-        send_default_pii=True,
-    )
+    DEBUG_TOOLBAR_CONFIG = {"UPDATE_ON_FETCH": True}
 
 # ---------------------------------------------------------- Django Extensions -----------------------------------------
 USE_DJANGO_EXTENSIONS = env.bool("USE_DJANGO_EXTENSIONS", default=DEBUG)
 if USE_DJANGO_EXTENSIONS:
-    INSTALLED_APPS += ["django_extensions"]
+    THIRD_PARTY_APPS += ["django_extensions"]
 
 # ---------------------------------------------------------- Django Import Export --------------------------------------
 
@@ -471,76 +529,53 @@ IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = False
 
 # ---------------------------------------------------------- Django Admin Interface ------------------------------------
 LIST_PER_PAGE = 20
-UNFOLD = {
-    "SITE_TITLE": "Administration",
-    "SITE_HEADER": "IXD Labs",
-    "SITE_URL": "https://example.com",
-    "SIDEBAR": {
-        "navigation": [
-            {
-                "title": _("Authentication/Authorization"),
-                "items": [
-                    {
-                        "title": _("Groups"),
-                        "icon": "person",
-                        "link": reverse_lazy("admin:auth_group_changelist"),
-                    },
-                    {
-                        "title": _("Users"),
-                        "icon": "group",
-                        "link": reverse_lazy("admin:users_user_changelist"),
-                    },
-                ],
-            },
-            {
-                "title": _("Background Tasks"),
-                "items": [
-                    {
-                        "title": _("Periodic Task"),
-                        "icon": "event_repeat",
-                        "link": reverse_lazy("admin:django_celery_beat_periodictask_changelist"),
-                    },
-                    {
-                        "title": _("Task Result"),
-                        "icon": "source_notes",
-                        "link": reverse_lazy("admin:django_celery_results_groupresult_changelist"),
-                    },
-                    {
-                        "title": _("Group Result"),
-                        "icon": "source_notes",
-                        "link": reverse_lazy("admin:django_celery_results_taskresult_changelist"),
-                    },
-                ],
-            },
-            {
-                "title": _("Site Settings"),
-                "items": [
-                    {
-                        "title": _("Site"),
-                        "icon": "globe",
-                        "link": reverse_lazy("admin:sites_site_changelist"),
-                    },
-                    {
-                        "title": _("Config"),
-                        "icon": "manufacturing",
-                        "link": reverse_lazy("admin:dynamic_preferences_globalpreferencemodel_changelist"),
-                    },
-                    {
-                        "title": _("API Documentation"),
-                        "icon": "api",
-                        "link": reverse_lazy("api_docs"),
-                    },
-                ],
-            },
-        ],
-    },
-}
+UNFOLD = UNFOLD_ADMIN_UI
 
 # ---------------------------------------------------------- Celery ----------------------------------------------------
 
-CELERY_TIMEZONE = TIME_ZONE
-CELERY_RESULT_BACKEND = "django-db"
-CELERY_CACHE_BACKEND = "default"
-CELERY_BROKER_URL = env.str("CELERY_BROKER_URL", default=None)
-CELERY_TASK_TRACK_STARTED = True
-CELERY_TASK_TIME_LIMIT = 30 * 60  # 30 minutes
+USE_CELERY = env.bool("USE_CELERY", default=True)
+if USE_CELERY:
+    CELERY_TIMEZONE = TIME_ZONE
+    CELERY_CACHE_BACKEND = "default"
+    CELERY_RESULT_BACKEND = "django-db"
+    CELERY_BROKER_URL = env.str("CELERY_BROKER_URL", default=None)
+    CELERY_TASK_TRACK_STARTED = True
+    CELERY_TASK_TIME_LIMIT = 30 * 60  # 30 minutes
+    CELERY_TASK_ALWAYS_EAGER = False
+else:
+    # Following will make the celery tasks always run in eager mode.
+    # So tasks will not be submitted to the worker.
+    CELERY_TASK_ALWAYS_EAGER = True
+
+# ---------------------------------------------------------- Firebase --------------------------------------------------
+
+# Setup instructions: https://fcm-django.readthedocs.io/en/latest/
+FCM_DJANGO_SETTINGS = {
+    "ONE_DEVICE_PER_USER": False,
+    "DELETE_INACTIVE_DEVICES": True,
+}
+
+# This is required for the demo page
+FIREBASE_DEMO_WEB_CONFIG_JSON = env.json("FIREBASE_DEMO_WEB_CONFIG_JSON", default={})
+FIREBASE_DEMO_WEB_VAPID_KEY = env.str("FIREBASE_DEMO_WEB_VAPID_KEY", default="")
+
+# We will initialize firebase only if the service account json is set
+FIREBASE_SERVICE_ACCOUNT_JSON = env.str("FIREBASE_SERVICE_ACCOUNT_JSON", default=None)
+if FIREBASE_SERVICE_ACCOUNT_JSON is not None:
+    initialize_app(CustomFirebaseCredentials(FIREBASE_SERVICE_ACCOUNT_JSON))
+
+# ---------------------------------------------------------- Zeal ------------------------------------------------------
+# https://github.com/taobojlen/django-zeal
+# Detects N+1 queries, but since this has a high performance impact, this should only run in tests
+if "test" in sys.argv:
+    THIRD_PARTY_APPS += ["zeal"]
+    MIDDLEWARE.append("zeal.middleware.zeal_middleware")
+    ZEAL_SHOW_ALL_CALLERS = True
+
+
+# ----------------------------------------------------------- Installed Apps -------------------------------------------
+# This is placed last to make sure the changes done in settings file is all reflected here
+# https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
+INSTALLED_APPS = (
+    I18N_OVERRIDE_APPS + DJANGO_ADMIN_THEME_APPS + DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS + CLEANUP_APPS
+)

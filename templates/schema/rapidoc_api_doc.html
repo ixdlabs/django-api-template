@@ -8,6 +8,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script type="module" src="{{ rapidoc_js_dist }}"></script>
     <script type="module" src="{{ rapipdf_js_dist }}"></script>
+    <script>
+      // Hack to set sidebar width to a different value
+      const SIDEBAR_WIDTH = "500px";
+      window.addEventListener("DOMContentLoaded", () => {
+        const interval = setInterval(() => {
+          const rapiDoc = document.querySelector("rapi-doc");
+          const shadowRoot = rapiDoc?.shadowRoot;
+          if (!shadowRoot) return;
+          const sidebar = shadowRoot.querySelector("nav");
+          if (sidebar) {
+            sidebar.style.width = SIDEBAR_WIDTH;
+            sidebar.style.minWidth = SIDEBAR_WIDTH;
+            clearInterval(interval);
+          }
+        }, 100);
+      });
+    </script>
   </head>
   <body>
     <rapi-doc
@@ -18,6 +35,8 @@
       show-method-in-nav-bar="as-colored-block"
       use-path-in-nav-bar="true"
       show-header="false"
+      nav-bg-color="#111827"
+      primary-color="#61A60A"
     >
       <rapi-pdf
         slot="overview"

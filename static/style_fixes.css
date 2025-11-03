@@ -1,68 +1,12 @@
-/* ----------------------------- Inline Admin Fixes ----------------------------- */
+/* Fixes for the color picker */
 
-/* Hide inline admin title and fix padding */
-.inline-group .tabular tr.has_original td.original > p {
-    display: none;
+div:has(> label[for="id_color"]){
+    font-weight:800;
+    margin-bottom: 8px;
 }
 
-.inline-group .tabular tr.has_original td {
-    padding-top: 8pt !important;
-}
-
-/* ----------------------------- Tabbed Admin Fixes ----------------------------- */
-/* Ref: https://github.com/fabiocaccamo/django-admin-interface/issues/317 */
-
-/* Fix: Remove indentation from error messages and help texts */
-.aligned div.help, form .aligned ul, form .wide p {
-    margin-left: 0 !important;
-    padding-left: 0 !important;
-}
-
-/* Fix: Make all fields in the 2 line */
-.flex-container {
-    display: block !important;
-}
-
-/* Fix: M2M field to not show help text inline */
-.related-widget-wrapper {
-    float: none !important;
-}
-
-/*----------------------------- Import Export Fixes ----------------------------- */
-/* Ref: https://github.com/django-import-export/django-import-export/issues/1330 */
-
-/* Fix: Import export preview table styles (disable dark mode because of some inconsistencies) */
-@media (prefers-color-scheme: dark) {
-    /* Workaround for https://github.com/django-import-export/django-import-export/pull/1323 */
-    html table.import-preview tr.skip {
-        background-color: #d2d2d2;
-    }
-
-    html table.import-preview tr.new {
-        background-color: #bdd8b2;
-    }
-
-    html table.import-preview tr.delete {
-        background-color: #f9bebf;
-    }
-
-    html table.import-preview tr.update {
-        background-color: #fdfdcf;
-    }
-
-    html .validation-error-container {
-        background-color: #ffc1c1;
-    }
-
-    /*
-    these declarations are necessary to forcibly override the
-    formatting applied by the diff-match-patch python library
-     */
-    html table.import-preview td ins {
-        background-color: #bdd8b2 !important;
-    }
-
-    html table.import-preview td del {
-        background-color: #f9bebf !important;
-    }
+#id_color {
+    height: 36px;
+    padding: 8px;
+    border: none;
 }

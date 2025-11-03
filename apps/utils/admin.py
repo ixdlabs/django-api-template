@@ -1,178 +1,149 @@
-import functools
-import json
-import logging
-from typing import List
+from textwrap import shorten
+from typing import Any, Optional
 
-from django.contrib import admin, messages
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 from django.utils.safestring import mark_safe
-from django.utils.translation import gettext_lazy as _
-
-from apps.utils.exceptions import OperationException
+from unfold.decorators import display
 
 
-class ErrorHandledModelAdmin(admin.ModelAdmin):
+def header_img(image: Optional[Any], size: int = 50):
+    image_url = image.url if image else f"https://placehold.co/{size}x{size}?text=?"
+    return ["", {"path": image_url, "width": size, "height": size, "squared": True, "borderless": True}]
+
+
+def header_col(text: str, color: str = "#a4eb3f"):
+    color_raw = color.lstrip("#")
+    letter = text[:4].upper() if text else "?"
+    image_url = f"https://placehold.co/50x50/{color_raw}/000?text={letter}&font=oswald"
+    return ["", {"path": image_url, "width": 50, "height": 50, "squared": True, "borderless": True}]
+
+
+def _follow(obj, dotted_path: str):
     """
-    Mixin to catch all errors in the Django Admin and map them to user-visible errors.
-    https://stackoverflow.com/questions/26554069/catch-exception-on-save-in-django-admin
-    """
-
-    def change_view(self, request, object_id, form_url="", extra_context=None):
-        try:
-            return super().change_view(request, object_id, form_url, extra_context)
-        except Exception as e:
-            self.message_user(request, _("Error changing model: %s") % e, level=logging.ERROR)
-            # This logic was cribbed from the `change_view()` handling here:
-            # django/contrib/admin/options.py:response_post_save_add()
-            # There might be a simpler way to do this, but it seems to do the job.
-            return HttpResponseRedirect(request.path)
-
-    def add_view(self, request, form_url="", extra_context=None):
-        try:
-            return super().add_view(request, form_url, extra_context)
-        except Exception as e:
-            self.message_user(request, _("Error adding model: %s") % e, level=logging.ERROR)
-            return HttpResponseRedirect(request.path)
-
-
-class CreateUpdateReadOnlyFieldsMixin:
-    """
-    Changes read only fields depending on update/create.
+    Magic method to walk fields with a string.
+    ```
+    obj__field      => obj.field
+    =value          => value
+    obj__method()   => obj.method()
+    obj1+obj2       => obj1 + obj2
+    ```
     """
 
-    readonly_fields_create: List[str] = []
-    readonly_fields_update: List[str] = []
+    def resolve(path):
+        if path.startswith("="):
+            return path.strip("=")
+        value = obj
+        for part in path.split("__"):
+            if part == "()":
+                value = value()
+            else:
+                value = getattr(value, part, None)
+            if value is None:
+                break
+        return value
 
-    def get_readonly_fields(self, request, obj=None):
-        if obj is not None:
-            return self.readonly_fields_update
-        return self.readonly_fields_create
+    # Handle +
+    if "+" in dotted_path:
+        parts = dotted_path.split("+")
+        return "".join(str(_follow(obj, p)) for p in parts)
+
+    # Handle single path or =value
+    return resolve(dotted_path)
 
 
-def status_field(func):
+def make_display(
+    *,
+    description: str,
+    primary: str,
+    ordering: Optional[str] = None,
+    secondary: Optional[str] = None,
+    image: Optional[str] = None,
+    image_text: Optional[str] = None,
+    image_text_suffix: Optional[str] = None,
+    image_text_color: Optional[str] = None,
+    shorten_secondary: bool = False,
+    secondary_suffix: Optional[str] = None,
+    header: bool = False,
+    label: bool | None | dict = None,
+):
     """
-    Decorate to wrap with color coded status field.
-    Return values as (COLOR, LABEL) to show colored status label.
-    Return values as (LABEL,) to show the uncolored label.
-    """
+    Build an @display-decorated list_display helper:
 
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        values = func(*args, **kwargs)
-        if isinstance(values, str):
-            return values
-        return mark_safe('<span style="background: %s; padding: 4px; color: white">%s</span>' % values)
+    ```
+        _organization = make_header_display(
+            description="organization",
+            ordering="organization",
+            primary="organization__name",
+            secondary="=Organization",
+            image="organization__logo",
+        )
+    ```
 
-    return wrapper
+    This is equal to,
 
-
-def admin_image_tag(width=50, height=50):
-    """
-    Decorator to wrap with image field on admin panel.
-    Renders an image thumbnail of given size or renders a empty box.
-    The decorated function should return the image source URL/path.
-    """
-
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(self, *args, **kwargs):
-            image_src = func(self, *args, **kwargs)
-            if not image_src:
-                return None
-            if hasattr(image_src, "url"):
-                image_src = getattr(image_src, "url")
-            image_tag = '<img src="%s" width="%s" height="%s" style="object-fit: contain;" />'
-            return mark_safe(image_tag % (image_src, width, height))
-
-        return wrapper
-
-    return decorator
-
-
-def admin_fk_link_tag():
-    """
-    Decorator to wrap with foreign key field on admin panel.
-    Renders a link to visit fields change page.
-    The decorated function should return foreign key object.
-    """
-
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(self, *args, **kwargs):
-            obj = func(self, *args, **kwargs)
-            link = reverse(f"admin:{obj._meta.app_label}_{obj._meta.model_name}_change", args=[obj.id])
-            link_text = str(obj)
-            if len(link_text.strip()) == 0:
-                link_text = str(_("Link"))
-            return mark_safe('<a href="%s">%s</a>' % (link, link_text))
-
-        return wrapper
-
-    return decorator
-
-
-def admin_filter_link_tag(link_text, list_model):
-    """
-    Decorator to wrap with a button to view filtered results on admin panel.
-    Renders a button to visit a specific model changelist, filtered.
-    The decorated function should return the filter query parameter.
-
-    :param link_text: Text on the button
-    :param list_model: Model to show the changelist of
+    ```
+        @display(description="organization", ordering="organization", header=True)
+        def _organization(self, obj):
+            return [obj.organization.name, "Organization", "", {
+                    "path": obj.organization.logo,
+                    "width": 50,
+                    "height": 50,
+                    "squared": True,
+                    "borderless": True
+                }
+            ]
+    ```
     """
 
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(self, *args, **kwargs):
-            query_params = func(self, *args, **kwargs)
-            link = reverse(f"admin:{list_model._meta.app_label}_{list_model._meta.model_name}_changelist")
-            return mark_safe('<button><a href="%s?%s">%s</a></button>' % (link, query_params, link_text))
+    def _fn(self, obj):
+        primary_text = _follow(obj, primary)
 
-        return wrapper
+        if label:
+            if type(primary_text) is bool:
+                return "Yes" if primary_text else "No"
+            return primary_text
 
-    return decorator
+        if header:
+            if primary_text is None:
+                return ["", ""]
+
+            secondary_text = _follow(obj, secondary) if secondary else None
+            if shorten_secondary:
+                secondary_text = shorten(str(secondary_text), width=100)
+            if secondary_suffix:
+                secondary_text = f"{secondary_text}{secondary_suffix}"
+
+            parts = [primary_text, secondary_text]
+            if image:
+                parts += header_img(_follow(obj, image))
+            if image_text:
+                image_text_value = f"{_follow(obj, image_text)}{image_text_suffix or ' '}"
+                parts += (
+                    header_col(image_text_value, _follow(obj, image_text_color))
+                    if image_text_color
+                    else header_col(image_text_value)
+                )
+
+            return parts
+
+        return primary_text
+
+    return display(
+        description=description,
+        ordering=ordering,
+        header=header,
+        label=label,
+    )(_fn)
 
 
-def admin_pretty_print_json():
-    """
-    Decorator to wrap with a json field on admin panel.
-    Renders a pretty printed json field.
-    The decorated function should return the json field value.
-    """
+def as_json_html(value) -> str:
+    try:
+        import json
 
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(self, *args, **kwargs):
-            result = func(self, *args, **kwargs)
-            pretty_result = json.dumps(result, indent=4, sort_keys=True)
-            return mark_safe("<pre>%s</pre>" % pretty_result)
+        from pygments import highlight
+        from pygments.formatters import HtmlFormatter
+        from pygments.lexers import JsonLexer
 
-        return wrapper
-
-    return decorator
-
-
-def admin_bulk_action():
-    """
-    Decorator to wrap with a queryset bulk action on admin panel.
-    Creates an action that will perform an operation on each object in the queryset.
-    The decorated function should perform the operation and return the success message.
-    If None is returned, the default success message will be shown.
-    """
-
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(self, request, queryset):
-            for obj in queryset.iterator():
-                try:
-                    response = func(self, request=request, queryset=queryset, obj=obj)
-                    if response is None:
-                        response = _("Operation successful")
-                    messages.add_message(request, messages.SUCCESS, _("[%s] %s") % (obj, response))
-                except OperationException as e:
-                    messages.add_message(request, messages.ERROR, _("[%s] %s") % (obj, e.message))
-
-        return wrapper
-
-    return decorator
+        formatted_json = json.dumps(json.loads(value), indent=4)
+        return mark_safe(highlight(formatted_json, JsonLexer(), HtmlFormatter(full=True)))
+    except (json.JSONDecodeError, TypeError):
+        return value

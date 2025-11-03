@@ -1,0 +1,409 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-04 15:02+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Sinhala <LL@li.org>\n"
+"Language: si\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: apps/achievements/apis/coach/views.py:86
+msgid "You don't have permissions to this achievement"
+msgstr "මෙම මස්තකප්‍රාප්තියට ඔබට අවසර නොමැත"
+
+#: apps/api_auth/apis/coach/views.py:46 apps/api_auth/apis/employee/views.py:59
+msgid "Unable to log in with provided credentials"
+msgstr "ලබා දී ඇති අක්තපත්‍ර සමඟ පුරනය විය නොහැක"
+
+# Apps
+# ----------------------------------------------------------------------------------------------------------------------
+#
+#: apps/api_auth/apis/coach/views.py:48
+msgid "You are not a coach, so you cannot use this authentication method"
+msgstr "ඔබ පුහුණුකරුවෙක් නොවන බැවින් මෙම සත්‍යාපන ක්‍රමය භාවිතා කළ නොහැක"
+
+#: apps/api_auth/apis/customer/views.py:86
+msgid "Unable to log in with provided OTP"
+msgstr "ලබා දී ඇති OTP සමඟ පුරනය විය නොහැක"
+
+#: apps/api_auth/apis/customer/views.py:101
+msgid "You are not a customer, so you cannot use this authentication method"
+msgstr "ඔබ පාරිභෝගිකයෙක් නොවන බැවින් මෙම සත්‍යාපන ක්‍රමය භාවිතා කළ නොහැක"
+
+#: apps/api_auth/apis/customer/views.py:136
+msgid "This is the same phone number as your current phone number"
+msgstr "මෙය ඔබගේ වර්තමාන දුරකථන අංකය මෙන්ම එකම අංකයයි"
+
+#: apps/api_auth/apis/customer/views.py:169
+msgid "Unable to verify provided OTP"
+msgstr "ලබා දී ඇති OTP සත්‍යාපනය කළ නොහැක"
+
+#: apps/api_auth/apis/customer/views.py:173
+msgid ""
+"Used phone number is already in use, please use a different phone number"
+msgstr "භාවිත කරන දුරකථන අංකය දැනටමත් භාවිතයේ පවතින බැවින් වෙනත් අංකයක් භාවිත කරන්න"
+
+#: apps/api_auth/apis/employee/views.py:61
+msgid "You are not an employee, so you cannot use this authentication method"
+msgstr "ඔබ සේවකයෙක් නොවන බැවින් මෙම සත්‍යාපන ක්‍රමය භාවිතා කළ නොහැක"
+
+#: apps/api_auth/models.py:51
+msgid "OTP not created"
+msgstr "OTP සෑදී නොමැත"
+
+#: apps/api_auth/models.py:55
+msgid "OTP is expired"
+msgstr "OTP කල් ඉකුත් වී ඇත"
+
+#: apps/api_auth/models.py:58
+msgid "OTP is invalid"
+msgstr "OTP වලංගු නොවේ"
+
+#: apps/attendances/models.py:52
+msgid "User does not belong to the branch of the access point."
+msgstr "පරිශීලකයාට මෙම ප්‍රවේශ ස්ථානයට අයත් ශාඛාවට අයත් නොවේ."
+
+#: apps/health_metrics/models.py:34
+msgid "User must be a customer to have a record health metrics."
+msgstr "සෞඛ්‍ය අගයන් වාර්තා කිරීමට පරිශීලකයා ගනුදෙනුකරුවෙකු විය යුතුය."
+
+#: apps/meal_plans/apis/customer/views.py:97
+#: apps/workouts/apis/customer/views.py:98
+msgid "There are no pending requests."
+msgstr "පොරොත්තු ඉල්ලීම් නොමැත."
+
+#: apps/meal_plans/apis/customer/views.py:108
+#: apps/workouts/apis/customer/views.py:111
+msgid "You already have a pending request"
+msgstr "ඔබට දැනටමත් පොරොත්තු ඉල්ලීමක් තිබේ."
+
+#: apps/meal_plans/apis/customer/views.py:224
+#, fuzzy
+#| msgid "The entry was marked as complete."
+msgid "The meal was marked as complete."
+msgstr "ඇතුළත් කිරීම සම්පූර්ණ ලෙස ලකුණු විය."
+
+#: apps/meal_plans/apis/employee/views.py:131
+#: apps/workouts/apis/employee/views.py:131
+msgid ""
+"Customer not found or you don't have permission to assign to this customer."
+msgstr "ගනුදෙනුකරු සොයාගත නොහැකිවීය හෝ මෙම ගනුදෙනුකරුට පවරන්නට ඔබට අවසර නැත."
+
+#: apps/meal_plans/apis/employee/views.py:137
+#, fuzzy
+#| msgid "Discount amount cannot be greater than package price."
+msgid "Discount amount cannot be greater than meal plan price."
+msgstr "වට්ටම් මුදල පැකේජයේ මිලට වඩා වැඩිවිය නොහැක."
+
+#: apps/meal_plans/apis/employee/views.py:259
+#: apps/meal_plans/apis/employee/views.py:267
+#, fuzzy
+#| msgid "You don't have permission to assign this workout category"
+msgid "You don't have permission to assign this food category"
+msgstr "මෙම ව්‍යායාම කාණ්ඩය පැවරීමට ඔබට අවසර නැත."
+
+#: apps/meal_plans/apis/employee/views.py:316
+#: apps/meal_plans/apis/employee/views.py:327
+#, fuzzy
+#| msgid "You don't have permission to assign this branch."
+msgid "You don't have permission to assign this meal plan"
+msgstr "මෙම ශාඛාව පවරන සඳහා ඔබට අවසර නොමැත."
+
+#: apps/meal_plans/apis/employee/views.py:386
+#, fuzzy
+#| msgid "You don't have permission to assign this branch."
+msgid "You don't have permission to assign this meal"
+msgstr "මෙම ශාඛාව පවරන සඳහා ඔබට අවසර නොමැත."
+
+#: apps/meal_plans/apis/employee/views.py:388
+#: apps/meal_plans/apis/employee/views.py:399
+#, fuzzy
+#| msgid "You don't have permission to assign this workout"
+msgid "You don't have permission to assign this food"
+msgstr "මෙම ව්‍යායාමය පැවරීමට ඔබට අවසර නොමැත"
+
+#: apps/meal_plans/apis/employee/views.py:439
+msgid "Duplicate meal entry IDs are not allowed."
+msgstr "අනුපිටපත් ආහාර ඇතුළත් කිරීමේ හැඳුනුම්පත් වලට අවසර නැත."
+
+#: apps/meal_plans/apis/employee/views.py:452
+#, fuzzy
+#| msgid ""
+#| "Customer not found or you don't have permission to assign to this "
+#| "customer."
+msgid ""
+"One or more meal entry IDs are invalid or you don't have permission to "
+"reorder them."
+msgstr "ගනුදෙනුකරු සොයාගත නොහැකිවීය හෝ මෙම ගනුදෙනුකරුට පවරන්නට ඔබට අවසර නැත."
+
+#: apps/meal_plans/apis/employee/views.py:514
+#, fuzzy
+#| msgid "Workout schedule not found or don't have permission to assign."
+msgid "Meal plan not found or don't have permission to assign."
+msgstr "ව්‍යායාම කාලසටහන සොයාගත නොහැකිවීය හෝ පැවරීමට අවසර නොමැත."
+
+#: apps/meal_plans/models.py:120 apps/workouts/models.py:122
+msgid "Goal must belong to the same organization as the customer."
+msgstr "ඉලක්කය ගනුදෙනුකරුට අයත් ආයතනයට අයත් විය යුතුය."
+
+#: apps/meal_plans/models.py:167 apps/workouts/models.py:172
+msgid "Goal must belong to the same organization as the schedule."
+msgstr "ඉලක්කය කාලසටහනට අයත් ආයතනයට අයත් විය යුතුය."
+
+#: apps/meal_plans/models.py:239
+#, fuzzy
+#| msgid "Goal must belong to the same organization as the customer."
+msgid "Meal plan must belong to the same organization as the customer."
+msgstr "ඉලක්කය ගනුදෙනුකරුට අයත් ආයතනයට අයත් විය යුතුය."
+
+#: apps/meal_plans/models.py:269
+msgid "A meal must be specified for a completion entry."
+msgstr "සම්පූර්ණ කිරීමේ ඇතුළත් කිරීමක් සඳහා ආහාර වේලක් නියම කළ යුතුය."
+
+#: apps/meal_plans/models.py:271
+#, fuzzy
+#| msgid "Entry does not belong to the assigned workout schedule."
+msgid "Meal does not belong to the assigned meal plan."
+msgstr "මෙම ඇතුළත් කිරීම පවරා ඇති ව්‍යායාම කාලසටහනට අයත් නොවේ."
+
+#: apps/memberships/apis/customer/views.py:119
+msgid "No current membership for the user."
+msgstr "පරිශීලකයා සදහා වත්මන් සාමාජිකත්වයක් නොමැත."
+
+#: apps/memberships/apis/customer/views.py:133
+msgid "Membership is already bound to a device."
+msgstr "මෙම සාමාජිකත්වය දැනටමත් උපාංගයකට බැඳී ඇත."
+
+#: apps/memberships/apis/customer/views.py:133
+msgid "Membership has no subscription."
+msgstr "මෙම සාමාජිකත්වයට ග්‍රාහකයක් නැත."
+
+#: apps/memberships/apis/employee/views.py:68
+#: apps/users/apis/employee/views.py:83
+msgid "You don't have permission to assign this branch."
+msgstr "මෙම ශාඛාව පවරන සඳහා ඔබට අවසර නොමැත."
+
+#: apps/memberships/apis/employee/views.py:139
+msgid "You don't have permission to assign to this customer."
+msgstr "මෙම ගනුදෙනුකරුට පවරන සඳහා ඔබට අවසර නොමැත."
+
+#: apps/memberships/apis/employee/views.py:141
+#: apps/users/apis/employee/views.py:85
+msgid "You don't have permission to assign this package."
+msgstr "මෙම පැකේජය පවරන සඳහා ඔබට අවසර නොමැත."
+
+#: apps/memberships/apis/employee/views.py:143
+#: apps/users/apis/employee/views.py:87
+msgid "Discount amount cannot be greater than package price."
+msgstr "වට්ටම් මුදල පැකේජයේ මිලට වඩා වැඩිවිය නොහැක."
+
+#: apps/memberships/apis/employee/views.py:174
+msgid "Membership is not bound"
+msgstr "සාමාජිකත්වය උපාංගයකට බැඳී නැත"
+
+#: apps/memberships/apis/employee/views.py:176
+msgid "Membership is inactive"
+msgstr "සාමාජිකත්වය අක්‍රීයයි"
+
+#: apps/memberships/models.py:59
+msgid "Package duration in days must be divisible by 7."
+msgstr "පැකේජ කාලයේ දින ගණන 7න් බෙදිය හැකි විය යුතුයි."
+
+#: apps/memberships/models.py:149
+msgid "User must be a customer to have a membership."
+msgstr "සාමාජිකත්වයක් ලබා ගැනීමට පරිශීලකයා ගනුදෙනුකරුවෙකු විය යුතුය."
+
+#: apps/memberships/models.py:151
+msgid "Package must belong to the same branch as the customer."
+msgstr "පැකේජය ගනුදෙනුකරුට අයත් එම ශාඛාවට අයත් විය යුතුය."
+
+#: apps/notifications/apis/customer/views.py:47
+msgid "Notification marked as read"
+msgstr "දැනුම්දීම කියවූවක් ලෙස ලකුණු කර ඇත"
+
+#: apps/notifications/apis/customer/views.py:56
+msgid "All notifications marked as read"
+msgstr "සියලු දැනුම්දීම් කියවූවක් ලෙස ලකුණු කර ඇත"
+
+#: apps/notifications/apis/employee/views.py:66
+msgid "All customers must belong to the same branch as the SMS group."
+msgstr "සියලුම ගනුදෙනුකරුවන් SMS කණ්ඩායම ඇති ශාඛාවටම අයත් විය යුතුය."
+
+#: apps/notifications/apis/employee/views.py:113
+msgid "You don't have permission to access this SMS group."
+msgstr "ඔබට මෙම SMS කණ්ඩායමට අවසර නැත."
+
+#: apps/notifications/apis/employee/views.py:227
+msgid "Only campaigns that are scheduled can be updated."
+msgstr "කාලසටහන්ගත කර ඇති ව්‍යාපාර පමණක් යාවත්කාලීන කළ හැකිය."
+
+#: apps/notifications/apis/employee/views.py:273
+msgid "Only campaigns that are scheduled can be cancelled."
+msgstr "අවලංගු කළ හැක්කේ නියමිත ව්‍යාපාර පමණි."
+
+#: apps/notifications/models.py:88
+msgid ""
+"Notification must belong to atleast one of the delivery methods (Push/SMS/"
+"EMail)"
+msgstr "දැනුම්දීම අවම වශයෙන් එක් බෙදාහැරීමේ ක්‍රමයකට (Push/SMS/Email) අයත් විය යුතුය"
+
+#: apps/notifications/models.py:90
+msgid "Broadcasting is not supported with SMS services"
+msgstr "SMS සේවාවන් සමඟ විකාශය ආධාර නොදක්වයි"
+
+#: apps/notifications/models.py:94
+msgid "SMS message body should be specified for SMS notifications"
+msgstr "SMS දැනුම්දීම් සඳහා SMS පණිවිඩ අන්තර්ගතය නිශ්චිතව දැක්විය යුතුය."
+
+#: apps/notifications/models.py:96
+msgid "Message body should be specified for email and push notifications"
+msgstr "ඊමේල් සහ තල්ලු දැනුම්දීම් සඳහා පණිවිඩ අන්තර්ගතය නිශ්චිතව දැක්විය යුතුය."
+
+#: apps/notifications/models.py:92
+msgid "Broadcasting is not supported with Email services"
+msgstr "Email සේවාවන් සමඟ විකාශය ආධාර නොදක්වයි"
+
+#: apps/notifications/models.py:182
+msgid "Package must belong to the branch of the SMS group."
+msgstr "පැකේජය SMS කණ්ඩායමේ ශාඛාවට අයත් විය යුතුය."
+
+#: apps/notifications/models.py:201
+msgid "Customer must belong to the same branch as the SMS group."
+msgstr "පාරිභෝගිකයා SMS කණ්ඩායම ඇති ශාඛාවටම අයත් විය යුතුය."
+
+#: apps/notifications/models.py:270
+msgid "Scheduled time must be set if campaign is scheduled."
+msgstr "ප්‍රචාරක ව්‍යාපාරය සැලසුම් කර ඇත්නම්, නියමිත වේලාව නියම කළ යුතුය."
+
+#: apps/payments/apis/employee/serializers.py:59
+#, python-format
+msgid "Package - %(package)s"
+msgstr "පැකේජය - %(package)s"
+
+#: apps/payments/apis/employee/serializers.py:61
+msgid "Workout Schedule Request"
+msgstr "ව්‍යායාම කාලසටහන ඉල්ලීම"
+
+#: apps/payments/apis/employee/serializers.py:64
+#, python-format
+msgid "Workout Schedule - %(title)s"
+msgstr "ව්‍යායාම කාලසටහන - %(title)s"
+
+#: apps/payments/apis/employee/serializers.py:67
+msgid "Not Specified"
+msgstr "නිශ්චිත කර නැත"
+
+#: apps/payments/models.py:70
+msgid "There are more than one source specified."
+msgstr "එකට වැඩි මූලාශ්‍ර ගණනක් සඳහන් කර ඇත."
+
+#: apps/payments/models.py:73
+msgid "The gateway error must be a list"
+msgstr "දෝෂය ලැයිස්තුවක් විය යුතුය"
+
+#: apps/users/apis/customer/views.py:69
+msgid "You are already enrolled to this branch"
+msgstr "ඔබ දැනටමත් මෙම ශාඛාවට ලියාපදිංචි වී ඇත"
+
+#: apps/users/models.py:59
+msgid "Phone number must be set for a customer"
+msgstr "ගනුදෙනුකරුවෙකුට දුරකථන අංකය සකසා තිබිය යුතුය"
+
+#: apps/users/models.py:61
+msgid "Organization must be set for an employee"
+msgstr "සේවකයෙකුට ආයතනයක් සකසා තිබිය යුතුය"
+
+#: apps/users/models.py:64
+msgid "This phone number is already registered."
+msgstr "මෙම දුරකථන අංකය දැනටමත් ලියාපදිංචි වී ඇත."
+
+#: apps/users/models.py:156
+msgid "User must be an employee to be added to a branch."
+msgstr "ශාඛාවකට එක් කිරීමට පරිශීලකයා සේවකයෙකු විය යුතුය."
+
+#: apps/workouts/apis/customer/views.py:215
+msgid "The entry was marked as complete."
+msgstr "ඇතුළත් කිරීම සම්පූර්ණ ලෙස ලකුණු විය."
+
+#: apps/workouts/apis/customer/views.py:251
+msgid "All entries were marked as complete."
+msgstr "සියලු ඇතුළත් කිරීම් සම්පූර්ණ ලෙස ලකුණු විය."
+
+#: apps/workouts/apis/customer/views.py:291
+msgid "The entry was reset."
+msgstr "ඇතුළත් කිරීම නැවත පිහිටුවන ලදි."
+
+#: apps/workouts/apis/employee/views.py:137
+msgid "Discount amount cannot be greater than schedule price."
+msgstr "වට්ටම් මුදල කාලසටහන් මිලට වඩා වැඩිවිය නොහැක."
+
+#: apps/workouts/apis/employee/views.py:260
+#: apps/workouts/apis/employee/views.py:269
+msgid "You don't have permission to assign this workout category"
+msgstr "මෙම ව්‍යායාම කාණ්ඩය පැවරීමට ඔබට අවසර නැත."
+
+#: apps/workouts/apis/employee/views.py:319
+#: apps/workouts/apis/employee/views.py:333
+msgid "You don't have permission to assign this workout schedule"
+msgstr "මෙම ව්‍යායාම කාලසටහන පැවරීමට ඔබට අවසර නොමැත"
+
+#: apps/workouts/apis/employee/views.py:393
+msgid "You don't have permission to assign this workout day"
+msgstr "මෙම ව්‍යායාම දිනය පැවරීමට ඔබට අවසර නොමැත"
+
+#: apps/workouts/apis/employee/views.py:395
+#: apps/workouts/apis/employee/views.py:408
+msgid "You don't have permission to assign this workout"
+msgstr "මෙම ව්‍යායාමය පැවරීමට ඔබට අවසර නොමැත"
+
+#: apps/workouts/apis/employee/views.py:512
+msgid "Workout schedule not found or don't have permission to assign."
+msgstr "ව්‍යායාම කාලසටහන සොයාගත නොහැකිවීය හෝ පැවරීමට අවසර නොමැත."
+
+#: apps/workouts/models.py:51
+msgid "Target muscle must be set to strength based workouts."
+msgstr "මෙම ව්‍යායාමය සඳහා ඉලක්ක මාංසපේශිය සකස් කල යුතුය."
+
+#: apps/workouts/models.py:223
+msgid "Number of reps is required for strength based workouts"
+msgstr "ශක්තිමත් ව්‍යායාම සඳහා නැවත කිරීම් ගණන අවශ්‍යයි"
+
+#: apps/workouts/models.py:226
+msgid "Resting time is required for strength based workouts"
+msgstr "ශක්තිමත් ව්‍යායාම සඳහා විවේක කාලය අවශ්‍යයි"
+
+#: apps/workouts/models.py:230
+msgid "Duration is required for time based workouts"
+msgstr "කාලය පදනම් කරගත් ව්‍යායාම සඳහා කාලසීමාව අවශ්‍යයි"
+
+#: apps/workouts/models.py:268
+msgid "Workout schedule must belong to the same organization as the customer."
+msgstr "ව්‍යායාම කාලසටහන ගනුදෙනුකරුට අයත් එම ආයතනයට අයත් විය යුතුය."
+
+#: apps/workouts/models.py:299
+msgid "Entry does not belong to the assigned workout schedule."
+msgstr "මෙම ඇතුළත් කිරීම පවරා ඇති ව්‍යායාම කාලසටහනට අයත් නොවේ."
+
+# Django Admin
+# ----------------------------------------------------------------------------------------------------------------------
+#
+#: templates/admin/index.html:12
+msgid "Django site admin"
+msgstr "Django අඩවි පරිපාලක"
+
+#: templates/admin/index.html:18
+msgid "Django administration"
+msgstr "Django පරිපාලනය"
+
+#~ msgid "%(deleted_count)s entries were reset"
+#~ msgstr "ඇතුළත් කිරීම් %(deleted_count)s ක් නැවත පිහිටුවන ලදි"

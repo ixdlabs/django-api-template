@@ -1,47 +1,71 @@
-# ---------------------------------------- Django and Core Libraries
-django==5.2.3
+# ---------------------------------------- Core Libraries --------------------------------------------------------------
+django==5.2.4
 django-environ==0.12.0
 django-model-utils==5.0.0
 django-filter==25.1
-Pillow==11.2.1
+Pillow==11.3.0
 psycopg2-binary==2.9.10
 argon2-cffi==25.1.0
 gunicorn==23.0.0
+phonenumbers==9.0.10
+celery==5.5.3
+ephem==4.2
+pygments==2.19.2
+whitenoise==6.9.0
+redis==6.2.0
+google-genai==1.47.0
+pydantic==2.11.7
 
-# ---------------------------------------- Django REST Framework and Authentication
+# ---------------------------------------- Django Packages -------------------------------------------------------------
 djangorestframework==3.16.0
 django-cors-headers==4.7.0
 drf-spectacular==0.28.0
 drf-standardized-errors[openapi]==0.15.0
-dj-rest-auth==7.0.1
-djangorestframework-simplejwt==5.5.0
-
-# ---------------------------------------- Django Admin
-django-unfold==1.0.0
-django-import-export==4.3.7
-
-# ---------------------------------------- Third-Party Integrations
-django-anymail==13.0
-sentry-sdk==2.30.0
-django-dynamic-preferences==1.17.0
-django-storages[boto3]==1.14.6
-celery==5.5.3
-django-celery-results==2.6.0
+djangorestframework-simplejwt==5.5.1
+django-phonenumber-field==8.1.0
+django-timezone-field==7.1
+django-cleanup==9.0.0
+django-unfold==0.63.0
+django-import-export==4.3.9
+django-anymail[resend]==13.0
+django-storages[boto3,azure]==1.14.6
 django_celery_beat==2.8.1
+django_celery_results==2.6.0
+fcm-django==2.3.1
 
-# ---------------------------------------- Testing and Code Quality
+# ---------------------------------------- Open Telemetry --------------------------------------------------------------
+opentelemetry-exporter-otlp==1.35.0
+opentelemetry-distro==0.56b0
+# To find out what are the open telemetry packages that can be used: opentelemetry-bootstrap
+# Following are the ones that were demed necessary for now.
+opentelemetry-instrumentation-logging==0.56b0
+opentelemetry-instrumentation-sqlite3==0.56b0
+opentelemetry-instrumentation-threading==0.56b0
+opentelemetry-instrumentation-celery==0.56b0
+opentelemetry-instrumentation-django==0.56b0
+opentelemetry-instrumentation-psycopg2==0.56b0
+opentelemetry-instrumentation-requests==0.56b0
+opentelemetry-instrumentation-redis==0.56b0
+opentelemetry.instrumentation.urllib3==0.56b0
+opentelemetry-instrumentation-urllib==0.56b0
+
+# ---------------------------------------- Testing and Code Quality ----------------------------------------------------
+coverage==7.9.2
 pre-commit==4.2.0
-mypy==1.16.1
-djangorestframework-stubs==3.16.0
-django-stubs==5.2.0
-types-python-dateutil==2.9.0.20250516
+mypy==1.17.0
+djangorestframework-stubs==3.16.1
+django-stubs==5.2.2
+types-python-dateutil==2.9.0.20250708
 types-requests==2.32.4.20250611
 
-# ---------------------------------------- Debugging and Development Tools
+# ---------------------------------------- Debugging and Development Tools ---------------------------------------------
 django-debug-toolbar==5.2.0
 django-extensions==4.1
 django-structlog==9.1.1
-
-# ---------------------------------------- Debugging and Development Tools
 setuptools==80.9.0
+django-zeal==2.0.4
+
+# ---------------------------------------- Package Managment Tools -----------------------------------------------------
+
+# To upgrade pip packages: pip-upgrade
 pip-upgrader==1.4.15

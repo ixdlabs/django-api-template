@@ -1,10 +1,10 @@
 import os
-from logging.config import dictConfig
 
 from celery import Celery, shared_task
-from celery.signals import setup_logging
-from django.conf import settings
+from celery.signals import worker_process_init
 from django_structlog.celery.steps import DjangoStructLogInitStep
+
+from config.otel import setup_open_telemetry
 
 # Cheat Sheet Documentation
 # https://cheat.readthedocs.io/en/latest/django/celery.html
@@ -29,9 +29,9 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 
 
-@setup_logging.connect
-def config_loggers(*args, **kwargs):
-    dictConfig(settings.LOGGING)
+@worker_process_init.connect(weak=False)
+def init_celery_tracing(*args, **kwargs):
+    setup_open_telemetry("django-api-template-celery-worker")
 
 
 @shared_task

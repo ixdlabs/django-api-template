@@ -1,73 +1,93 @@
+{% load static humanize %}
 <div class="container mx-auto">
-  <!-- Charts Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <!-- Doughnut Chart -->
-    <div class="border p-6 rounded shadow">
-      <h2 class="text-xl font-semibold mb-4">Sales Distribution</h2>
-      <div id="chart"></div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="flex flex-col gap-6 mb-6">
+      <h2 class="text-xl font-semibold">System Status</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full border border-gray-200">
+          <thead>
+            <tr>
+              <th class="w-48 py-2 px-4 border text-left">System</th>
+              <th class="w-32 py-2 px-4 border text-left">Status</th>
+              <th class="py-2 px-4 border text-left">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="py-2 px-4 border">Celery</td>
+              <td class="py-2 px-4 border">{{celery_info.status}} {{celery_info.name}}</td>
+              <td class="py-2 px-4 border">{{celery_info.message}}</td>
+            </tr>
+            <tr>
+              <td class="py-2 px-4 border">Cache</td>
+              <td class="py-2 px-4 border">{{cache_info.status}} {{cache_info.name}}</td>
+              <td class="py-2 px-4 border">{{cache_info.message}}</td>
+            </tr>
+            <tr>
+              <td class="py-2 px-4 border">Media Storage</td>
+              <td class="py-2 px-4 border">{{storage_info.status}} {{storage_info.name}}</td>
+              <td class="py-2 px-4 border">{{storage_info.message}}</td>
+            </tr>
+            <tr>
+              <td class="py-2 px-4 border">SMS Service</td>
+              <td class="py-2 px-4 border">{{sms_info.status}} {{sms_info.name}}</td>
+              <td class="py-2 px-4 border">{{sms_info.message}}</td>
+            </tr>
+            <tr>
+              <td class="py-2 px-4 border">Email Service</td>
+              <td class="py-2 px-4 border">{{email_info.status}} {{email_info.name}}</td>
+              <td class="py-2 px-4 border">{{email_info.message}}</td>
+            </tr>
+            <tr>
+              <td class="py-2 px-4 border">Payment Service</td>
+              <td class="py-2 px-4 border">{{payment_info.status}} {{payment_info.name}}</td>
+              <td class="py-2 px-4 border">{{payment_info.message}}</td>
+            </tr>
+            <tr>
+              <td class="py-2 px-4 border">Push Notification Service</td>
+              <td class="py-2 px-4 border">{{push_info.status}} {{push_info.name}}</td>
+              <td class="py-2 px-4 border">{{push_info.message}}</td>
+            </tr>
+            <tr>
+              <td class="py-2 px-4 border">Meal Scanner Service</td>
+              <td class="py-2 px-4 border">{{meal_scanner_info.status}} {{meal_scanner_info.name}}</td>
+              <td class="py-2 px-4 border">{{meal_scanner_info.message}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <!-- Stats Cards -->
     <div class="flex flex-col gap-6 mb-6">
-      <div class="border p-6 rounded shadow">
-        <h2 class="text-xl font-semibold">New Users</h2>
-        <p class="text-2xl font-bold">1,254</p>
-      </div>
-      <div class="border p-6 rounded shadow">
-        <h2 class="text-xl font-semibold">New Users</h2>
-        <p class="text-2xl font-bold">1,230</p>
-      </div>
-      <div class="border p-6 rounded shadow">
-        <h2 class="text-xl font-semibold">Conversion Rate</h2>
-        <p class="text-2xl font-bold">4.5%</p>
+      <h2 class="text-xl font-semibold">Payouts</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full border border-gray-200">
+          <thead>
+            <tr>
+              <th class="py-2 px-4 border text-left">Organization</th>
+              <th class="py-2 px-4 border text-left">Total Payments</th>
+              <th class="py-2 px-4 border text-left">PG Fee (3.5%)</th>
+              <th class="py-2 px-4 border text-left">Total Payouts</th>
+              <th class="py-2 px-4 border text-left">Completed Payouts</th>
+              <th class="py-2 px-4 border text-left">Pending Payouts</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for x in org_payout_stats %}
+            <tr>
+              <td class="py-2 px-4 border">{{ x.organization_name | default:"Other"}}</td>
+              <td class="py-2 px-4 border text-right">{{ x.total_payments | floatformat:"2" | intcomma }}</td>
+              <td class="py-2 px-4 border text-right">{{ x.total_pg_fee | floatformat:"2" | intcomma }}</td>
+              <td class="py-2 px-4 border text-right">{{ x.total_payouts | floatformat:"2" | intcomma }}</td>
+              <td class="py-2 px-4 border text-right">{{ x.total_completed_payouts | floatformat:"2" | intcomma }}</td>
+              <td class="py-2 px-4 border text-right">{{ x.total_pending_payouts | floatformat:"2" | intcomma }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
-<script>
-  var options = {
-    series: [
-      {
-        name: "series1",
-        data: [31, 40, 28, 51, 42, 109, 100],
-      },
-      {
-        name: "series2",
-        data: [11, 32, 45, 32, 34, 52, 41],
-      },
-    ],
-    chart: {
-      height: 350,
-      type: "area",
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      curve: "smooth",
-    },
-    xaxis: {
-      type: "datetime",
-      categories: [
-        "2018-09-19T00:00:00.000Z",
-        "2018-09-19T01:30:00.000Z",
-        "2018-09-19T02:30:00.000Z",
-        "2018-09-19T03:30:00.000Z",
-        "2018-09-19T04:30:00.000Z",
-        "2018-09-19T05:30:00.000Z",
-        "2018-09-19T06:30:00.000Z",
-      ],
-    },
-    tooltip: {
-      x: {
-        format: "dd/MM/yy HH:mm",
-      },
-    },
-  };
-
-  var chart = new ApexCharts(document.querySelector("#chart"), options);
-  chart.render();
-</script>
+<script src="{% static 'apexcharts.js' %}"></script>

@@ -1,5 +1,3 @@
-import logging
-
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 
@@ -14,10 +12,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         user_model = get_user_model()
-        if not user_model.objects.filter(username=options["username"]).exists():
+        if user_model.objects.filter(is_superuser=True).exists():
+            self.stdout.write(self.style.WARNING("There is already a superadmin"))
+        elif user_model.objects.filter(username=options["username"]).exists():
+            self.stdout.write(self.style.ERROR('Username "%s" already exists' % options["username"]))
+        else:
             user_model.objects.create_superuser(
                 username=options["username"], email=options["email"], password=options["password"]
             )
-        else:
-            logging.info(f'Username {options["username"]} already exists')
-            self.stdout.write(self.style.ERROR('Username "%s" already exists' % options["username"]))

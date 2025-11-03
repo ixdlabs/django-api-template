@@ -1,0 +1,570 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-22 08:53+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Sinhala <LL@li.org>\n"
+"Language: si\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: authentication.py:70
+msgid "Invalid basic header. No credentials provided."
+msgstr "වලංගු නොවන මූලික ශීර්ෂය. අක්තපත්‍ර ලබා දී නොමැත."
+
+#: authentication.py:73
+msgid "Invalid basic header. Credentials string should not contain spaces."
+msgstr "වලංගු නොවන මූලික ශීර්ෂය. අක්තපත්‍රයේ අකුරු අතර හිස් ඉඩ නොවිය යුතුය."
+
+#: authentication.py:83
+msgid "Invalid basic header. Credentials not correctly base64 encoded."
+msgstr "වලංගු නොවන මූලික ශීර්ෂය. අක්තපත්‍ර Base64 ලෙස නිවැරදිව කේතගත කර නොමැත."
+
+#: authentication.py:101
+msgid "Invalid username/password."
+msgstr "වලංගු නොවන පරිශීලක නාමය/මුරපදය."
+
+#: authentication.py:104 authentication.py:206
+msgid "User inactive or deleted."
+msgstr "පරිශීලකය අක්‍රිය හෝ මකා ඇත."
+
+#: authentication.py:184
+msgid "Invalid token header. No credentials provided."
+msgstr "වලංගු නොවන ටෝකන් ශීර්ෂය. අක්තපත්‍ර ලබා දී නොමැත."
+
+#: authentication.py:187
+msgid "Invalid token header. Token string should not contain spaces."
+msgstr "වලංගු නොවන ටෝකන් ශීර්ෂය. ටෝකනයේ අකුරු අතර හිස් ඉඩ නොවිය යුතුය."
+
+#: authentication.py:193
+msgid ""
+"Invalid token header. Token string should not contain invalid characters."
+msgstr "වලංගු නොවන ටෝකන් ශීර්ෂය. ටෝකනයේ අවලංගු අකුරු නොවිය යුතුය."
+
+#: authentication.py:203
+msgid "Invalid token."
+msgstr "වලංගු නොවන ටෝකනයකි."
+
+#: authtoken/apps.py:7
+msgid "Auth Token"
+msgstr "සත්‍යාපන ටෝකනය"
+
+#: authtoken/models.py:13
+msgid "Key"
+msgstr " යතුර"
+
+#: authtoken/models.py:16
+msgid "User"
+msgstr "පරිශීලක"
+
+#: authtoken/models.py:18
+msgid "Created"
+msgstr "නිර්මාණය කළේ"
+
+#: authtoken/models.py:27 authtoken/serializers.py:19
+msgid "Token"
+msgstr "ටෝකනය"
+
+#: authtoken/models.py:28
+msgid "Tokens"
+msgstr "ටෝකන"
+
+#: authtoken/serializers.py:9
+msgid "Username"
+msgstr "පරිශීලක නාමය"
+
+#: authtoken/serializers.py:13
+msgid "Password"
+msgstr "මුරපදය"
+
+#: authtoken/serializers.py:35
+msgid "Unable to log in with provided credentials."
+msgstr "ලබා දී ඇති අක්තපත්‍ර සමඟ පුරනය විය නොහැක."
+
+#: authtoken/serializers.py:38
+msgid "Must include \"username\" and \"password\"."
+msgstr "\"පරිශීලක නාමය\" සහ \"මුරපදය\" ඇතුළත් කළ යුතුය."
+
+#: exceptions.py:102
+msgid "A server error occurred."
+msgstr "සේවාදායක දෝෂයක් සිදු විය."
+
+#: exceptions.py:142
+msgid "Invalid input."
+msgstr "වලංගු නොවන ආදානයකි."
+
+#: exceptions.py:161
+msgid "Malformed request."
+msgstr "වැරදිව සකස් කළ අයදුමකි."
+
+#: exceptions.py:167
+msgid "Incorrect authentication credentials."
+msgstr "වැරදි සත්‍යාපන අක්තපත්‍රය."
+
+#: exceptions.py:173
+msgid "Authentication credentials were not provided."
+msgstr "සත්‍යාපන අක්තපත්‍ර ලබා දී නොමැත."
+
+#: exceptions.py:179
+msgid "You do not have permission to perform this action."
+msgstr "මෙම ක්‍රියාව සිදු කිරීමට ඔබට අවසර නොමැත."
+
+#: exceptions.py:185
+msgid "Not found."
+msgstr "හමු නොවීය."
+
+#: exceptions.py:191
+#, python-brace-format
+msgid "Method \"{method}\" not allowed."
+msgstr "\"{method}\" ක්‍රමය අවසර නොදේ."
+
+#: exceptions.py:202
+msgid "Could not satisfy the request Accept header."
+msgstr "ඉල්ලීම් Accept ශීර්ෂය සපුරාලි නොහැකි විය."
+
+#: exceptions.py:212
+#, python-brace-format
+msgid "Unsupported media type \"{media_type}\" in request."
+msgstr "ඉල්ලීම තුළ සහාය නොදක්වන මාධ්‍ය වර්ගය \"{media_type}\"."
+
+#: exceptions.py:223
+msgid "Request was throttled."
+msgstr "ඉල්ලීම සීමා කරන ලදි."
+
+#: exceptions.py:224
+#, python-brace-format
+msgid "Expected available in {wait} second."
+msgstr "තව {wait} තත්පරයකින් ලබා ගත හැක."
+
+#: exceptions.py:225
+#, python-brace-format
+msgid "Expected available in {wait} seconds."
+msgstr "තව {wait} තත්පරවලින් ලබා ගත හැක."
+
+#: fields.py:316 relations.py:245 relations.py:279 validators.py:90
+#: validators.py:183
+msgid "This field is required."
+msgstr "මෙම ක්ෂේත්‍රය අවශ්‍ය වේ."
+
+#: fields.py:317
+msgid "This field may not be null."
+msgstr "මෙම ක්ෂේත්‍රය null විය නොහැක."
+
+#: fields.py:701
+msgid "Must be a valid boolean."
+msgstr "වලංගු බූලියන් විය යුතුය."
+
+#: fields.py:766
+msgid "Not a valid string."
+msgstr "වලංගු නොවන පෙළකි."
+
+#: fields.py:767
+msgid "This field may not be blank."
+msgstr "මෙම ක්ෂේත්‍රය හිස්විය නොහැක."
+
+#: fields.py:768 fields.py:1881
+#, python-brace-format
+msgid "Ensure this field has no more than {max_length} characters."
+msgstr "මෙම ක්ෂේත්‍රයේ අක්ෂර ගණන {max_length} ට වඩා නොමැති බව තහවුරු කරන්න."
+
+#: fields.py:769
+#, python-brace-format
+msgid "Ensure this field has at least {min_length} characters."
+msgstr "මෙම ක්ෂේත්‍රයේ අවමයෙන් {min_length} අක්ෂර තිබිය යුතුය."
+
+#: fields.py:816
+msgid "Enter a valid email address."
+msgstr "වලංගු ඊමේල් ලිපිනයක් ඇතුළත් කරන්න."
+
+#: fields.py:827
+msgid "This value does not match the required pattern."
+msgstr "මෙම අගය අවශ්‍ය රටාවට ගැලපෙන්නේ නැත."
+
+#: fields.py:838
+msgid ""
+"Enter a valid \"slug\" consisting of letters, numbers, underscores or "
+"hyphens."
+msgstr "අකුරු, ඉලක්කම්, යටිඉර හෝ සන්ධිඉර සහිත වලංගු \"slug\" එකක් ඇතුළත් කරන්න."
+
+#: fields.py:839
+msgid ""
+"Enter a valid \"slug\" consisting of Unicode letters, numbers, underscores, "
+"or hyphens."
+msgstr "Unicode අකුරු, ඉලක්කම්, යටිඉර හෝ සන්ධිඉර සහිත වලංගු \"slug\" එකක් ඇතුළත් කරන්න."
+
+#: fields.py:854
+msgid "Enter a valid URL."
+msgstr "වලංගු URL එකක් ඇතුළත් කරන්න."
+
+#: fields.py:867
+msgid "Must be a valid UUID."
+msgstr "වලංගු UUID විය යුතුය."
+
+#: fields.py:903
+msgid "Enter a valid IPv4 or IPv6 address."
+msgstr "වලංගු IPv4 හෝ IPv6 ලිපිනයක් ඇතුළත් කරන්න."
+
+#: fields.py:931
+msgid "A valid integer is required."
+msgstr "වලංගු පූර්ණ සංඛ්‍යාවක් අවශ්‍ය වේ."
+
+#: fields.py:932 fields.py:969 fields.py:1005 fields.py:1366
+#, python-brace-format
+msgid "Ensure this value is less than or equal to {max_value}."
+msgstr "මෙම අගය {max_value} ට වඩා අඩු හෝ සමාන බව තහවුරු කරන්න."
+
+#: fields.py:933 fields.py:970 fields.py:1006 fields.py:1367
+#, python-brace-format
+msgid "Ensure this value is greater than or equal to {min_value}."
+msgstr "මෙම අගය {min_value} ට වඩා වැඩි හෝ සමාන බව තහවුරු කරන්න."
+
+#: fields.py:934 fields.py:971 fields.py:1010
+msgid "String value too large."
+msgstr "පෙළ අගය විශාල වැඩිය."
+
+#: fields.py:968 fields.py:1004
+msgid "A valid number is required."
+msgstr "වලංගු සංඛ්‍යාවක් අවශ්‍ය වේ."
+
+#: fields.py:1007
+#, python-brace-format
+msgid "Ensure that there are no more than {max_digits} digits in total."
+msgstr "මුළු ගණන {max_digits} ට වඩා ඉලක්කම් නොමැති බව තහවුරු කරන්න."
+
+#: fields.py:1008
+#, python-brace-format
+msgid "Ensure that there are no more than {max_decimal_places} decimal places."
+msgstr "දශම ස්ථාන {max_decimal_places} ට වඩා නොමැති බව තහවුරු කරන්න."
+
+#: fields.py:1009
+#, python-brace-format
+msgid ""
+"Ensure that there are no more than {max_whole_digits} digits before the "
+"decimal point."
+msgstr "දශම ලකුණට පෙර ඉලක්කම් {max_whole_digits} ට වඩා නොමැති බව තහවුරු කරන්න."
+
+#: fields.py:1148
+#, python-brace-format
+msgid "Datetime has wrong format. Use one of these formats instead: {format}."
+msgstr "දිනය/වේලාව වැරදි ආකෘතියේ ඇත. මේ ආකෘති වලින් එකක් භාවිතා කරන්න: {format}."
+
+#: fields.py:1149
+msgid "Expected a datetime but got a date."
+msgstr "දිනය/වේලාවක් බලාපොරොත්තු වූ නමුත් දිනයක් ලැබුණි."
+
+#: fields.py:1150
+#, python-brace-format
+msgid "Invalid datetime for the timezone \"{timezone}\"."
+msgstr "\"{timezone}\" කාල කලාපය සඳහා වැරදි දිනය/වේලාවකි."
+
+#: fields.py:1151
+msgid "Datetime value out of range."
+msgstr "දිනය/වේලාව අවසර ඇති සීමාවෙන් පිටව ඇත."
+
+#: fields.py:1236
+#, python-brace-format
+msgid "Date has wrong format. Use one of these formats instead: {format}."
+msgstr "දිනය වැරදි ආකෘතියේ ඇත. මේ ආකෘති වලින් එකක් භාවිතා කරන්න: {format}."
+
+#: fields.py:1237
+msgid "Expected a date but got a datetime."
+msgstr "දිනයක් බලාපොරොත්තු වූ නමුත් දිනය/වේලාවක් ලැබුණි."
+
+#: fields.py:1303
+#, python-brace-format
+msgid "Time has wrong format. Use one of these formats instead: {format}."
+msgstr "වේලාව වැරදි ආකෘතියේ ඇත. මේ ආකෘති වලින් එකක් භාවිතා කරන්න: {format}."
+
+#: fields.py:1365
+#, python-brace-format
+msgid "Duration has wrong format. Use one of these formats instead: {format}."
+msgstr "කාලය වැරදි ආකෘතියේ ඇත. මේ ආකෘති වලින් එකක් භාවිතා කරන්න: {format}."
+
+#: fields.py:1399 fields.py:1456
+#, python-brace-format
+msgid "\"{input}\" is not a valid choice."
+msgstr "\"{input}\" වලංගු තේරීමක් නොවේ."
+
+#: fields.py:1402
+#, python-brace-format
+msgid "More than {count} items..."
+msgstr "අයිතම {count} ට වඩා..."
+
+#: fields.py:1457 fields.py:1603 relations.py:485 serializers.py:570
+#, python-brace-format
+msgid "Expected a list of items but got type \"{input_type}\"."
+msgstr "අයිතම ලැයිස්තුවක් බලාපොරොත්තු වූ නමුත් \"{input_type}\" ලැබුණි."
+
+#: fields.py:1458
+msgid "This selection may not be empty."
+msgstr "මෙම තේරීම හිස් විය නොහැක."
+
+#: fields.py:1495
+#, python-brace-format
+msgid "\"{input}\" is not a valid path choice."
+msgstr "\"{input}\" වලංගු මාර්ග තේරීමක් නොවේ."
+
+#: fields.py:1514
+msgid "No file was submitted."
+msgstr "ගොනුවක් යොමු කර නොමැත."
+
+#: fields.py:1515
+msgid "The submitted data was not a file. Check the encoding type on the form."
+msgstr "යොමු කළ දත්ත ගොනුවක් නොවේ. පෝරමයේ කේතනය කිරීමේ වර්ගය පරීක්ෂා කරන්න."
+
+#: fields.py:1516
+msgid "No filename could be determined."
+msgstr "ගොනු නාමය තීරණය කළ නොහැකි විය."
+
+#: fields.py:1517
+msgid "The submitted file is empty."
+msgstr "යොමු කළ ගොනුව හිස් ය."
+
+#: fields.py:1518
+#, python-brace-format
+msgid ""
+"Ensure this filename has at most {max_length} characters (it has {length})."
+msgstr "මෙම ගොනු නාමයේ අක්ෂර {max_length} ට වඩා නොමැති බව තහවුරු කරන්න (දැන් {length} ඇත)."
+
+#: fields.py:1566
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr "වලංගු රූපයක් උඩුගත කරන්න. ඔබ උඩුගත කළ ගොනුව රූපයක් නොවීය හෝ විනාශ වී ඇත."
+
+#: fields.py:1604 relations.py:486 serializers.py:571
+msgid "This list may not be empty."
+msgstr "මෙම ලැයිස්තුව හිස් විය නොහැක."
+
+#: fields.py:1605
+#, python-brace-format
+msgid "Ensure this field has at least {min_length} elements."
+msgstr "මෙම ක්ෂේත්‍රයේ අවමයෙන් {min_length} අංග තිබිය යුතුය."
+
+#: fields.py:1606
+#, python-brace-format
+msgid "Ensure this field has no more than {max_length} elements."
+msgstr "මෙම ක්ෂේත්‍රයේ අංග {max_length} ට වඩා නොමැති බව තහවුරු කරන්න."
+
+#: fields.py:1682
+#, python-brace-format
+msgid "Expected a dictionary of items but got type \"{input_type}\"."
+msgstr "අයිතම ශබ්දකෝෂයක් බලාපොරොත්තු වූ නමුත් \"{input_type}\" ලැබුණි."
+
+#: fields.py:1683
+msgid "This dictionary may not be empty."
+msgstr "මෙම ශබ්දකෝෂය හිස් විය නොහැක."
+
+#: fields.py:1755
+msgid "Value must be valid JSON."
+msgstr "අගය වලංගු JSON විය යුතුය."
+
+#: filters.py:49 templates/rest_framework/filters/search.html:2
+msgid "Search"
+msgstr "සොයන්න"
+
+#: filters.py:50
+msgid "A search term."
+msgstr "සෙවීම සඳහා යොදන වචනය."
+
+#: filters.py:180 templates/rest_framework/filters/ordering.html:3
+msgid "Ordering"
+msgstr "අනුපිළිවෙල"
+
+#: filters.py:181
+msgid "Which field to use when ordering the results."
+msgstr "ප්‍රතිඵල අනුපිළිවෙලට ගන්වීමට භාවිතා කරන ක්ෂේත්‍රය."
+
+#: filters.py:287
+msgid "ascending"
+msgstr "ආරෝහණ"
+
+#: filters.py:288
+msgid "descending"
+msgstr "අවරෝහණ"
+
+#: pagination.py:174
+msgid "A page number within the paginated result set."
+msgstr "පිටු වශයෙන් වෙන්කළ ප්‍රතිඵල කට්ටලයේ පිටු අංකයක්."
+
+#: pagination.py:179 pagination.py:372 pagination.py:590
+msgid "Number of results to return per page."
+msgstr "පිටුවකට ලබා දිය යුතු ප්‍රතිඵල ගණන."
+
+#: pagination.py:189
+msgid "Invalid page."
+msgstr "වලංගු නොවන පිටුවකි."
+
+#: pagination.py:374
+msgid "The initial index from which to return the results."
+msgstr "ප්‍රතිඵල ලබා දිය යුතු ආරම්භක දර්ශකය."
+
+#: pagination.py:581
+msgid "The pagination cursor value."
+msgstr "පිටුකරණ කර්සර අගය."
+
+#: pagination.py:583
+msgid "Invalid cursor"
+msgstr "වලංගු නොවන කර්සරය"
+
+#: relations.py:246
+#, python-brace-format
+msgid "Invalid pk \"{pk_value}\" - object does not exist."
+msgstr "වලංගු නොවන pk \"{pk_value}\" - වස්තුව නොපවතී."
+
+#: relations.py:247
+#, python-brace-format
+msgid "Incorrect type. Expected pk value, received {data_type}."
+msgstr "වැරදි වර්ගය. pk අගයක් බලාපොරොත්තු වූ නමුත් {data_type} ලැබුණි."
+
+#: relations.py:280
+msgid "Invalid hyperlink - No URL match."
+msgstr "වලංගු නොවන සබැඳිය - URL ගැලපීමක් නොමැත."
+
+#: relations.py:281
+msgid "Invalid hyperlink - Incorrect URL match."
+msgstr "වලංගු නොවන සබැඳිය - වැරදි URL ගැලපීමකි."
+
+#: relations.py:282
+msgid "Invalid hyperlink - Object does not exist."
+msgstr "වලංගු නොවන සබැඳිය - වස්තුව නොපවතී."
+
+#: relations.py:283
+#, python-brace-format
+msgid "Incorrect type. Expected URL string, received {data_type}."
+msgstr "වැරදි වර්ගය. URL පෙළක් බලාපොරොත්තු වූ නමුත් {data_type} ලැබුණි."
+
+#: relations.py:448
+#, python-brace-format
+msgid "Object with {slug_name}={value} does not exist."
+msgstr "{slug_name}={value} යන වස්තුව නොපවතී."
+
+#: relations.py:449
+msgid "Invalid value."
+msgstr "වලංගු නොවන අගයකි."
+
+#: schemas/utils.py:32
+msgid "unique integer value"
+msgstr "අද්විතීය පූර්ණ සංඛ්‍යා අගය"
+
+#: schemas/utils.py:34
+msgid "UUID string"
+msgstr "UUID පෙළ"
+
+#: schemas/utils.py:36
+msgid "unique value"
+msgstr "අද්විතීය අගය"
+
+#: schemas/utils.py:38
+#, python-brace-format
+msgid "A {value_type} identifying this {name}."
+msgstr "මෙම {name} හඳුනාගන්නා {value_type}."
+
+#: serializers.py:337
+#, python-brace-format
+msgid "Invalid data. Expected a dictionary, but got {datatype}."
+msgstr "වලංගු නොවන දත්ත. ශබ්දකෝෂයක් බලාපොරොත්තු වූ නමුත් {datatype} ලැබුණි."
+
+#: templates/rest_framework/admin.html:116
+#: templates/rest_framework/base.html:136
+msgid "Extra Actions"
+msgstr "අමතර ක්‍රියා"
+
+#: templates/rest_framework/admin.html:130
+#: templates/rest_framework/base.html:150
+msgid "Filters"
+msgstr "පෙරහන්"
+
+#: templates/rest_framework/base.html:37
+msgid "navbar"
+msgstr "සංචාර තීරුව"
+
+#: templates/rest_framework/base.html:75
+msgid "content"
+msgstr "අන්තර්ගතය"
+
+#: templates/rest_framework/base.html:78
+msgid "request form"
+msgstr "ඉල්ලීම් පෝරමය"
+
+#: templates/rest_framework/base.html:157
+msgid "main content"
+msgstr "ප්‍රධාන අන්තර්ගතය"
+
+#: templates/rest_framework/base.html:173
+msgid "request info"
+msgstr "ඉල්ලීම් තොරතුරු"
+
+#: templates/rest_framework/base.html:177
+msgid "response info"
+msgstr "ප්‍රතිචාර තොරතුරු"
+
+#: templates/rest_framework/horizontal/radio.html:4
+#: templates/rest_framework/inline/radio.html:3
+#: templates/rest_framework/vertical/radio.html:3
+msgid "None"
+msgstr "කිසිවක් නැත"
+
+#: templates/rest_framework/horizontal/select_multiple.html:4
+#: templates/rest_framework/inline/select_multiple.html:3
+#: templates/rest_framework/vertical/select_multiple.html:3
+msgid "No items to select."
+msgstr "තේරිය හැකි අයිතම නොමැත."
+
+#: validators.py:39
+msgid "This field must be unique."
+msgstr "මෙම ක්ෂේත්‍රය අද්විතීය විය යුතුය."
+
+#: validators.py:89
+#, python-brace-format
+msgid "The fields {field_names} must make a unique set."
+msgstr "{field_names} ක්ෂේත්‍රය අද්විතීය සමුදායක් බව තහවුරු කළ යුතුය."
+
+#: validators.py:171
+#, python-brace-format
+msgid "Surrogate characters are not allowed: U+{code_point:X}."
+msgstr "ප්‍රතිස්ථාපන අක්ෂර අවසර නැත: U+{code_point:X}."
+
+#: validators.py:243
+#, python-brace-format
+msgid "This field must be unique for the \"{date_field}\" date."
+msgstr "\"{date_field}\" දිනය සඳහා මෙම ක්ෂේත්‍රය අද්විතීය විය යුතුය."
+
+#: validators.py:258
+#, python-brace-format
+msgid "This field must be unique for the \"{date_field}\" month."
+msgstr "\"{date_field}\" මාසය සඳහා මෙම ක්ෂේත්‍රය අද්විතීය විය යුතුය."
+
+#: validators.py:271
+#, python-brace-format
+msgid "This field must be unique for the \"{date_field}\" year."
+msgstr "\"{date_field}\" වර්ෂය සඳහා මෙම ක්ෂේත්‍රය අද්විතීය විය යුතුය."
+
+#: versioning.py:40
+msgid "Invalid version in \"Accept\" header."
+msgstr "\"Accept\" ශීර්ෂයේ වලංගු නොවන අනුවාදය."
+
+#: versioning.py:71
+msgid "Invalid version in URL path."
+msgstr "URL මාර්ගයේ වලංගු නොවන අනුවාදය."
+
+#: versioning.py:116
+msgid "Invalid version in URL path. Does not match any version namespace."
+msgstr "URL මාර්ගයේ වලංගු නොවන අනුවාදය. කිසිඳු අනුවාද නාම අවකාශයට ගැලපෙන්නේ නැත."
+
+#: versioning.py:148
+msgid "Invalid version in hostname."
+msgstr "ඇගයුම් නාමය තුළ වලංගු නොවන අනුවාදය."
+
+#: versioning.py:170
+msgid "Invalid version in query parameter."
+msgstr "විමසුම් පරාමිතිය තුළ වලංගු නොවන අනුවාදය."

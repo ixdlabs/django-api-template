@@ -1,18 +1,17 @@
 from typing import Sequence
 
-from django.conf import settings
-from rest_framework import pagination
-
-
-class PageSizeParamPagination(pagination.PageNumberPagination):
-    """Pagination class with page size query param support."""
-
-    page_size = settings.REST_FRAMEWORK.get("PAGE_SIZE")
-    max_page_size = settings.REST_FRAMEWORK.get("MAX_PAGE_SIZE")
-    page_size_query_param = "page_size"
-    page_query_param = "page"
+from rest_framework.routers import DefaultRouter
 
 
 class PublicEndpoint:
     permission_classes: Sequence = ()
     authentication_classes: Sequence = ()
+
+
+class PrefixedDefaultRouter(DefaultRouter):
+    def __init__(self, prefix: str, trailing_slash=True, use_regex_path=True, *, root_renderers=...):
+        super().__init__(trailing_slash, use_regex_path, root_renderers=root_renderers)
+        self.prefix = prefix
+
+    def register(self, prefix, viewset, basename=..., base_name=...):
+        return super().register(f"{self.prefix}/{prefix}", viewset, f"{self.prefix}-{basename}")

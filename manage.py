@@ -12,7 +12,7 @@ def main():
 
     # Setup open telemetry only if running via "runserver --noreload"
     if sys.argv[1] == "runserver" and "--noreload" in sys.argv:
-        setup_open_telemetry("fitconnect-backend")
+        setup_open_telemetry("django-api-template-backend")
 
     try:
         from django.core.management import execute_from_command_line

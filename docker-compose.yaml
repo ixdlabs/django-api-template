@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: tools/infra/Dockerfile.web
     restart: always
-    container_name: fitconnect-web
+    container_name: backend-web
     ports:
       - "8000:8000"
     depends_on:
@@ -14,7 +14,7 @@ services:
         condition: service_healthy
     environment:
       CELERY_BROKER_URL: amqp://guest:guest@rabbitmq:5672//
-      DATABASE_URL: postgres://user:password@db:5432/fitconnect_db
+      DATABASE_URL: postgres://user:password@db:5432/backend_db
       REDIS_URL: redis://:password@redis:6379
       USE_WHITENOISE: True
       DJANGO_DEBUG: False
@@ -32,7 +32,7 @@ services:
       context: .
       dockerfile: tools/infra/Dockerfile.celery
     restart: always
-    container_name: fitconnect-worker
+    container_name: backend-worker
     command: ["/app/entrypoint_worker.sh"]
     depends_on:
       rabbitmq:
@@ -41,7 +41,7 @@ services:
         condition: service_healthy
     environment:
       CELERY_BROKER_URL: amqp://guest:guest@rabbitmq:5672//
-      DATABASE_URL: postgres://user:password@db:5432/fitconnect_db
+      DATABASE_URL: postgres://user:password@db:5432/backend_db
       REDIS_URL: redis://:password@redis:6379
       DJANGO_DEBUG: False
       OTEL_EXPORTER_OTLP_ENDPOINT: http://host.docker.internal:4317
@@ -58,7 +58,7 @@ services:
       context: .
       dockerfile: tools/infra/Dockerfile.celery
     restart: always
-    container_name: fitconnect-beat
+    container_name: backend-beat
     command: ["/app/entrypoint_beat.sh"]
     depends_on:
       rabbitmq:
@@ -67,7 +67,7 @@ services:
         condition: service_healthy
     environment:
       CELERY_BROKER_URL: amqp://guest:guest@rabbitmq:5672//
-      DATABASE_URL: postgres://user:password@db:5432/fitconnect_db
+      DATABASE_URL: postgres://user:password@db:5432/backend_db
       REDIS_URL: redis://:password@redis:6379
       DJANGO_DEBUG: False
     develop:
@@ -81,7 +81,7 @@ services:
       context: .
       dockerfile: tools/rabbitmq/Dockerfile
     restart: always
-    container_name: fitconnect-rabbitmq
+    container_name: backend-rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -97,7 +97,7 @@ services:
       context: .
       dockerfile: tools/redis/Dockerfile
     restart: always
-    container_name: fitconnect-redis
+    container_name: backend-redis
     environment:
       REDIS_PASSWORD: password
     ports:
@@ -107,20 +107,20 @@ services:
     build:
       context: .
       dockerfile: tools/postgres/Dockerfile
-    container_name: fitconnect-postgres
+    container_name: backend-postgres
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: fitconnect_db
+      POSTGRES_DB: backend_db
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
     volumes:
-      - fitconnect_pgdata:/var/lib/postgresql/data
+      - backend_pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d fitconnect_db"]
+      test: ["CMD-SHELL", "pg_isready -U user -d backend_db"]
       interval: 5s
       timeout: 3s
       retries: 10
 
 volumes:
-  fitconnect_pgdata:
+  backend_pgdata:

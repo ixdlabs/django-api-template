@@ -7,4 +7,4 @@ timeout = 120
 
 # https://signoz.io/docs/instrumentation/opentelemetry-python/#running-applications-with-gunicorn-uwsgi
 def post_fork(server, worker):
-    setup_open_telemetry("fitconnect-backend")
+    setup_open_telemetry("django-api-template-backend")
