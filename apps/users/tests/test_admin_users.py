@@ -7,7 +7,7 @@ from apps.users.choices import UserTypes
 from apps.users.models import User
 
 
-class OrganizationManagementAdminTestCase(TestCase):
+class UsersAdminTestCase(TestCase):
     def setUp(self):
         logging.disable(logging.CRITICAL)
         self.admin_user = User.objects.create_superuser(username="tadmin", email="tadmin@example.com", password="pass")

@@ -13,7 +13,7 @@ class User(UUIDModel, AbstractUser):
     username = models.CharField(max_length=63, unique=True)
     first_name = models.CharField(max_length=31, blank=True)
     last_name = models.CharField(max_length=31, blank=True)
-    email = models.EmailField(null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)  # type: ignore
 
     class Meta:
         ordering = ["-date_joined"]
