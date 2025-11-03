@@ -484,15 +484,6 @@ SPECTACULAR_SETTINGS = {
         "ErrorCode415Enum": "drf_standardized_errors.openapi_serializers.ErrorCode415Enum",
         "ErrorCode429Enum": "drf_standardized_errors.openapi_serializers.ErrorCode429Enum",
         "ErrorCode500Enum": "drf_standardized_errors.openapi_serializers.ErrorCode500Enum",
-        "CurrentMembershipTimeStateEnum": "apps.memberships.choices.MembershipTimeStates",
-        "RequestStateEnum": "apps.workouts.choices.RequestStates",
-        "PaymentMethodEnum": "apps.payments.choices.PaymentMethods",
-        "WorkoutLevelAssignmentEnum": "apps.workouts.choices.WorkoutLevelAssignments",
-        "WorkoutGenderAssignmentEnum": "apps.workouts.choices.WorkoutGenderAssignments",
-        "PaymentBackendEnum": "apps.dashboard.choices.PaymentBackends",
-        "GenderEnum": "apps.users.choices.Genders",
-        "SmsGroupGenderEnum": "apps.notifications.choices.SmsGroupGenders",
-        "OrderStateEnum": "apps.products.choices.OrderStates",
     },
 }
 

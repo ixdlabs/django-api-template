@@ -9,5 +9,5 @@ from apps.users.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "user_type", "username", "email", "photo", "first_name", "last_name"]
-        read_only_fields = ["id", "user_type", "username", "photo"]
+        fields = ["id", "user_type", "username", "email", "first_name", "last_name"]
+        read_only_fields = ["id", "user_type", "username"]

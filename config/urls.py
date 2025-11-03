@@ -7,6 +7,7 @@ from drf_spectacular import views as spec_views
 from rest_framework.routers import DefaultRouter
 
 from apps.api_auth.apis.common.views import MeCommonViewSet, TokenCommonViewSet
+from apps.api_auth.apis.customer.views import AuthCustomerViewSet
 from apps.dashboard.apis.common.views import GlobalSettingsCommonViewSet
 from apps.users.apis.customer.views import CustomerViewSet
 from apps.utils.views import PrefixedDefaultRouter
@@ -17,7 +18,7 @@ spectacular_api_docs_view = SpectacularRapiDocView.as_view(url_name="schema")
 
 
 customer_router = PrefixedDefaultRouter("customer")
-# customer_router.register("auth", AuthCustomerViewSet, basename="auth")
+customer_router.register("auth", AuthCustomerViewSet, basename="auth")
 customer_router.register("customers", CustomerViewSet, basename="customers")
 
 
