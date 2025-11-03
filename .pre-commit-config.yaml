@@ -1,37 +1,53 @@
-exclude: 'docs|node_modules|migrations|.git|.tox'
-default_stages: [ pre-commit ]
+exclude: "docs|node_modules|migrations|.git|.tox"
+default_stages: [pre-commit]
 fail_fast: true
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+        exclude: ^tools/infra/helm/.*\.ya?ml$
 
   - repo: https://github.com/psf/black
     rev: 23.9.1
     hooks:
       - id: black
-        args: [ '--line-length=120' ]
+        args: ["--line-length=120"]
 
   - repo: https://github.com/timothycrosley/isort
     rev: 5.12.0
     hooks:
       - id: isort
-        args: [ '--profile=black' ]
+        args: ["--profile=black"]
 
   - repo: https://github.com/pycqa/flake8
     rev: 6.1.0
     hooks:
       - id: flake8
-        args: [ '--config=setup.cfg' ]
-        additional_dependencies: [ flake8-isort ]
+        args: ["--config=setup.cfg"]
+        additional_dependencies: [flake8-isort]
 
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v1.17.0
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+
+  - repo: local
+    hooks:
+      - id: unused-class-def-analyzer
+        name: analyze unused class defs
+        entry: python tools/analyzers/unused_class_def_analyzer.py
+        language: python
+        always_run: true
+        pass_filenames: false
+        args: ["--roots=apps,config", "--suffixes=Serializer,ViewSet,View"]
 
 # sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
 ci:
   autoupdate_schedule: weekly
-  skip: [ ]
+  skip: []
   submodules: false

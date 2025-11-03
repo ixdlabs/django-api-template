@@ -1,0 +1,9 @@
+.media
+.static
+.env
+.env.example
+celerybeat-schedule
+sqlite.db
+
+.github
+tests

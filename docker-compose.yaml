@@ -1,0 +1,126 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: tools/infra/Dockerfile.web
+    restart: always
+    container_name: fitconnect-web
+    ports:
+      - "8000:8000"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    environment:
+      CELERY_BROKER_URL: amqp://guest:guest@rabbitmq:5672//
+      DATABASE_URL: postgres://user:password@db:5432/fitconnect_db
+      REDIS_URL: redis://:password@redis:6379
+      USE_WHITENOISE: True
+      DJANGO_DEBUG: False
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://host.docker.internal:4317
+    develop:
+      watch:
+        - action: sync+restart
+          path: .
+          target: /app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  worker:
+    build:
+      context: .
+      dockerfile: tools/infra/Dockerfile.celery
+    restart: always
+    container_name: fitconnect-worker
+    command: ["/app/entrypoint_worker.sh"]
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    environment:
+      CELERY_BROKER_URL: amqp://guest:guest@rabbitmq:5672//
+      DATABASE_URL: postgres://user:password@db:5432/fitconnect_db
+      REDIS_URL: redis://:password@redis:6379
+      DJANGO_DEBUG: False
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://host.docker.internal:4317
+    develop:
+      watch:
+        - action: sync+restart
+          path: .
+          target: /app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  beat:
+    build:
+      context: .
+      dockerfile: tools/infra/Dockerfile.celery
+    restart: always
+    container_name: fitconnect-beat
+    command: ["/app/entrypoint_beat.sh"]
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    environment:
+      CELERY_BROKER_URL: amqp://guest:guest@rabbitmq:5672//
+      DATABASE_URL: postgres://user:password@db:5432/fitconnect_db
+      REDIS_URL: redis://:password@redis:6379
+      DJANGO_DEBUG: False
+    develop:
+      watch:
+        - action: sync+restart
+          path: .
+          target: /app
+
+  rabbitmq:
+    build:
+      context: .
+      dockerfile: tools/rabbitmq/Dockerfile
+    restart: always
+    container_name: fitconnect-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "15692:15692"
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    build:
+      context: .
+      dockerfile: tools/redis/Dockerfile
+    restart: always
+    container_name: fitconnect-redis
+    environment:
+      REDIS_PASSWORD: password
+    ports:
+      - "6379:6379"
+
+  db:
+    build:
+      context: .
+      dockerfile: tools/postgres/Dockerfile
+    container_name: fitconnect-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: fitconnect_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - fitconnect_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d fitconnect_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  fitconnect_pgdata:

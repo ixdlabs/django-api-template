@@ -1,0 +1,31 @@
+FROM python:3.11-slim
+
+# Install system dependencies
+RUN apt update && apt --no-install-recommends install -y \
+    build-essential libpq-dev gettext \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Create a non-root user
+RUN adduser --disabled-password --gecos '' appuser
+
+# Install packages
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Add scripts
+COPY tools/infra/entrypoint_worker.sh /app/entrypoint_worker.sh
+COPY tools/infra/entrypoint_beat.sh /app/entrypoint_beat.sh
+RUN chmod +x entrypoint_worker.sh entrypoint_beat.sh
+
+# Copy project files
+COPY ./apps apps
+COPY ./config config
+COPY ./static static
+COPY ./templates templates
+COPY manage.py .
+
+# Change ownership and switch to non-root user
+RUN chown -R appuser /app
+USER appuser
